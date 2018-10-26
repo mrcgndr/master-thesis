@@ -1,0 +1,84 @@
+\documentclass[12pt,twoside,paper=a4,ngerman,bibliography=totoc, listof=totoc,headsepline,footsepline]{scrbook}
+% Packages
+% -----------------------------------
+\usepackage[backend=bibtex,style=numeric-comp,sorting=none,backref=true,sortcites=true]{biblatex}
+\addbibresource{bibliography.bib}	
+\renewcommand*{\bibfont}{\small}
+\usepackage{ragged2e}
+\AtBeginBibliography{\RaggedRight}
+\makeatletter
+\def\blx@maxline{77}
+% für URLs in Quellen und im Text
+\makeatother	
+\usepackage{url}		
+\usepackage{mdwlist}
+% Sprache und Codierung
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+% Kopf- und Fußzeilen
+\usepackage{scrlayer-scrpage}
+\ofoot*{\raisebox{-2mm}{\pagemark}}
+\renewcommand*{\chapterpagestyle}{scrheadings}
+% Fußnoten nicht auf mehrere Seiten aufteilen
+\interfootnotelinepenalty=10000
+% Grafiken
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\graphicspath{{./pictures/}{./plots/}{./scetches/}}
+\usepackage[space]{grffile}
+% Tabellen
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{listings}
+% Bildunterschriften
+\usepackage[format=plain, indention=\the\parindent, font={onehalfspacing}, labelfont={bf}, justification=justified]{caption}
+% Zeileneinstellung
+\usepackage{setspace} 
+% Mathe		
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+% Counter
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+% Einheiten
+\usepackage[per-mode=symbol-or-fraction, separate-uncertainty=true]{siunitx}
+% Serifenschrift
+\rmfamily
+% Seitenränder
+\usepackage[outer=28mm, inner=18mm, top=32mm, bottom=36mm]{geometry}
+% Hyperlinks
+\usepackage{hyperref}
+% Document
+
+% -----------------------------------
+\begin{document}
+
+\frontmatter 
+	\input{./title/title} 		% Titelblatt
+    \input{./title/persons}		% Betreuer, Korrektor
+    \onehalfspacing             % Zeilenabstand ab hier 1.5 zeilig
+	\renewcommand{\contentsname}{Content}
+	\tableofcontents			% Inhaltsverzeichnis
+	\protect\thispagestyle{scrheadings}
+	\renewcommand{\listfigurename}{Figures}
+	\listoffigures 				% Abbildungsverzeichnis
+	\protect\thispagestyle{scrheadings}
+	\renewcommand{\listtablename}{Tables}
+	\listoftables				% Tabellenverzeichnis
+	\protect\thispagestyle{scrheadings}
+
+% -----------------------------------
+\mainmatter 					% die einzelnen Kapitel
+    \pagestyle{scrheadings}
+    \input{./chapters/introduction}
+
+% -----------------------------------
+\backmatter
+	\pagestyle{scrheadings}
+	\printbibliography[title=Literature]
+
+\end{document}
