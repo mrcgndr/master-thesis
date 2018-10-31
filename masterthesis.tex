@@ -1,4 +1,4 @@
-\documentclass[12pt,twoside,paper=a4,ngerman,bibliography=totoc, listof=totoc,headsepline,footsepline]{scrbook}
+\documentclass[12pt,twoside,paper=a4,bibliography=totoc, listof=totoc,headsepline,footsepline]{scrbook}
 % Packages
 % -----------------------------------
 \usepackage[backend=bibtex,style=numeric-comp,sorting=none,backref=true,sortcites=true]{biblatex}
@@ -14,7 +14,7 @@
 \usepackage{mdwlist}
 % Sprache und Codierung
 \usepackage[utf8]{inputenc}
-\usepackage[ngerman]{babel}
+%\usepackage[ngerman]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{csquotes}
 % Kopf- und Fußzeilen
@@ -66,12 +66,6 @@
 	\renewcommand{\contentsname}{Content}
 	\tableofcontents			% Inhaltsverzeichnis
 	\protect\thispagestyle{scrheadings}
-	\renewcommand{\listfigurename}{Figures}
-	\listoffigures 				% Abbildungsverzeichnis
-	\protect\thispagestyle{scrheadings}
-	\renewcommand{\listtablename}{Tables}
-	\listoftables				% Tabellenverzeichnis
-	\protect\thispagestyle{scrheadings}
 
 % -----------------------------------
 \mainmatter 					% die einzelnen Kapitel
@@ -83,6 +77,12 @@
 
 % -----------------------------------
 \backmatter
+	\renewcommand{\listfigurename}{Figures}
+	\listoffigures 				% Abbildungsverzeichnis
+	\protect\thispagestyle{scrheadings}
+	\renewcommand{\listtablename}{Tables}
+	\listoftables				% Tabellenverzeichnis
+	\protect\thispagestyle{scrheadings}
 	\pagestyle{scrheadings}
 	\printbibliography[title=Literature]
 
