@@ -33,7 +33,7 @@ Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth ref
 13 & 8192 & 805306368 &  \SI{25.8}{\arcsecond}\\
 \vdots & \vdots & \vdots & \vdots \\
 \end{tabular}
-\captionof{table}{\textbf{HEALPix Parameters and resulting angular resolutions.} \cite{healpix:paper}}
+\captionof{table}{\textbf{HEALPix parameters and resulting angular resolutions.} $k$ represents the number of dividing iterations on the 12 panes, $N_\text{side}$ the number of tiles per pane edge, $N_\text{pix}$ the total number of pixels, and $\theta_\text{pix}$ the angular resolution defined by the angular length of a pixel edge. \cite{healpix:paper}}
 \end{center}
 
 For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the pole at $\theta = \SI{0}{\degree}$. 
