@@ -2,7 +2,7 @@
 \documentclass[12pt,twoside,paper=a4,bibliography=totoc, listof=totoc,headsepline,footsepline]{scrbook}
 % Packages
 % -----------------------------------
-\usepackage[backend=bibtex,style=numeric-comp,sorting=none,backref=true,sortcites=true]{biblatex}
+\usepackage[backend=biber,style=numeric-comp,sorting=none,backref=true,sortcites=true]{biblatex}
 \addbibresource{bibliography.bib}	
 \renewcommand*{\bibfont}{\small}
 \usepackage{ragged2e}
@@ -27,7 +27,7 @@
 % Grafiken
 \usepackage{graphicx}
 \usepackage{pdfpages}
-\graphicspath{{./pictures/}{./plots/}{./scetches/}}
+\graphicspath{{./pictures/}{./plots/}{./sketches/}}
 \usepackage[space]{grffile}
 % Tabellen
 \usepackage{tabularx}
@@ -74,7 +74,7 @@
     \input{./chapters/introduction}
     \input{./chapters/iceact_model}
     \input{./chapters/simresults}
-    \input{./chapters/iceact_parameterization}
+    \input{./chapters/iceact_parametrization}
 
 % -----------------------------------
 \backmatter
