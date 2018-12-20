@@ -3,7 +3,40 @@
 
 \section{Detection Efficiency}
 
-\subsection{The HEALpix Algorithm}
+\subsection{The HEALPix Algorithm}
+
+In order to account for the spherical shape of the angles of incidence it is useful to have angular bins with equal areas. Therefore, in this parametrization method, the \enquote{HEALPix} (\textbf{H}ierarchical \textbf{E}qual \textbf{A}rea iso\textbf{L}atitude \textbf{Pix}elization) algorithm is used. It allows a uniform pixelization of incidence angles to the telescope.\\
+
+\todo{healpix pixelization image}
+
+The basic idea is to subdivide the sphere into 12 quadrilateral panes which can then further divided into more sub-panes as shown in figure \todo{figure reference}. A parameter $k$ numbers the subdivision step so that the number of sub-panes per each of the 12 panes is $N_{\text{side}}^2=\left(2^k\right)^2$. Hence, the total amount of pixels on the sphere is then
+\[ N_\text{pix} = 12N_\text{side}^2\,. \]
+Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth referred to as \enquote{pixel}.
+
+\begin{center}
+\begin{tabular}{r|r|r|r}
+\multicolumn{1}{l|}{$k$} & \multicolumn{1}{l|}{$N_\text{side} = 2^k$} & \multicolumn{1}{l|}{$N_\text{pix} = 12N_\text{nside}^2$} & \multicolumn{1}{l}{$\theta_\text{pix}$} \\
+\hline
+0  & 1    & 12        &  \SI{58.6}{\degree}\\
+1  & 2    & 48        &  \SI{29.3}{\degree}\\
+2  & 4    & 192       &  \SI{14.7}{\degree}\\
+3  & 8    & 768 	  &  \SI{7.33}{\degree}\\
+4  & 16   & 3072      &  \SI{3.66}{\degree}\\
+5  & 32   & 12288     &  \SI{1.83}{\degree}\\
+6  & 64   & 49152     &  \SI{55.0}{\arcminute}\\
+7  & 128  & 196608    &  \SI{27.5}{\arcminute}\\
+8  & 256  & 786432    &  \SI{13.7}{\arcminute}\\
+9  & 512  & 3145728   &  \SI{6.87}{\arcminute}\\
+10 & 1024 & 12582912  &  \SI{3.44}{\arcminute}\\
+11 & 2048 & 50331648  &  \SI{1.72}{\arcminute}\\
+12 & 4096 & 201326592 &  \SI{51.5}{\arcsecond}\\
+13 & 8192 & 805306368 &  \SI{25.8}{\arcsecond}\\
+\vdots & \vdots & \vdots & \vdots \\
+\end{tabular}
+\captionof{table}{\textbf{HEALPix Parameters and resulting angular resolutions.} \cite{healpix:paper}}
+\end{center}
+
+For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the pole at $\theta = \SI{0}{\degree}$. 
 
 \section{Lookup Table}
 
