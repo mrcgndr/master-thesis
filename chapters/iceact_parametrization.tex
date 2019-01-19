@@ -13,7 +13,8 @@ The basic idea is to subdivide the sphere into 12 quadrilateral panes which can 
 \[ N_\text{pix} = 12N_\text{side}^2\,. \]
 Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth referred to as \enquote{pixel}.
 
-\begin{center}
+\begin{table}[H]
+\centering
 \begin{tabular}{r|r|r|r}
 \multicolumn{1}{l|}{$k$} & \multicolumn{1}{l|}{$N_\text{side} = 2^k$} & \multicolumn{1}{l|}{$N_\text{pix} = 12N_\text{nside}^2$} & \multicolumn{1}{l}{$\theta_\text{pix}$} \\
 \hline
@@ -33,8 +34,8 @@ Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth ref
 13 & 8192 & 805306368 &  \SI{25.8}{\arcsecond}\\
 \vdots & \vdots & \vdots & \vdots \\
 \end{tabular}
-\captionof{table}{\textbf{HEALPix parameters and resulting angular resolutions.} $k$ represents the number of dividing iterations on the 12 panes, $N_\text{side}$ the number of tiles per pane edge, $N_\text{pix}$ the total number of pixels, and $\theta_\text{pix}$ the angular resolution defined by the angular length of a pixel edge. \cite{healpix:paper}}
-\end{center}
+\caption{\textbf{HEALPix parameters and resulting angular resolutions.} $k$ represents the number of dividing iterations on the 12 panes, $N_\text{side}$ the number of tiles per pane edge, $N_\text{pix}$ the total number of pixels, and $\theta_\text{pix}$ the angular resolution defined by the angular length of a pixel edge. \cite{healpix:paper}}
+\end{table}
 
 For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the pole at $\theta = \SI{0}{\degree}$. 
 
