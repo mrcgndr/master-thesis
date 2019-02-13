@@ -17,7 +17,7 @@ Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth ref
 
 \begin{table}[H]
 \centering
-\begin{tabular}{r|r|r|r}
+\begin{tabular}{S[table-format=2.0]|S[table-format=4.0]|S[table-format=9.0]|S[table-format=2.2]}
 \multicolumn{1}{l|}{$k$} & \multicolumn{1}{l|}{$N_\text{side} = 2^k$} & \multicolumn{1}{l|}{$N_\text{pix} = 12N_\text{nside}^2$} & \multicolumn{1}{l}{$\theta_\text{pix}$} \\
 \hline
 0  & 1    & 12        &  \SI{58.6}{\degree}\\
@@ -34,7 +34,7 @@ Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth ref
 11 & 2048 & 50331648  &  \SI{1.72}{\arcminute}\\
 12 & 4096 & 201326592 &  \SI{51.5}{\arcsecond}\\
 13 & 8192 & 805306368 &  \SI{25.8}{\arcsecond}\\
-\vdots & \vdots & \vdots & \vdots \\
+\multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c}{\vdots} \\
 \end{tabular}
 \caption{\textbf{HEALPix parameters and resulting angular resolutions.} $k$ represents the number of dividing iterations on the 12 panes, $N_\text{side}$ the number of tiles per pane edge, $N_\text{pix}$ the total number of pixels, and $\theta_\text{pix}$ the angular resolution defined by the angular length of a pixel edge. \cite{healpix:paper}}
 \end{table}
