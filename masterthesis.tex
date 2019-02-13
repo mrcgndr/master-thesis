@@ -1,7 +1,20 @@
 % !TeX spellcheck = en_US
-\documentclass[12pt,twoside,paper=a4,bibliography=totoc, listof=totoc,headsepline,footsepline]{scrbook}
-% Packages
+\documentclass[12pt,twoside,paper=a4,bibliography=totoc, listof=totoc,headsepline,footsepline,chapterprefix=true,open=right,headings=twolinechapter,headings=big]{scrbook}
 % -----------------------------------
+% für große Kapitelzahlen
+\usepackage{anyfontsize}
+%\setkomafont{chapter}{\normalfont\Huge}
+\renewcommand*{\chapterheadstartvskip}{\vspace*{4\baselineskip}}
+\renewcommand*{\chapterheadendvskip}{\vspace*{2\baselineskip}}
+\renewcommand*{\chapterformat}{%
+	{\fontsize{20}{30}\scshape\chapappifchapterprefix{}}%
+	\fontsize{90}{30}\selectfont\rlap{\thechapter\autodot}%
+}
+\renewcommand*{\raggedchapter}{\raggedright}
+
+\renewcommand*\othersectionlevelsformat[3]{%
+	\llap{#3\autodot\enskip}%
+}
 \usepackage[backend=biber,style=numeric-comp,sorting=none,backref=true,sortcites=true]{biblatex}
 \addbibresource{bibliography.bib}	
 \renewcommand*{\bibfont}{\small}
@@ -58,6 +71,9 @@
 \usepackage{hyperref}
 % Todonotes
 \usepackage{todonotes}
+% Schriftart
+%\usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
 
 % Document
 % -----------------------------------
