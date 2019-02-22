@@ -59,7 +59,7 @@ with the height dependent air density $\rho(h)$. Once a high energetic \enquote{
 	\label{airshowers:cascades}
 \end{figure}
 
-The multiplication process holds, until the particle energies are high enough for pair production and bremsstrahlung. Below this energy, which Heitler named as the \textit{critical energy} $\xi_c^e$, the shower size decreases. Hence, the maximum number of particles $N_\text{max} = 2^{n_c}$ is reached after $n_c$ splitting steps. The energy of a considered primary photon $E_\circ$ is then distributed over all secondary shower particles so that $E_\circ = \xi_c^e N_\text{max} = \xi_c^e 2^{n_c}$. With this information, one can derive the slant depth $X_\text{max}$ at which the shower has the largest size. It is
+The multiplication process holds, until the particle energies are high enough for pair production and bremsstrahlung. Below this energy, which Heitler named as the \textit{critical energy}~$\xi_c^e$, the shower size decreases. Hence, the maximum number of particles $N_\text{max} = 2^{n_c}$ is reached after $n_c$ splitting steps. The energy of a considered primary photon $E_\circ$ is then distributed over all secondary shower particles so that $E_\circ = \xi_c^e N_\text{max} = \xi_c^e 2^{n_c}$. With this information, one can derive the slant depth $X_\text{max}$ at which the shower has the largest size. It is
 \begin{align}
 	X_\text{max}^\gamma = n_c\lambda_\text{em}\ln{2} = \lambda_\text{em}\ln{\left(\frac{E_\circ}{\xi_c^e}\right)}\,.
 	\label{airshowers:eq:xmax}
@@ -70,6 +70,42 @@ Since the maximum depth $X_\text{max}$ is dependent from energy and type of the 
 \section{Detection of Air Showers via Atmospheric Cherenkov Light}\label{sec:cherenkov}
 
 \subsection{The Cherenkov Effect}
+
+The Cherenkov Effect is named after the Soviet physicist \textsc(Pavel Alekseyevich Cherenkov) and describes the emission of radiation if a charged particle traverses a medium with a speed exceeding speed of light in that medium. \cite{airshowers:cherenkov} The effect is describable in two ways:
+\begin{itemize}
+	\item{\textbf{Polarization of dipoles}}
+	\begin{description}
+		\item[$v < \frac{c_0}{n}$:]{(see figure \ref{airshowers:cherenkov1} top)}
+		\item[$v > \frac{c_0}{n}$:]{(see figure \ref{airshowers:cherenkov2} top)}
+	\end{description}
+\end{itemize}
+
+\begin{itemize}
+	\item{\textbf{Huygens' principle -- \enquote{sonic boom}}}
+	\begin{description}
+		\item[$v < \frac{c_0}{n}$:]{(see figure \ref{airshowers:cherenkov1} bottom)}
+		\item[$v > \frac{c_0}{n}$:]{(see figure \ref{airshowers:cherenkov2} bottom)}
+	\end{description}
+\end{itemize}
+
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[t]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Cherenkov1.pdf}
+		\caption{$v < \frac{c_0}{n}$}
+		\label{airshowers:cherenkov1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Cherenkov2.pdf}
+		\caption{$v > \frac{c_0}{n}$}
+		\label{airshowers:cherenkov2}
+	\end{subfigure}
+	\caption[Illustration for the Cherenkov effect]{\textbf{Illustration for the Cherenkov effect.} A charged particle is traversing the medium from left to right. In the two top images, the dipole interpretation of the Cherenkov effect is shown. The two bottom images show the effect by using Huygens' principle.}
+\end{figure}
+
+
 
 \begin{figure}[h]
 	\includegraphics[width=\textwidth]{AirShowerDetection.pdf}
