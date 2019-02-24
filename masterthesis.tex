@@ -76,6 +76,11 @@
 \renewcommand{\familydefault}{\sfdefault}
 % für Subcaptions
 \usepackage{subcaption}
+% Umgebung für Variablenbeschreibung
+\newenvironment{vardescription}
+{\par\vspace{\abovedisplayskip}\noindent
+	\tabularx{\columnwidth}{>{$}l<{$} @{${}\quad{}$} >{\raggedright\arraybackslash}X}}
+{\endtabularx\par\vspace{\belowdisplayskip}}
 
 % Document
 % -----------------------------------
