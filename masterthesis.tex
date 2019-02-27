@@ -52,6 +52,8 @@
 % Bildunterschriften
 \usepackage{float}
 \usepackage[format=plain, indention=1.5em, labelfont={bf}, justification=justified]{caption}
+% Bilder neben Text
+\usepackage{wrapfig}
 % Zeileneinstellung
 \usepackage{setspace} 
 % Mathe		
@@ -76,11 +78,15 @@
 \renewcommand{\familydefault}{\sfdefault}
 % für Subcaptions
 \usepackage{subcaption}
+% mehere Referenzen in einem
+\usepackage{cleveref}
 % Umgebung für Variablenbeschreibung
 \newenvironment{vardescription}
 {\par\vspace{\abovedisplayskip}\noindent
 	\tabularx{\columnwidth}{>{$}l<{$} @{${}\quad{}$} >{\raggedright\arraybackslash}X}}
 {\endtabularx\par\vspace{\belowdisplayskip}}
+% Geant4
+\newcommand{\geant}{\textsc{Geant4 }}
 
 % Document
 % -----------------------------------
