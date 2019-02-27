@@ -12,7 +12,9 @@ In order to account for the spherical shape of the angles of incidence it is use
 \todo{healpix pixelization image}
 
 The basic idea is to subdivide the sphere into 12 quadrilateral panes which can then further divided into more sub-panes as shown in figure \todo{figure reference}. A parameter $k$ numbers the subdivision step so that the number of sub-panes per each of the 12 panes is $N_{\text{side}}^2=\left(2^k\right)^2$. Hence, the total amount of pixels on the sphere is then
-\[ N_\text{pix} = 12N_\text{side}^2\,. \]
+\begin{align}
+N_\text{pix} = 12N_\text{side}^2\,.
+\end{align}
 Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth referred to as \enquote{pixel}.
 
 \begin{table}[H]

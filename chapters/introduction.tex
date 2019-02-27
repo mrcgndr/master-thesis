@@ -19,7 +19,7 @@ Since January 2011, the IceCube Neutrino Observatory at the South Pole is measur
 
 Neutrinos are very interesting elementary particles because of their weak interaction cross section and their electrical neutrality. This fact makes it possible for neutrinos to let them point back to their sources which is exploited in the search for astrophysical processes like active galactic nuclei, supernovae, or gamma-ray bursts. Since they are able to reach us without scattering processes, neutrinos can even give information about sources at cosmological distances. Simultaneously, the weak interaction potential is what neutrino detection makes challenging. Therefore, a detector with a large scale active volume is needed. In the case of IceCube, this is \SI{1}{\cubic\kilo\meter} of ice.
 
-At the surface on top of the in-ice detector the cosmic ray air shower array IceTop is installed to detect Cherenkov radiation (see \ref{sec:cherenkov}). IceTop consists of 81 stations approximately arranged in the same grid as the in-ice strings. Each station has two tanks filled up with ice and two standard IceCube DOMs. This arrangement makes it possible for IceTop to detect primary cosmic rays (see \ref{sec:cosmicrays}) in the energy range of \si{\peta\electronvolt} to \si{\exa\electronvolt}. One purpose of IceTop is to provide a veto for downward-going neutrinos in the IceCube detector originating from coincident atmospheric air shower events. \cite{icecube:instrumentation} Since IceCube is investigating astrophysical neutrinos, atmospheric neutrinos are a major background.
+At the surface on top of the in-ice detector the cosmic ray air shower array IceTop is installed to detect Cherenkov radiation (cf. \ref{sec:cherenkov}). IceTop consists of 81 stations approximately arranged in the same grid as the in-ice strings. Each station has two tanks filled up with ice and two standard IceCube DOMs. This arrangement makes it possible for IceTop to detect primary cosmic rays (cf. \ref{sec:cosmicrays}) in the energy range of \si{\peta\electronvolt} to \si{\exa\electronvolt}. One purpose of IceTop is to provide a veto for downward-going neutrinos in the IceCube detector originating from coincident atmospheric air shower events. \cite{icecube:instrumentation} Since IceCube is investigating astrophysical neutrinos, atmospheric neutrinos are a major background.
 
 \todo{TXS?}
 
@@ -53,7 +53,7 @@ If a high energetic particle -- a photon or hadron -- incidentally reaches the E
 \begin{align}
 X(h) = \int_{h}^{\infty}\rho(h')dh'\,
 \end{align}
-with the height dependent air density $\rho(h)$. Once a high energetic \enquote{primary} particle interacts with an atmospheric atom, it initiates a cascade of secondary particles. Typically, one differentiates between hadronic and electro-magnetic cascades or showers (see figure \ref{airshowers:cascades}). For electro-magnetic showers or sub-showers \textit{Heitler's model} is used as a simple conception. The model is based on two-body splittings of electrons, positrons, and photons by $e^+ e^-$ pair production or bremsstrahlung which occur after a fixed distance $d=\lambda_\text{em}\ln{2}$ by using the medium-specific \textit{radiation length} $\lambda_\text{em}$. In other words: after $n$ splitting processes the shower consists out of $N = 2^n = e^{x/\lambda_\text{em}}$ electrons and photons.
+with the height dependent air density $\rho(h)$. Once a high energetic \enquote{primary} particle interacts with an atmospheric atom, it initiates a cascade of secondary particles. Typically, one differentiates between hadronic and electro-magnetic cascades or showers (cf. figure \ref{airshowers:cascades}). For electro-magnetic showers or sub-showers \textit{Heitler's model} is used as a simple conception. The model is based on two-body splittings of electrons, positrons, and photons by $e^+ e^-$ pair production or bremsstrahlung which occur after a fixed distance $d=\lambda_\text{em}\ln{2}$ by using the medium-specific \textit{radiation length} $\lambda_\text{em}$. In other words: after $n$ splitting processes the shower consists out of $N = 2^n = e^{x/\lambda_\text{em}}$ electrons and photons.
 
 \begin{figure}[h]
 	\includegraphics[width=\textwidth]{AirShowerHeitler.pdf}
@@ -107,15 +107,15 @@ The effect is describable in two ways which are shown in figure \ref{airshowers:
 	\hfill
 	\begin{subfigure}[t]{0.45\textwidth}
 		\includegraphics[width=\textwidth]{Cherenkov2Huy.pdf}
-		\caption{$v > \frac{c_0}{n}$ -- The charged particle induces electro-magnetic elementary waves along its trajectory which propagate slower trough the medium than the particle. All elementary waves add up to a wavefront under a fixed angle $\theta$. With this model the Cherenkov effect can be interpreted as the optical analogue for the \textit{sonic boom}.}
+		\caption{$v > \frac{c_0}{n}$ -- The charged particle induces electro-magnetic elementary waves along its trajectory which propagate slower trough the medium than the particle. All elementary waves add up to a wavefront under a fixed angle $\theta_C$. With this model the Cherenkov effect can be interpreted as the optical analogue for the \textit{sonic boom}.}
 		\label{airshowers:cherenkov2huy}
 	\end{subfigure}
 	\caption[Illustration for the Cherenkov effect]{\textbf{Illustration for the Cherenkov effect.} A charged particle is traversing the medium with a refractive index $n$ from left to right with velocity $v$. $c_0$ is the vacuum speed of light. In (\subref{airshowers:cherenkov1pol}) and (\subref{airshowers:cherenkov2pol}) the dipole interpretation of the Cherenkov effect is shown. (\subref{airshowers:cherenkov1huy}) and (\subref{airshowers:cherenkov2huy}) show the effect by exploiting Huygens' principle.}
 	\label{airshowers:cherenkov}
 \end{figure}
-A \textit{Cherenkov angle} $\theta$ as introduced in figure \ref{airshowers:cherenkov2huy} can be calculated by applying trigonometry:
+A \textit{Cherenkov angle} $\theta_C$ as introduced in figure \ref{airshowers:cherenkov2huy} can be calculated by applying trigonometry:
 \begin{align}
-	\cos{\theta} = \frac{c_0}{nv} = \frac{1}{n\beta}\,,
+	\cos{\theta_C} = \frac{c_0}{nv} = \frac{1}{n\beta}\,,
 \end{align}
 with the dimensionless velocity $\beta = \frac{v}{c_0}$.
 
@@ -136,7 +136,7 @@ The factor $\frac{1}{\lambda^2}$ suppresses higher wavelengths so that the Chere
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{CherenkovSpectrum.pdf}
-	\caption[Cherenkov spectrum]{\textbf{Cherenkov wavelength spectrum.} Exemplary spectrum of Cherenkov photons measured at \SI{2200}{\meter} above sea level at the HEGRA IACT System (La Palma)\footnotemark. The falling edge towards high wavelength is proportional to $\frac{1}{\lambda^2}$ whereas the falling edge towards low wavelengths is caused by atmospheric attenuation. Data adapted from \cite{airshowers:doering}}	
+	\caption[Cherenkov spectrum]{\textbf{Cherenkov wavelength spectrum.} Exemplary spectrum of Cherenkov photons measured at \SI{2200}{\meter} above sea level at the HEGRA IACT System (La Palma)\footnotemark. The falling edge towards high wavelength is proportional to $\lambda^{-2}$ whereas the falling edge towards low wavelengths is caused by atmospheric attenuation. Data adapted from \cite{airshowers:doering}.}	
 	\label{airshowers:cherenkovspectrum}
 \end{figure}
 \footnotetext{\textbf{H}igh \textbf{E}nergy \textbf{G}amma \textbf{Ray} \textbf{A}stronomy, operated between 1987 and 2006 at Roque de los Muchachos Observatory on La Palma. \cite{airshowers:doering}}
@@ -149,4 +149,4 @@ The cone-like radiation profile of Cherenkov light with respect to the air showe
 
 \subsection{Photon Detection}
 
-\subsection{IceAct}
+\subsection{The IceCube Air Cherenkov Telescope IceAct}
