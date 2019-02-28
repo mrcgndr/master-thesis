@@ -29,7 +29,16 @@ photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy
 
 For an optical device, the material that the light should pass has to be chosen deliberately. Especially the transmission properties, processability, and for IceAct in particular the resistance against harsh weather conditions are of interest.
 
-The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass with a thickness of \SI{2}{\milli\meter}\todo{tolerances?}. \cite{iceact:borosilicate:datasheet}
+The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass with a thickness of \SI{2+-0.2}{\milli\meter} and a diameter of \SI{650.3+-1}{\milli\meter}. \cite{iceact:borosilicate:datasheet}
+
+\todo{Borosilicate refractive index with spline}
+
+\todo{PMMA refractive index with sellmeier}
+
+
+
+
+\cite{iceact:sellmeier}
 
 \begin{figure}[h]
 	\centering
@@ -45,7 +54,7 @@ The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\te
 	\label{iceact:model:material:refractive_index}	
 \end{figure}
 
-The tube, back plane and other coating surfaces are simulated as \enquote{dummy} material with no reflection or transmission parameters. A particle hitting those surfaces is absorbed and not considered further.
+The tube, back plane and other coating surfaces are simulated as \enquote{dummy} material with no reflection or transmission parameters. A particle hits those surfaces is absorbed and not considered any further.
 
 \section{Optics}
 
