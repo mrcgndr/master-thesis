@@ -29,32 +29,68 @@ photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy
 
 For an optical device, the material that the light should pass has to be chosen deliberately. Especially the transmission properties, processability, and for IceAct in particular the resistance against harsh weather conditions are of interest.
 
-The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass with a thickness of \SI{2+-0.2}{\milli\meter} and a diameter of \SI{650.3+-1}{\milli\meter}. \cite{iceact:borosilicate:datasheet}
+The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass with a thickness of \SI{2+-0.2}{\milli\meter} and a diameter of \SI{650.3+-1}{\milli\meter}. Borosilicate is chosen for its high durability, transparency in the interesting spectral region, flatness, and weak fluorescence intensities. The refractive index is evaluated at some wavelength. Since we need to have a full dispersion relation the points are spline interpolated (cf. orange curve in figure \ref{iceact:model:material:refractive_index}). \cite{iceact:borosilicate:datasheet}. 
 
-\todo{Borosilicate refractive index with spline}
+In the data sheet \cite{iceact:borosilicate:datasheet} the transmission properties are given for a vertical light and a glass plate of a thickness of $d = \SI{6.5}{\milli\meter}$. Therefore, the transmission curve $T_\text{total}(\lambda)$ includes the internal absorption as well as the two interface transitions into and out of the borosilicate.
+\begin{align}
+	T_\text{total}(\lambda) = T_\text{interface}^2(\lambda)\cdot T_\text{internal}(d=\SI{6.5}{\milli\meter},\lambda)
+	\label{eq:transmission}
+\end{align}
+The transmission at the interface can be calculated by using the Fresnel equations. In case of perpendicular light, it is
+\begin{align}
+	T_\text{interface}(\lambda) = 1 - \left(\frac{n(\lambda)-n_\text{air}}{n(\lambda)+n_\text{air}}\right)^2
+	\label{eq:perp_interface_transmission}
+\end{align}
+In \geant the wavelength dependent absorption length $a(\lambda)$ has to be implemented which is given by the exponential absorption law
+\begin{align}
+	I(x) = I_0 e^{-\frac{x}{a}} \Leftrightarrow a = - \frac{x}{\ln\left(\frac{I(x)}{I_0}\right)}
+	\label{eq:absorptionlaw}
+\end{align}
+Thus, one gets the absorption length by using equations \eqref{eq:transmission}, \eqref{eq:perp_interface_transmission}, and \eqref{eq:absorptionlaw}.
+\begin{align}
+	a(\lambda) &= - \frac{d}{\ln T_\text{internal}(d,\lambda)}\\
+	&= -\frac{d}{\ln T_\text{total}(\lambda)-2\ln\left(1 - \left(\frac{n(\lambda)-n_\text{air}}{n(\lambda)+n_\text{air}}\right)^2\right)}\,,
+\end{align}
+which is implemented in \geant material properties with $n_\text{air} = 1$. Figure \ref{iceact:model:material:transmission} shows the three transmission components as orange lines.
 
-\todo{PMMA refractive index with sellmeier}
+The Fresnel lens and the Winston Cones in IceAct are made of polymethyl methacrylate (PMMA, acrylic, or plexiglass). The dispersion $n(\lambda)$ can be parametrized with the empirical \textit{Sellmeier equation}. For glasses the usual form is
+\begin{align}
+	n^2(\lambda) = 1 + \frac{B_1\lambda^2}{\lambda^2-C_1} + \frac{B_2\lambda^2}{\lambda^2-C_2} + \frac{B_3\lambda^2}{\lambda^2-C_3}\,,
+	\label{eq:sellmeier}
+\end{align}
+with the \textit{Sellmeier coefficients} $B_{1,2,3}$ and $C_{1,2,3}$. \cite{iceact:sellmeier} Table \ref{iceact:model:pmma_sellmeiercoeffs} shows the used coefficients and the function is plotted in figure \ref{iceact:model:material:refractive_index} (blue curve).
 
+\begin{table}[h]
+	\centering
+	\begin{tabular}{c|l}
+		$B_1$  & \num{0.99654}  \\
+		$B_2$  & \num{0.18964}  \\
+		$B_3$  & \num{0.00411}  \\
+		$C_1$  & \SI{0.00787}{\micro\meter\squared}  \\
+		$C_2$  & \SI{0.02191}{\micro\meter\squared}  \\
+		$C_3$  & \SI{3.85727}{\micro\meter\squared}  \\
+	\end{tabular}
+	\caption[Sellmeier coefficients for PMMA]{\textbf{Sellmeier coefficients for PMMA.} \cite{iceact:refractiveindex} The above-mentioned coefficients are used in the \geant material properties for PMMA. The related Sellmeier equation \eqref{eq:sellmeier} is plotted in figure \ref{iceact:model:material:refractive_index} as the blue curve.}
+	\label{iceact:model:pmma_sellmeiercoeffs}
+\end{table}
 
-
-
-\cite{iceact:sellmeier}
+For the transmission properties of PMMA, the same method as for borosilicate is used (see above). Therefore, the data stated in \cite{famous:niggemann} is taken as $T_\text{internal}(d = \SI{3}{\milli\meter})$. Figure \ref{iceact:model:material:transmission} shows the three transmission components as blue lines.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{material/transmission.pdf}
-	\caption[Transmission of used materials]{\textbf{Transmission functions of materials used in the simulation.} The total transmission function is the product of internal and two interface transmissions which is evaluated for a perpendicularly incident particle in this plot. Thus, the solid lines represent a complete (perpendicular) transition through a \SI{3}{\milli\meter} thick layer of the respective material.}
+	\includegraphics[width=0.7\textwidth]{material/transmission.pdf}
+	\caption[Transmission of used materials]{\textbf{Transmission functions of materials used in the simulation.} The total transmission function is the product of internal and two interface transmissions which is evaluated for a perpendicularly incident particle in this plot. Thus, the solid lines represent a complete (perpendicular) transition through a \SI{3}{\milli\meter} thick layer of the respective material. For a better comparison, the data of internal transmission for borosilicate is converted from \SI{6.5}{\milli\meter} into \SI{3}{\milli\meter}.}
 	\label{iceact:model:material:transmission}	
 \end{figure}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{material/refractive_index.pdf}
-	\caption[Refractive index of used materials]{\textbf{Refractive index of materials used in the simulation.} The dispersion is calculated by evaluating the Sellmeier equation introduced in this section.}
+	\includegraphics[width=0.7\textwidth]{material/refractive_index.pdf}
+	\caption[Refractive index of used materials]{\textbf{Refractive index of materials used in the simulation.} For PMMA the dispersion is calculated by evaluating the Sellmeier equation introduced in this section. The refractive index for the used borosilicate is only given at specific wavelengths. \cite{iceact:borosilicate:datasheet} Therefore, spline interpolation is used to reconstruct the full curve.}
 	\label{iceact:model:material:refractive_index}	
 \end{figure}
 
-The tube, back plane and other coating surfaces are simulated as \enquote{dummy} material with no reflection or transmission parameters. A particle hits those surfaces is absorbed and not considered any further.
+The tube, back plane and other coating surfaces are simulated as \enquote{dummy} material with no reflection or transmission parameters. A particle that hits those surfaces is absorbed and not considered any further.
 
 \section{Optics}
 
