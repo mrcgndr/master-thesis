@@ -12,8 +12,8 @@
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.6\textwidth]{Geant4ConceptDiagram.pdf}
-	\caption[\geant category diagram]{\textbf{Diagram of relationships between \geant categories. \cite{geant4}} The circles represent a \enquote{using} relation. The category with the circle next to the box uses the linked one.}	
+	\includegraphics[width=0.5\textwidth]{Geant4ConceptDiagram.pdf}
+	\caption[\geant category diagram]{\textbf{Diagram of relationships between \geant categories.} \cite{geant4} The circles represent a \enquote{using} relation. The category with the circle next to the box uses the linked one.}	
 	\label{geant4:categories}
 \end{figure}
 
@@ -29,7 +29,7 @@ photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy
 
 For an optical device, the material that the light should pass has to be chosen deliberately. Especially the transmission properties, processability, and for IceAct in particular the resistance against harsh weather conditions are of interest.
 
-The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass with a thickness of \SI{2+-0.2}{\milli\meter} and a diameter of \SI{650.3+-1}{\milli\meter}. Borosilicate is chosen for its high durability, transparency in the interesting spectral region, flatness, and weak fluorescence intensities. The refractive index is evaluated at some wavelength. Since we need to have a full dispersion relation the points are spline interpolated (cf. orange curve in figure \ref{iceact:model:material:refractive_index}). \cite{iceact:borosilicate:datasheet}. 
+The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass. Borosilicate is chosen for its high durability, transparency in the interesting spectral region, flatness, and weak fluorescence intensities. The refractive index is evaluated at some wavelength. Since we need to have a full dispersion relation the points are spline interpolated (cf. orange curve in figure \ref{iceact:model:material:refractive_index}). \cite{iceact:borosilicate:datasheet}. 
 
 In the data sheet \cite{iceact:borosilicate:datasheet} the transmission properties are given for a vertical light and a glass plate of a thickness of $d = \SI{6.5}{\milli\meter}$. Therefore, the transmission curve $T_\text{total}(\lambda)$ includes the internal absorption as well as the two interface transitions into and out of the borosilicate.
 \begin{align}
@@ -49,7 +49,7 @@ In \geant the wavelength dependent absorption length $a(\lambda)$ has to be impl
 Thus, one gets the absorption length by using equations \eqref{eq:transmission}, \eqref{eq:perp_interface_transmission}, and \eqref{eq:absorptionlaw}.
 \begin{align}
 	a(\lambda) &= - \frac{d}{\ln T_\text{internal}(d,\lambda)}\\
-	&= -\frac{d}{\ln T_\text{total}(\lambda)-2\ln\left(1 - \left(\frac{n(\lambda)-n_\text{air}}{n(\lambda)+n_\text{air}}\right)^2\right)}\,,
+	&= \frac{d}{2\ln\left(1 - \left(\frac{n(\lambda)-n_\text{air}}{n(\lambda)+n_\text{air}}\right)^2\right)-\ln T_\text{total}(\lambda)}\,,
 \end{align}
 which is implemented in \geant material properties with $n_\text{air} = 1$. Figure \ref{iceact:model:material:transmission} shows the three transmission components as orange lines.
 
@@ -78,7 +78,15 @@ For the transmission properties of PMMA, the same method as for borosilicate is 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{material/transmission.pdf}
+	\begin{subfigure}[t]{0.485\textwidth}
+		\includegraphics[width=\textwidth]{material/transmission.pdf}
+		\caption{full view}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.499\textwidth}
+		\includegraphics[width=\textwidth]{material/transmission_zoom.pdf}
+		\caption{zoomed view}
+	\end{subfigure}
 	\caption[Transmission of used materials]{\textbf{Transmission functions of materials used in the simulation.} The total transmission function is the product of internal and two interface transmissions which is evaluated for a perpendicularly incident particle in this plot. Thus, the solid lines represent a complete (perpendicular) transition through a \SI{3}{\milli\meter} thick layer of the respective material. For a better comparison, the data of internal transmission for borosilicate is converted from \SI{6.5}{\milli\meter} into \SI{3}{\milli\meter}.}
 	\label{iceact:model:material:transmission}	
 \end{figure}
@@ -104,21 +112,26 @@ In the following section the four optical components of the IceAct \geant model 
 
 \subsection{Glass Plate}\label{iceact:model:glassplate}
 
-\todo{glass plate}
+The IceAct glass plate has a thickness of \SI{2+-0.2}{\milli\meter} and a diameter of \SI{650.3+-1}{\milli\meter}. It is mounted on top of the tube and its major purpose is to enclose a gap above the Fresnel lens. At South Pole conditions, the most challenging for the optical system is adherence of snow above the lens. In the \SI{12.2}{\milli\meter} thick air gap a heating cable is installed to remove snow from the field of view. \todo{check, if this is right} Otherwise, the light would be scattered diffusely at the snow layer and the camera would see a very blurred image.
 
 \subsection{Fresnel Lens}\label{iceact:model:fresnellens}
+
+The two major advantages using a Fresnel lens rather than a conventional lens are the significantly less weight and the fact that the light passes less material which could absorb it. The idea of a Fresnel lens is to divide a thick lens into small annular facets in form of prisms that keep the local inclination of the conventional lens by making local approximations of the lens' \textit{sagitta function}\footnote{In application to lenses, the sagitta function $z(\rho)$ gives the lens thickness $z$ as a function of the radial distance $\rho$ from the optical axis for radially symmetrical lenses.}. Figure \ref{iceact:model:fresnelvsthick} visualizes the principle. IceAct uses the model ORAFOL SC 943 with an aperture of \SI{549.7}{\milli\meter}, a focal length of \SI{502.1}{\milli\meter} at a wavelength of \SI{546+-27.3}{\nano\meter}. The lens is \SI{2.5}{\milli\meter} thick and has 10 grooves per \si{\milli\meter}. \cite{iceact:fresnellens:datasheet}
+
+
+A detailed discussion and measurement about point spread functions and aberration effects is done in \cite{famous:niggemann} and \cite{famous:eichler}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{FresnelVsNormalLens.pdf}
-	\caption[Comparison conventional vs. Fresnel lens]{\textbf{Comparison between a conventional \enquote{thick} lens and a Fresnel lens. \cite{famous:eichler}} For the functionality of a lens the radius-dependent sagitta function $z(\rho)$ is crucial. To get rid of the bulky material of a conventional lens, the Fresnel lens is divided into annular \enquote{prisms} called \enquote{grooves}. The slope angle $\delta$ of each groove is a local approximation of the sagitta function to ensure the imaging capability.}
+	\caption[Comparison conventional vs. Fresnel lens]{\textbf{Comparison between a conventional \enquote{thick} lens and a Fresnel lens.} \cite{famous:eichler} For the functionality of a lens the radius-dependent sagitta function $z(\rho)$ is crucial. To get rid of the bulky material of a conventional lens, the Fresnel lens is divided into annular \enquote{prisms} called \enquote{grooves}. The slope angle $\delta$ of each groove is a local approximation of the sagitta function to ensure the imaging capability.}
 	\label{iceact:model:fresnelvsthick}	
 \end{figure}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{FresnelGroove.pdf}
-	\caption[Fresnel groove]{\textbf{Cross-sectional sketch of a Fresnel groove. \cite{famous:eichler}}}
+	\caption[Fresnel groove]{\textbf{Cross-sectional sketch of a Fresnel groove.} \cite{famous:eichler} Most of the incoming rays are hitting the regular active face of the groove with slope angle $\delta$. For an optimal groove, the inactive face would be parallel to the optical axis. Due to manufacturing process, there is always a small slope on the inactive face given by the draft angle $\psi$ and the peak is rounded. With this design, there are some impact regions where incoming rays are not refracted to the focal point: if they are total-reflected at the inactive face inside the groove (red-dashed region), if they hit the peak rounding (red rays), or if they hit the inactive face (gray region).}
 	\label{iceact:model:fresnelgroove}	
 \end{figure}
 
@@ -128,6 +141,7 @@ In the following section the four optical components of the IceAct \geant model 
 \subsection{Camera}\label{iceact:model:camera}
 
 \todo{write}
+\todo{image of camera from Ben Burgmann}
 
 \subsubsection{Winston Cones}
 
