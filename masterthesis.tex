@@ -67,7 +67,7 @@
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
 % Einheiten
-\usepackage[per-mode=symbol-or-fraction, separate-uncertainty=true]{siunitx}
+\usepackage[per-mode=reciprocal, separate-uncertainty=true]{siunitx}
 % Serifenschrift
 \rmfamily
 % Seitenränder
@@ -88,8 +88,9 @@
 {\par\vspace{\abovedisplayskip}\noindent
 	\tabularx{\columnwidth}{>{$}l<{$} @{${}\quad{}$} >{\raggedright\arraybackslash}X}}
 {\endtabularx\par\vspace{\belowdisplayskip}}
+\usepackage{xspace}
 % Geant4
-\newcommand{\geant}{\textsc{Geant4 }}
+\newcommand{\geant}{\textsc{Geant4}\xspace}
 
 % Document
 % -----------------------------------
