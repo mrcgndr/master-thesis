@@ -25,7 +25,7 @@ Since this thesis is about an approach of an all-encompassing telescope simulati
 The fluorescence telescope FAMOUS\footnote{\textbf{F}irst \textbf{A}uger \textbf{M}ulti-pixel
 photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy air \textbf{S}howers} for the Pierre Auger Observatory in Argentina is developed at RWTH Aachen to measure fluorescence light originating from ultra-high-energy cosmic rays (UHECR) by using Silicon Photomultipliers (SiPMs). Withing the development, a detailed \geant simulation has been elaborated. \cite{famous:sim_github,famous:sim_github} The telescope design of FAMOUS is very similar since the detection technique and the optics system is basically the same. Therefore, the IceAct telescope simulation is heavily based on this FAMOUS \geant framework. A detailed discourse and a summary of previous analyses can be found in \cite{famous:niggemann}.
 
-\section{Materials}
+\section{Materials}\label{sec:iceact:model:material}
 
 For an optical device, the material that the light should pass has to be chosen deliberately. Especially the transmission properties, processability, and for IceAct in particular the resistance against harsh weather conditions are of interest.
 
@@ -112,14 +112,11 @@ In the following section the four optical components of the IceAct \geant model 
 
 \subsection{Glass Plate}\label{iceact:model:glassplate}
 
-The IceAct glass plate has a thickness of \SI{2+-0.2}{\milli\meter} and a diameter of \SI{650.3+-1}{\milli\meter}. It is mounted on top of the tube and its major purpose is to enclose a gap above the Fresnel lens. At South Pole conditions, the most challenging for the optical system is adherence of snow above the lens. In the \SI{12.2}{\milli\meter} thick air gap a heating cable is installed to remove snow from the field of view. \todo{check, if this is right} Otherwise, the light would be scattered diffusely at the snow layer and the camera would see a very blurred image.
+The IceAct glass plate has a thickness of \SI{2+-0.2}{\milli\meter}, a diameter of \SI{650.3+-1}{\milli\meter}, and is made of borosilicate as mentioned in section \ref{sec:iceact:model:material}. It is mounted on top of the tube and its major purpose is to protect the Fresnel lens from the environment. At South Pole conditions, the most challenging for the optical system is adherence of snow above the lens. In the \SI{12.2}{\milli\meter} thick air gap between glass plate and Fresnel lens a heating cable is installed to remove snow from the glass surface. Otherwise, the light would be scattered diffusely at the snow layer and the camera would see a very blurred image.
 
 \subsection{Fresnel Lens}\label{iceact:model:fresnellens}
 
-The two major advantages using a Fresnel lens rather than a conventional lens are the significantly less weight and the fact that the light passes less material which could absorb it. The idea of a Fresnel lens is to divide a thick lens into small annular facets in form of prisms that keep the local inclination of the conventional lens by making local approximations of the lens' \textit{sagitta function}\footnote{In application to lenses, the sagitta function $z(\rho)$ gives the lens thickness $z$ as a function of the radial distance $\rho$ from the optical axis for radially symmetrical lenses.}. Figure \ref{iceact:model:fresnelvsthick} visualizes the principle. IceAct uses the model ORAFOL SC 943 with an aperture of \SI{549.7}{\milli\meter}, a focal length of \SI{502.1}{\milli\meter} at a wavelength of \SI{546+-27.3}{\nano\meter}. The lens is \SI{2.5}{\milli\meter} thick and has 10 grooves per \si{\milli\meter}. \cite{iceact:fresnellens:datasheet}
-
-
-A detailed discussion and measurement about point spread functions and aberration effects is done in \cite{famous:niggemann} and \cite{famous:eichler}
+The two major advantages using a Fresnel lens rather than a conventional lens are the significantly less weight and the fact that light passes less material which could absorb it. The main idea of a Fresnel lens is to divide a thick lens into small annular facets in form of prisms that keep the local inclination of the conventional lens by making local approximations of the lens' \textit{sagitta function}\footnote{In application to lenses, the sagitta function $z(\rho)$ gives the lens thickness $z$ as a function of the radial distance $\rho$ from the optical axis for radially symmetrical lenses.}. Figure \ref{iceact:model:fresnelvsthick} visualizes the principle. IceAct uses the model ORAFOL SC 943 with an aperture of \SI{549.7}{\milli\meter}, a focal length of \SI{502.1}{\milli\meter} at a wavelength of \SI{546+-27.3}{\nano\meter}. The lens is \SI{2.5}{\milli\meter} thick, has 10 grooves per \si{\milli\meter}, and is made of polymethyl methacrylate (PMMA) as stated in section \ref{sec:iceact:model:material}. \cite{iceact:fresnellens:datasheet}
 
 \begin{figure}[h]
 	\centering
@@ -131,23 +128,46 @@ A detailed discussion and measurement about point spread functions and aberratio
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{FresnelGroove.pdf}
-	\caption[Fresnel groove]{\textbf{Cross-sectional sketch of a Fresnel groove.} \cite{famous:eichler} Most of the incoming rays are hitting the regular active face of the groove with slope angle $\delta$. For an optimal groove, the inactive face would be parallel to the optical axis. Due to manufacturing process, there is always a small slope on the inactive face given by the draft angle $\psi$ and the peak is rounded. With this design, there are some impact regions where incoming rays are not refracted to the focal point: if they are total-reflected at the inactive face inside the groove (red-dashed region), if they hit the peak rounding (red rays), or if they hit the inactive face (gray region).}
+	\caption[Fresnel groove]{\textbf{Cross-sectional sketch of a Fresnel groove.} \cite{famous:eichler} Most of the incoming rays are hitting the regular active (or slope) facet of the groove with slope angle $\delta$. For an optimal groove, the inactive (or draft) facet would be parallel to the optical axis. Due to manufacturing process, there is always a small slope on the inactive facet given by the draft angle $\psi$ and the peak is rounded. With this design, there are some impact regions where incoming rays are not refracted to the focal point: if they are total-reflected at the inactive facet inside the groove (red-dashed region), if they hit the peak rounding (red rays), or if they hit the inactive face (gray region).}
 	\label{iceact:model:fresnelgroove}	
 \end{figure}
 
-\todo{write}
-\cite{famous:eichler}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{FresnelSideProfile.pdf}
+	\caption[Fresnel side-profile]{\textbf{Side-profile sketch of a Fresnel lens.} \cite[adapted]{iceact:fresnellens:design}. Complementary sketch to figure \ref{iceact:model:fresnelgroove} which shows the manufacturing-driven draft angle increases with radius $\rho$.}
+	\label{iceact:model:fresnelprofile}	
+\end{figure}
+
+The transmission of a Fresnel lens is not just given by the material properties. Due to the groove structure there are so called \textit{draft facets} where unwanted refractions, reflections, or transmissions occur. One can compensate for this by adjust the \text{draft angle} $\psi$ (cf. figures \ref{iceact:model:fresnelgroove} and \ref{iceact:model:fresnelprofile}) as a function of the lens radius $\rho$. Anyway, the molding process -- which is the common manufacturing technique of Fresnel lenses -- does not allow to have a perpendicular draft facet ($\psi = 0$) due to mold release. This forces the lens to have a minimum draft angle of $\psi_0 = \SI{3}{\degree}$. With the optimization mentioned before, this leads to a radial dependent draft angle which can be expressed as \cite{famous:eichler, famous:niggemann}
+\begin{align}
+	\psi(\rho) = \SI{3}{\degree} + \SI{0.0473}{\degree\per\milli\meter}\rho\,.
+\end{align}
+This draft angle function is implemented in the Fresnel lens design in \geant, the groove peak rounding suggested in figure \ref{iceact:model:fresnelgroove} is not.
+
+A detailed discussion and measurement of point spread functions and optical aberrations is done in \cite{famous:niggemann} and \cite{famous:eichler}.
 
 \subsection{Camera}\label{iceact:model:camera}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{Camera.png}
+	\caption[Picture of an assembled IceAct Camera]{\textbf{Picture of an assembled IceAct Camera.} \cite{iceact:camera:burgmann} 61 Winston cones are glued onto the hexagonal SiPM grid. Besides, one can see two of the overall three additional \enquote{blind pixels} for reference measurements.}
+	\label{iceact:camera:picture}	
+\end{figure}
+\todo{sind die blind pixels wirklich blind (abgeklebt)?}
+
+The IceAct Camera is the compound of 61 Silicon Photomultipliers (SiPMs, cf. section \ref{sec:sipm}) arranged in a hexagonal grid together with 61 Winston cones (cf. section \ref{sec:winstoncones}) glued on them and obviously the readout instrumentation. Figure \ref{iceact:camera:picture} shows an assembled IceAct camera.
+
+In the following sections, the working principle as well as the implementation in \geant is discussed.
+
+
+
+\subsubsection{Winston Cones}\label{sec:winstoncones}
+
 \todo{write}
-\todo{image of camera from Ben Burgmann}
 
-\subsubsection{Winston Cones}
-
-\todo{write}
-
-\subsubsection{Silicon Photomultiplier}
+\subsubsection{Silicon Photomultiplier}\label{sec:sipm}
 
 \todo{write}
 
