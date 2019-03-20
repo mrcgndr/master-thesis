@@ -155,7 +155,7 @@ A detailed discussion and measurement of point spread functions and optical aber
 	\caption[Picture of an assembled IceAct Camera]{\textbf{Picture of an assembled IceAct Camera.} \cite{iceact:camera:burgmann} 61 Winston cones are glued onto the hexagonal SiPM grid. Besides, one can see two of the overall three additional \enquote{blind pixels} for reference measurements.}
 	\label{iceact:camera:picture}	
 \end{figure}
-\todo{sind die blind pixels wirklich blind (abgeklebt)?}
+\todo{sind die blind pixels wirklich blind (abgeklebt)? -- Ja, zwei sind abgeklebt und einer offen}
 
 The IceAct Camera is the compound of 61 Silicon Photomultipliers (SiPMs, cf. section \ref{sec:sipm}) arranged in a hexagonal grid together with 61 Winston cones (cf. section \ref{sec:winstoncones}) glued on them and obviously the readout instrumentation. Figure \ref{iceact:camera:picture} shows an assembled IceAct camera.
 
@@ -165,9 +165,24 @@ In the following sections, the working principle as well as the implementation i
 
 \subsubsection{Winston Cones}\label{sec:winstoncones}
 
-The IceAct telescopes use a light collection technique to enlarge the detection area of the SiPM grid based on so called \textit{Winston cones} (or originally \textit{parabolic concentrator} \cite{wico:book}). 
+The IceAct telescopes use a light collection technique to enlarge the detection area of the SiPM grid based on \textit{compound parabolic concentrators} (CPC) \cite{wico:book}. In the following, this concentrators are named \textit{Winston cones}. 
+Primarily, \todo{WiCo allgemein}
 
-\todo{write}
+\todo{WiCo approx für IceAct}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{WinstonConeSketch.pdf}
+	\caption[Sketch of a Winston cone]{\textbf{Sketch of a Winston cone.} \cite{iceact:camera}}
+	\label{iceact:camera:wico_sketch}	
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{IceActWiCoSketches.pdf}
+	\caption[Sketches of the IceAct \enquote{hex-to-square} Winston cone]{\textbf{Sketches of the IceAct \enquote{hex-to-square} Winston cone.} The cone is shown from different points of view with dimensioning. The pink edge and the green dashed surface line follow the optimized parabola functions developed in \cite{iceact:camera}.}
+	\label{iceact:camera:iceact_wico_sketch}	
+\end{figure}
 
 \subsubsection{Silicon Photomultiplier}\label{sec:sipm}
 
