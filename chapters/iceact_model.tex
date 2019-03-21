@@ -102,6 +102,14 @@ The tube, back plane and other coating surfaces are simulated as \enquote{dummy}
 
 \section{Optics}
 
+As introduced in section \ref{sec:iceact_intro}, IceAct is designed to image the direction of Cherenkov light on a camera consisting of multiple pixels. The imaging is done by a Fresnel lens, and an SiPM-based camera with light collecting \enquote{cones}. A sketch of the camera layout is shown in figure \ref{iceact:camera:layout}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{CameraDesign.pdf}
+	\caption[IceAct camera layout]{\textbf{The IceAct camera layout.} \cite{iceact:camera} In this sketch the Fresnel lens with a diameter $D=\SI{549.7}{\milli\meter}$ and a focal length of $f=\SI{502.1}{\milli\meter}$ focusing rays to the camera sketched below. Additionally, three characteristic angles are shown: the maximum incidence angle of a ray to be focused on the camera plane $\Omega\approx\SI{6.8}{\degree}$, the maximum incidence angle on the central Winston cone $\gamma\approx\SI{28.7}{\degree}$, and the maximum incidence angle for the outermost Winston cone $\delta\approx\SI{33.7}{\degree}$.}
+	\label{iceact:camera:layout}	
+\end{figure}
+
 In the following section the four optical components of the IceAct \geant model are discussed. To have a first glimpse of the model, see figure \ref{iceact:model:cut}.
 \begin{figure}[h]
 	\centering
@@ -166,7 +174,21 @@ In the following sections, the working principle as well as the implementation i
 \subsubsection{Winston Cones}\label{sec:winstoncones}
 
 The IceAct telescopes use a light collection technique to enlarge the detection area of the SiPM grid based on \textit{compound parabolic concentrators} (CPC) \cite{wico:book}. In the following, this concentrators are named \textit{Winston cones}. 
-Primarily, \todo{WiCo allgemein}
+Primarily, a Winston cone is a rotationally symmetrical paraboloid formed by an off-axis parabola revolving around the axis of symmetry (\textit{CPC axis}, cf. figure \ref{iceact:camera:wico_sketch}). Hence, the entrance area $A_\text{en}=\pi a_\text{en}^2$ and the exit area $A_\text{ex}=\pi a_\text{ex}^2$ are circular. The concentration effect works for every ray hitting the entrance area up to the maximum angle $\vartheta_\text{M}$. A relation between $\vartheta_M$ and the characteristic lengths shown in figure \ref{iceact:camera:wico_sketch} can be found: \cite{wico:book,iceact:camera}
+\begin{align}
+	\sin\vartheta_\text{M} = n\cdot\frac{a_\text{ex}}{a_\text{en}}\,,
+	\label{eq:wico:theta_max}
+\end{align}
+with the refractive index $n$ of the cone material. The appearance of the refractive index connotes the to major working principles of Winston cones. On the one hand, light can be concentrated by using surface reflections in hollow cones ($n=n_\text{air}\approx 1$), or -- on the other hand -- using internal total reflections in solid cones ($n>1$). Equation \eqref{eq:wico:theta_max} shows, that the maximum angle can be increased by using a solid cone with a preferably large refractive index.
+
+The parabola describing the Winston cone surface can be parameterized by \cite{wico:book,iceact:camera}
+\begin{align}
+	x &= \frac{2a_\text{ex}(1+\sin\vartheta_\text{M})\sin(\phi-\vartheta_\text{M})}{1-\cos\phi}-a_\text{ex}\,,\\
+	y &= \frac{2a_\text{ex}(1+\sin\vartheta_\text{M})\cos(\phi-\vartheta_\text{M})}{1-\cos\phi}\,,
+\end{align}
+with the cone radius $x$, the cone length $y$, and the angle $\phi$ between the connecting line of focus of parabola and a point on the opposite parabola and the parabola axis (cf. figure \ref{iceact:camera:wico_sketch}).
+
+By appropriate design, this angle can be sufficiently high to fulfill the requirements for IceAct Winston cones given by the optical layout (cf. figure \ref{iceact:camera:layout}).
 
 \todo{WiCo approx für IceAct}
 
