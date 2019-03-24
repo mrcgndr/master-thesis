@@ -181,21 +181,21 @@ Primarily, a Winston cone is a rotationally symmetrical paraboloid formed by an 
 \end{align}
 with the refractive index $n$ of the cone material. The appearance of the refractive index connotes the to major working principles of Winston cones. On the one hand, light can be concentrated by using surface reflections in hollow cones ($n=n_\text{air}\approx 1$), or -- on the other hand -- using internal total reflections in solid cones ($n>1$). Equation \eqref{eq:wico:theta_max} shows that the maximum angle can be increased by using a solid cone with a preferably large refractive index.
 
-The parabola describing the Winston cone surface can be parameterized by \cite{wico:book,iceact:camera}
-\begin{align}
+The parabola describing the Winston cone surface is further called \textit{Winston curve} and can be parameterized by \cite{wico:book,iceact:camera}
+\begin{subequations}
+	\label{eq:wico:param}
+	\begin{align}
 	x &= \frac{2a_\text{ex}(1+\sin\vartheta_\text{M})\sin(\phi-\vartheta_\text{M})}{1-\cos\phi}-a_\text{ex}\,,\\
 	y &= \frac{2a_\text{ex}(1+\sin\vartheta_\text{M})\cos(\phi-\vartheta_\text{M})}{1-\cos\phi}\,,
-\end{align}
+	\end{align}
+\end{subequations}
+
 with the cone radius $x$, the cone length $y$, and the angle $\phi$ between the connecting line of focus of parabola and a point on the opposite parabola and the parabola axis (cf. figure \ref{iceact:camera:wico_sketch}).
 
 Another important quantity is the cone length $L$ which is given by \cite{wico:book,iceact:camera}
 \begin{align}
 	L = \frac{a_\text{ex}(1+\sin\vartheta_\text{M})\cos\vartheta_\text{M}}{\sin^2\vartheta_\text{M}}\sim\frac{2a_\text{en}}{2\vartheta_\text{M}}\,.
 \end{align}
-
-By appropriate design, Winston cones fulfill all requirements for light concentrators in IceAct given by the optical layout (cf. figure \ref{iceact:camera:layout}).
-However, one can design an improved Winston cone for the purposes in IceAct since a hexagonal grid of quadratic pixels is used \todo{referenz zur techn. Zeichnung der Kamera}. Instead of a radially symmetrical cone, the IceAct Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's effective area (cf. figure \ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the IceAct Winston cone is shown in figure \ref{iceact:camera:iceact_wico_sketch}. 
-\todo{WiCo approx für IceAct}
 
 \begin{figure}
 	\centering
@@ -204,14 +204,26 @@ However, one can design an improved Winston cone for the purposes in IceAct sinc
 	\label{iceact:camera:wico_sketch}	
 \end{figure}
 
+By appropriate design, Winston cones fulfill all requirements for light concentrators in IceAct given by the optical layout (cf. figure \ref{iceact:camera:layout}).
+However, one can design an improved Winston cone for the purposes in IceAct since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used \todo{referenz zur techn. Zeichnung der Kamera}. Instead of a radially symmetrical cone, the IceAct Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's effective area (cf. figure \ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the IceAct Winston cone is shown in figure \ref{iceact:camera:iceact_wico_sketch}. In it, one can see a green dashed line and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations \eqref{eq:wico:param}.
+
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{IceActWiCoSketches.pdf}
-	\caption[Sketches of the IceAct \enquote{hex-to-square} Winston cone]{\textbf{Sketches of the IceAct \enquote{hex-to-square} Winston cone.} The cone is shown from different points of view with dimensioning. The pink edge and the green dashed surface line follow the optimized Winston functions developed in \cite{iceact:camera}. Two different functions result in two different maximum angles $\vartheta_\text{M}^\text{edge,side}$ for an incidence parallel to the \enquote{edge} or the \enquote{side} plane.}
+	\caption[Sketches of the IceAct \enquote{hex-to-square} Winston cone]{\textbf{Sketches of the IceAct \enquote{hex-to-square} Winston cone.} The cone is shown from different points of view with dimensioning. The pink edge and the green dashed surface line follow the optimized Winston curve functions developed in \cite{iceact:camera}. The green dashed curve is extruded in order to form the whole side. Two different functions result in two different maximum angles $\vartheta_\text{M}^\text{edge,side}$ for an incidence parallel to the \enquote{edge} or the \enquote{side} plane.}
 	\label{iceact:camera:iceact_wico_sketch}	
 \end{figure}
 
-\subsubsection{Silicon Photomultiplier}\label{sec:sipm}
+Hence, the application of Winston cones extend the detectional area of the pixels by a factor of
+\begin{align}
+	\frac{A_\text{camera with WiCos}}{A_\text{camera without WiCos}} = \frac{61\cdot \frac{3}{2}\sqrt{3}\cdot\left(\frac{\SI{17.09}{\milli\meter}}{2}\right)^2}{61\cdot(\SI{6}{\milli\meter})^2}\approx\num{5.27}\,.
+\end{align}
+
+Due to its complex shape the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshgrid}. This meshed geometry is then translated into \geant by using the toolkit \textit{CADMesh} \cite{wico:cadmesh}. More about Winston cone meshing is discussed in section \ref{sec:wico_meshing}.
+
+\subsubsection{Silicon Photomultipliers}\label{sec:sipm}
+
+
 
 \todo{write}
 
