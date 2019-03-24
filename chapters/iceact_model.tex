@@ -205,7 +205,7 @@ Another important quantity is the cone length $L$ which is given by \cite{wico:b
 \end{figure}
 
 By appropriate design, Winston cones fulfill all requirements for light concentrators in IceAct given by the optical layout (cf. figure \ref{iceact:camera:layout}).
-However, one can design an improved Winston cone for the purposes in IceAct since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used \todo{referenz zur techn. Zeichnung der Kamera}. Instead of a radially symmetrical cone, the IceAct Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's effective area (cf. figure \ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the IceAct Winston cone is shown in figure \ref{iceact:camera:iceact_wico_sketch}. In it, one can see a green dashed line and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations \eqref{eq:wico:param}.
+However, one can design an improved Winston cone for the purposes in IceAct since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used \todo{referenz zur techn. Zeichnung der Kamera}. Instead of a radially symmetrical cone, the IceAct Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's detectional area (cf. figure \ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the IceAct Winston cone is shown in figure \ref{iceact:camera:iceact_wico_sketch}. In it, one can see a green dashed line and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations \eqref{eq:wico:param}.
 
 \begin{figure}
 	\centering
@@ -214,7 +214,7 @@ However, one can design an improved Winston cone for the purposes in IceAct sinc
 	\label{iceact:camera:iceact_wico_sketch}	
 \end{figure}
 
-Hence, the application of Winston cones extend the detectional area of the pixels by a factor of
+Hence, the application of Winston cones extend the detectional area of the pixels by a factor of (cf. figure \ref{iceact:camera:iceact_wico_sketch})
 \begin{align}
 	\frac{A_\text{camera with WiCos}}{A_\text{camera without WiCos}} = \frac{61\cdot \frac{3}{2}\sqrt{3}\cdot\left(\frac{\SI{17.09}{\milli\meter}}{2}\right)^2}{61\cdot(\SI{6}{\milli\meter})^2}\approx\num{5.27}\,.
 \end{align}
@@ -223,7 +223,7 @@ Due to its complex shape the cones are implemented in \geant by decomposing thei
 
 \subsubsection{Silicon Photomultipliers}\label{sec:sipm}
 
-
+Silicon Photomultipliers (\textit{SiPM}s) are compact devices used for photon detection in multiple applications. 
 
 \todo{write}
 
