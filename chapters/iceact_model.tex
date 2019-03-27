@@ -160,12 +160,19 @@ A detailed discussion and measurement of point spread functions and optical aber
 \begin{figure}
 	\centering
 	\includegraphics[width=0.6\textwidth]{Camera.png}
-	\caption[Picture of an assembled IceAct Camera]{\textbf{Picture of an assembled IceAct Camera.} \cite{iceact:camera:burgmann} 61 \enquote{hex-to-square} Winston cones are glued onto the hexagonal SiPM grid. Besides, one can see two of the overall three additional \enquote{blind pixels} for reference measurements.}
+	\caption[Picture of an assembled IceAct camera]{\textbf{Picture of an assembled IceAct camera.} \cite{iceact:camera:burgmann} 61 \enquote{hex-to-square} Winston cones are glued onto the hexagonal SiPM grid. Besides, one can see two of the overall three additional \enquote{blind pixels} for reference measurements.}
 	\label{iceact:camera:picture}	
 \end{figure}
 \todo{sind die blind pixels wirklich blind (abgeklebt)? -- Ja, zwei sind abgeklebt und einer offen}
 
-The IceAct Camera is the compound of 61 Silicon Photomultipliers (SiPMs, cf. section \ref{sec:sipm}) arranged in a hexagonal grid together with 61 Winston cones (cf. section \ref{sec:winstoncones}) glued on them and obviously the readout instrumentation. Figure \ref{iceact:camera:picture} shows an assembled IceAct camera.
+\begin{wrapfigure}{r}{0.4\textwidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{CameraPixels.pdf}
+	\caption[Pixel numbering scheme of the IceAct camera]{\textbf{Pixel numbering scheme of the IceAct camera.} The 61 pixels are numbered in a spiral scheme starting with the central pixel.}
+	\label{iceact:camera:pixelnumbering}	
+\end{wrapfigure}
+
+The IceAct Camera is the compound of 61 Silicon Photomultipliers (SiPMs, cf. section \ref{sec:sipm}) arranged in a hexagonal grid together with 61 Winston cones (cf. section \ref{sec:winstoncones}) glued on them and obviously the readout instrumentation. Figure \ref{iceact:camera:picture} shows an assembled IceAct camera. To address each pixel, they are numbered in a spiral scheme starting with the central \enquote{0$\text{th}$} pixel and going outside counterclockwise as seen from the top (cf. figure \ref{iceact:camera:pixelnumbering}).
 
 \todo{technische zeichnung der Kamera mit SiPM abständen}
 
