@@ -3,7 +3,7 @@
 
 The simulation results discussed in chapter \ref{chap:simresults} can now be used to parameterize the telescope response of IceAct. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). In the following sections, the method of setting up this LUT is described.
 
-\section{Kernel Density Estimation}
+\section{Adaptive Kernel Density Estimation}
 
 As one can see in the simulation results (cf. \todo{verweis zu map}) each pixel has a certain region of photon directions where it is efficient. However, each pixel is almost \enquote{blind} for most other directions. This results in statistically stable -- \enquote{dense} -- regions but also \enquote{sparse} regions dominated by scattered photons that undergo large statistical fluctuations. 
 
