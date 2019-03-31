@@ -10,7 +10,7 @@
 	\caption[\geant Logo]{\textbf{\geant logo.} \cite{geant4:logo}}	
 \end{wrapfigure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{Geant4ConceptDiagram.pdf}
 	\caption[\geant category diagram]{\textbf{Diagram of relationships between \geant categories.} \cite{geant4} The circles represent a \enquote{using} relation. The category with the circle next to the box uses the linked one.}	
@@ -60,7 +60,7 @@ The Fresnel lens and the Winston Cones in IceAct are made of polymethyl methacry
 \end{align}
 with the \textit{Sellmeier coefficients} $B_{1,2,3}$ and $C_{1,2,3}$. \cite{iceact:sellmeier} Table \ref{iceact:model:pmma_sellmeiercoeffs} shows the used coefficients and the function is plotted in figure \ref{iceact:model:material:refractive_index} (blue curve).
 
-\begin{table}[h]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{c|l}
 		$B_1$  & \num{0.99654}  \\
@@ -76,7 +76,7 @@ with the \textit{Sellmeier coefficients} $B_{1,2,3}$ and $C_{1,2,3}$. \cite{icea
 
 For the transmission properties of PMMA, the same method as for borosilicate is used (see above). Therefore, the data stated in \cite{famous:niggemann} is taken as $T_\text{internal}(d = \SI{3}{\milli\meter})$. Figure \ref{iceact:model:material:transmission} shows the three transmission components as blue lines.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}[t]{0.485\textwidth}
 		\includegraphics[width=\textwidth]{material/transmission.pdf}
@@ -91,7 +91,7 @@ For the transmission properties of PMMA, the same method as for borosilicate is 
 	\label{iceact:model:material:transmission}	
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{material/refractive_index.pdf}
 	\caption[Refractive index of used materials]{\textbf{Refractive index of materials used in the simulation.} For PMMA the dispersion is calculated by evaluating the Sellmeier equation introduced in this section. The refractive index for the used borosilicate is only given at specific wavelengths. \cite{iceact:borosilicate:datasheet} Therefore, spline interpolation is used to reconstruct the full curve.}
@@ -103,7 +103,7 @@ The tube, back plane and other coating surfaces are simulated as \enquote{dummy}
 \section{Optics}
 
 As introduced in section \ref{sec:iceact_intro}, IceAct is designed to image the direction of Cherenkov light on a camera consisting of multiple pixels. The imaging is done by a Fresnel lens, and an SiPM-based camera with light collecting \enquote{cones}. A sketch of the camera layout is shown in figure \ref{iceact:camera:layout}
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{CameraDesign.pdf}
 	\caption[IceAct camera layout]{\textbf{The IceAct camera layout.} \cite{iceact:camera} In this sketch the Fresnel lens with a diameter $D=\SI{549.7}{\milli\meter}$ and a focal length of $f=\SI{502.1}{\milli\meter}$ focusing rays to the camera sketched below. Additionally, three characteristic angles are shown: the maximum incidence angle of a ray to be focused on the camera plane $\Omega\approx\SI{6.8}{\degree}$, the maximum incidence angle on the central Winston cone $\gamma\approx\SI{28.7}{\degree}$, and the maximum incidence angle for the outermost Winston cone $\delta\approx\SI{33.7}{\degree}$.}
@@ -111,7 +111,7 @@ As introduced in section \ref{sec:iceact_intro}, IceAct is designed to image the
 \end{figure}
 
 In the following section the four optical components of the IceAct \geant model are discussed. To have a first glimpse of the model, see figure \ref{iceact:model:cut}.
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{IceActGeant4Model.pdf}
 	\caption[IceAct \geant model]{\textbf{The IceAct \geant model.} Cross-sectional sketch of the IceAct optics in \geant with all simulated components. They are described in detail in \cref{iceact:model:fresnellens,iceact:model:camera,iceact:model:glassplate}.}
@@ -126,21 +126,21 @@ The IceAct glass plate has a thickness of \SI{2+-0.2}{\milli\meter}, a diameter 
 
 The two major advantages using a Fresnel lens rather than a conventional lens are the significantly less weight and the fact that light passes less material which could absorb it. The main idea of a Fresnel lens is to divide a thick lens into small annular facets in form of prisms that keep the local inclination of the conventional lens by making local approximations of the lens' \textit{sagitta function}\footnote{In application to lenses, the sagitta function $z(\rho)$ gives the lens thickness $z$ as a function of the radial distance $\rho$ from the optical axis for radially symmetrical lenses.}. Figure \ref{iceact:model:fresnelvsthick} visualizes the principle. IceAct uses the model ORAFOL SC 943 with an aperture of \SI{549.7}{\milli\meter}, a focal length of \SI{502.1}{\milli\meter} at a wavelength of \SI{546+-27.3}{\nano\meter}. The lens is \SI{2.5}{\milli\meter} thick, has 10 grooves per \si{\milli\meter}, and is made of polymethyl methacrylate (PMMA) as stated in section \ref{sec:iceact:model:material}. \cite{iceact:fresnellens:datasheet}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{FresnelVsNormalLens.pdf}
 	\caption[Comparison conventional vs. Fresnel lens]{\textbf{Comparison between a conventional \enquote{thick} lens and a Fresnel lens.} \cite{famous:eichler} For the functionality of a lens the radius-dependent sagitta function $z(\rho)$ is crucial. To get rid of the bulky material of a conventional lens, the Fresnel lens is divided into annular \enquote{prisms} called \enquote{grooves}. The slope angle $\delta$ of each groove is a local approximation of the sagitta function to ensure the imaging capability.}
 	\label{iceact:model:fresnelvsthick}	
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{FresnelGroove.pdf}
 	\caption[Fresnel groove]{\textbf{Cross-sectional sketch of a Fresnel groove.} \cite{famous:eichler} Most of the incoming rays are hitting the regular active (or slope) facet of the groove with slope angle $\delta$. For an optimal groove, the inactive (or draft) facet would be parallel to the optical axis. Due to manufacturing process, there is always a small slope on the inactive facet given by the draft angle $\psi$ and the peak is rounded. With this design, there are some impact regions where incoming rays are not refracted to the focal point: if they are total-reflected at the inactive facet inside the groove (red-dashed region), if they hit the peak rounding (red rays), or if they hit the inactive face (gray region).}
 	\label{iceact:model:fresnelgroove}	
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{FresnelSideProfile.pdf}
 	\caption[Fresnel side-profile]{\textbf{Side-profile sketch of a Fresnel lens.} \cite[adapted]{iceact:fresnellens:design}. Complementary sketch to figure \ref{iceact:model:fresnelgroove} which shows the manufacturing-driven draft angle increases with radius $\rho$.}
@@ -157,7 +157,7 @@ A detailed discussion and measurement of point spread functions and optical aber
 
 \subsection{Camera}\label{iceact:model:camera}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{subfigure}[t]{0.59\textwidth}
 		\includegraphics[width=\textwidth]{Camera.png}
@@ -205,7 +205,7 @@ Another important quantity is the cone length $L$ which is given by \cite{wico:b
 	L = \frac{a_\text{ex}(1+\sin\vartheta_\text{M})\cos\vartheta_\text{M}}{\sin^2\vartheta_\text{M}}\sim\frac{2a_\text{en}}{2\vartheta_\text{M}}\,.
 \end{align}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{WinstonConeSketch.pdf}
 	\caption[Sketch of a Winston cone]{\textbf{Sketch of a Winston cone.} \cite{iceact:camera} The shape of the cone is given by the two sketched parabolic curves rotating around the CPC axis. Characteristic lengths and angles are indicated: the entrance and exit diameters $a_\text{en,ex}$, the cone length $L$, the maximum incidence angle $\vartheta_\text{M}$, the parameterization coordinates $(x,y)$, and the angle $\phi\in[\vartheta_\text{M},\vartheta_M+\SI{90}{\degree}]$ needed for parameterization as well.}
@@ -215,7 +215,7 @@ Another important quantity is the cone length $L$ which is given by \cite{wico:b
 By appropriate design, Winston cones fulfill all requirements for light concentrators in IceAct given by the optical layout (cf. figure \ref{iceact:camera:layout}).
 However, one can design an improved Winston cone for the purposes in IceAct since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used \todo{referenz zur techn. Zeichnung der Kamera}. Instead of a radially symmetrical cone, the IceAct Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's detectional area (cf. figure \ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the IceAct Winston cone is shown in figure \ref{iceact:camera:iceact_wico_sketch}. In it, one can see a green dashed line and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations \eqref{eq:wico:param}.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{IceActWiCoSketches.pdf}
 	\caption[Sketches of the IceAct \enquote{hex-to-square} Winston cone]{\textbf{Sketches of the IceAct \enquote{hex-to-square} Winston cone.} The cone is shown from different points of view with dimensioning. The pink edge and the green dashed surface line follow the optimized Winston curve functions developed in \cite{iceact:camera}. The green dashed curve is extruded in order to form the whole side. Two different functions result in two different maximum angles $\vartheta_\text{M}^\text{edge,side}$ for an incidence parallel to the \enquote{edge} or the \enquote{side} plane.}
@@ -233,14 +233,21 @@ Due to its complex shape the cones are implemented in \geant by decomposing thei
 
 Silicon Photomultipliers (\textit{SiPM}s) are semiconductor devices used for photon detection in multiple applications. In comparison to conventional photon detection devices like Photomultiplier Tubes (\textit{PMT}s) they are rather compact and offer a higher detection efficiency. These features made them interesting devices for application in imaging detectors.
 
-An SiPM is the composition of an array of so called \textit{Geiger-mode avalanche photo diodes} (\text{G-APD}s). Their working principle is based on p-n junctions (cf. figure \ref{sipm:pn_junction})
+An SiPM is the composition of an array of so called \textit{Geiger-mode avalanche photo diodes} (\mbox{\textit{G-APD}s}). Their working principle is based on $p$-$n$-junctions (cf. figure \ref{sipm:pn_junction})
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{PNJunction.pdf}
-	\caption[Sketch of a p-n-junction]{\textbf{Sketch of a p-n-junction.} \cite{iceact:camera} }
+	\caption[Sketch of a $p$-$n$-junction]{\textbf{Sketch of a $p$-$n$-junction.} \cite{iceact:camera} In the top, the energy bands are shown for $n$-doped and $p$-doped semiconductor with the Fermi energy level $E_F$, the gap energy $E_G$, and the donor or acceptor energy level $E_D$ and $E_A$ respectively. Below, an $n$-doped (left) and a $p$-doped (right) material are brought together. Thus, a \textit{depletion zone} occurs where free electrons of the $n$-doped material fill  holes of the $p$-doped material. Due to the resulting net charge, an electric field arises from right to left. The size of the depletion zone can be enlarged by an external bias voltage applied as shown. An incident photon may result in production of an additional electron-hole-pair inducing a current via avalanches.}
 	\label{sipm:pn_junction}	
 \end{figure}
 
 \todo{write}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{material/PDE_interpolation.pdf}
+	\caption[Photon detection efficiency of SensL J-Series SiPM]{\textbf{Photon detection efficiency of SensL J-Series SiPM.} The data for overvoltages of \SI{6.0}{\volt} and \SI{2.5}{\volt} is taken from \cite{sipm:datasheet}, the curve for \SI{5.0}{\volt} -- which is used in the \geant simulation -- is interpolated linearly.}
+	\label{sipm:pde}	
+\end{figure}
 
