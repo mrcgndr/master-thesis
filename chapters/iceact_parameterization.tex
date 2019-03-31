@@ -3,20 +3,38 @@
 
 The simulation results discussed in chapter \ref{chap:simresults} can now be used to parameterize the telescope response of IceAct. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). In the following sections, the method of setting up this LUT is described.
 
-\section{Adaptive Kernel Density Estimation}
+\section{Kernel Density Estimation}
 
+Kernel density estimation \textit{KDE} is a non-parametric method to estimate a probability density function of a random variable by a given finite data sample. The standard \textit{kernel density estimator}
+\begin{align}
+	\hat{f}(x)=\frac{1}{nh}\sum_{i=1}^{n}K\left(\frac{x-X_i}{h}\right)\,,
+	\label{eq:kde}
+\end{align}
+is the sum of \textit{kernel functions} $K(\dots)$ for each data point $X_i$. The non-negative parameter $h$ is the \textit{bandwidth} and is a measure for the smoothing of the resulting KDE: the KDE gets smoother with increasing $h$. Due to the normalization factor, $\hat{f}(x)$ is normed to
+\begin{align}
+	\int\limits_{-\infty}^{+\infty}\hat{f}(x)dx = 1\,.
+\end{align}
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.5\textwidth]{KDE_example.pdf}
+	\caption[Example KDE with different smoothing]{\textbf{Example KDE with different smoothing.} \cite{kde:example_plot} Kernel density estimation is applied on a data sample with 100 random numbers drawn from a normal distribution (gray curve). The blue, green, and orange curves have different bandwidths.}
+	\label{kde:example_1d}	
+\end{wrapfigure}
+
+
+\subsection*{Adaptive KDE}
 As one can see in the simulation results (cf. \todo{verweis zu map}) each pixel has a certain region of photon directions where it is efficient. However, each pixel is almost \enquote{blind} for most other directions. This results in statistically stable -- \enquote{dense} -- regions but also \enquote{sparse} regions dominated by scattered photons that undergo large statistical fluctuations. 
 
 \cite{kde:schoenen,kde:wangwang}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{scatter_px20_wvl410-420nm.png}
 	\caption[Comparison: adaptive vs. non-adaptive KDE]{\textbf{Comparison: adaptive vs. non-adaptive KDE.} }
 	\label{kde:example_scatter}	
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive.pdf}
 	\caption[Comparison: adaptive vs. non-adaptive KDE]{\textbf{Comparison: adaptive vs. non-adaptive KDE.} }
@@ -63,7 +81,7 @@ Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth ref
 
 For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the zenith at $\theta = \SI{0}{\degree}$ which reduces the number of needed HEALPix by a factor of
 \begin{align}
-	2\pi\left(1-\cos\theta_\text{max}\right)\,.
+	\Gamma = 2\pi\left(1-\cos\theta_\text{max}\right)\,.
 \end{align}
 For the IceAct simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to the fact that only about $\SI{9.5}{\percent}$ of the HEALPixes are needed.
 
