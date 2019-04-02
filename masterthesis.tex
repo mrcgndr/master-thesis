@@ -89,6 +89,13 @@
 	\tabularx{\columnwidth}{>{$}l<{$} @{${}\quad{}$} >{\raggedright\arraybackslash}X}}
 {\endtabularx\par\vspace{\belowdisplayskip}}
 \usepackage{xspace}
+% Um zwei Subfigures aneinander zentriert auszurichten
+\newsavebox{\savedimage}
+\newcommand{\saveimageheight}[2][]{%
+	\savebox{\savedimage}{\includegraphics[#1]{#2}}}
+\newcommand{\raiseimage}[2][]{%
+	\raisebox{.5\dimexpr\ht\savedimage-\height}{%
+		\includegraphics[#1]{#2}}}%
 % Geant4
 \newcommand{\geant}{\textsc{Geant4}\xspace}
 
