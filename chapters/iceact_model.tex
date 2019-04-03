@@ -232,7 +232,9 @@ Hence, the application of Winston cones extend the detectional area of the pixel
 
 \paragraph{Implementation in \geant with CADMesh}
 
-Due to its complex shape the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshgrid}. \todo{bisschen mehr ins detail (FreeCAD, welcher Algorithmus ...)} This meshed geometry is then translated into \geant by using the toolkit \textit{CADMesh} \cite{wico:cadmesh}. More about Winston cone meshing is discussed in section \ref{sec:wico_meshing}.
+Due to its complex shape the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshing}. For the IceAct Winston cone this is done with the CAD software \textit{FreeCAD}, more precisely with the algorithm \enquote{Mefisto}. This meshing routine only need the maximum edge length as a free parameter. The smaller the maximum edge length the more detailed the mesh gets but the more computation time is needed to translate this mesh into \geant. Thus, a good compromise has to be found.
+
+The meshed geometry is then translated into \geant by using the toolkit \textit{CADMesh} \cite{wico:cadmesh}. More about Winston cone meshing is discussed in section \ref{sec:wico_meshing}.
 
 \subsubsection{Silicon Photomultipliers}\label{sec:sipm}
 
@@ -301,7 +303,7 @@ In addition, the pulse shape can be parameterized by a function of two exponenti
 where $c$ is a calibration factor, that corresponds to the amplitude of a \SI{1}{PE} pulse, $t_0$ is the starting time of the pulse, and $\tau$ and $\lambda$ are the rise and fall times respectively, which are typically in a range of $\tau=\SIrange{0.9}{1.1}{\nano\meter}$ and $\lambda=\SIrange{18}{20}{\nano\second}$.~\cite{sipm:fact_calibration}
 
 Moreover, figure~\ref{sipm:iceact_sipm} shows the SiPM used for the IceAct camera. It is the MicroFJ-60035-TSV SiPM by ON Semiconductor\footnote{In former theses and publications on IceAct the SiPM is called SensL J-Series 60035. Since 2018, SensL is fully integrated in the head organization ON Semiconductor which took over the sales of SensL products.}. 
-It consists of \num{22292} G-APD cells with the dimensions $\SI{35}{\micro\meter}\times\SI{35}{\micro\meter}$ each. The active area is $\SI{6.07}{\milli\meter}\times\SI{6.07}{\milli\meter}$ and the package area is $\SI{6.13}{\milli\meter}\times\SI{6.13}{\milli\meter}$ which results in a fill factor\footnote{Percentage of the active area that is actually equipped with cells.} of $\epsilon_\text{fill}=\SI{75}{\percent}$. On top of the active area, a glass plate with a thickness of \SI{0.37}{\milli\meter} and a refractive index of $n = \SI{1.53}{\nano\meter}$ at a wavelength of $\lambda = \SI{436}{\nano\meter}$ is mounted (cf. figure~\ref{sipm:tec_sketch}). More technical properties can be found in the datasheet~\cite{sipm:datasheet}.
+It consists of \num{22292} G-APD cells with the dimensions $\SI{35}{\micro\meter}\times\SI{35}{\micro\meter}$ each. The active area is $\SI{6.07}{\milli\meter}\times\SI{6.07}{\milli\meter}$ and the package area is $\SI{6.13}{\milli\meter}\times\SI{6.13}{\milli\meter}$ which results in a fill factor\footnote{Percentage of the active area that is actually equipped with cells.} of $\epsilon_\text{fill}=\SI{75}{\percent}$. On top of the active area, a glass plate with a thickness of \SI{0.37}{\milli\meter} (cf. figure~\ref{sipm:tec_sketch}). More technical properties can be found in the data sheet~\cite{sipm:datasheet}.
 
 \begin{figure}[H]
 	\centering
@@ -312,13 +314,20 @@ It consists of \num{22292} G-APD cells with the dimensions $\SI{35}{\micro\meter
 
 \paragraph{Implementation in \geant with G4SiPM}
 
-In the IceAct \geant simulation -- as well as in the one for the FAMOUS telescope which is the basis of this simulation (cf. section~\ref{sec:famous_simulation}) -- the SiPM is implemented via the plug-in \textit{G4SiPM} \cite{sipm:g4sipm}. It allows a convenient implementation of geometry, materials, photon detection efficiency, and many other physics and performance parameters in \geant. It is even possible to do waveform simulation with background from cross talk, after pulses, thermal noise, etc. Since the signal simulation is beyond the scope of this thesis, only the material and detection properties are of interest. 
+In the IceAct \geant simulation -- as well as in the one for the FAMOUS telescope which is the basis of this simulation (cf. section~\ref{sec:famous_simulation}) -- the SiPM is implemented via the plug-in \textit{G4SiPM}~\cite{sipm:g4sipm}. It allows a convenient implementation of geometry, materials, photon detection efficiency, and many other physics and performance parameters in \geant. It is even possible to do waveform simulation with background from cross talk, after pulses, thermal noise, etc. Since the signal simulation is beyond the scope of this thesis, only the material and detection properties are of interest.
 
-\todo{Material, Detection Efficiency}
+For the material properties of the \SI{0.37}{\milli\meter} thick covering glass plate on the SiPM, only the refractive index of $n = \SI{1.53}{\nano\meter}$ at a wavelength of $\lambda = \SI{436}{\nano\meter}$ is given in the data sheet~\cite{sipm:datasheet}. Since there are no detailed information about the glass, $n$ is assumed to be constant for the simulation.
+
+The other important property is the \textit{photon detection efficiency} $PDE(\lambda,V_\text{OV})$ which is given for the over voltages $V_\text{OV}=\SI{2.5}{\volt}$ and $V_\text{OV}=\SI{6}{\volt}$ and for wavelengths $\lambda = \SIrange{200}{900}{\nano\meter}$. In IceAct the SiPMs are operated with an over voltage of $V_\text{OV} = \SI{5}{\volt}$. Measurements in the data sheet show that the relation between over voltage and PDE is linear.~\cite{sipm:datasheet} Therefore, one gets the needed $PDE_{\SI{5}{\volt}}\coloneqq PDE(\lambda,V_\text{OV}=\SI{5}{\volt})$ by linear interpolation,
+\begin{align}
+	PDE_{\SI{5}{\volt}} = PDE_{\SI{2.5}{\volt}} + \frac{\SI{2.5}{\volt}}{(6-2.5)\si{\volt}} \cdot (PDE_{\SI{6}{\volt}}-PDE_{\SI{2.5}{\volt}}),
+\end{align}
+which is then implemented in \geant. In addition, G4SiPM takes into account, that the PDE is measured for perpendicular light incidence in air environment. By using Fresnel equations it compensates for slant photon incidences. The fill factor $\epsilon_\text{fill}$ is also divided out. \cite{sipm:g4sipm,famous:niggemann}. 
+The interpolated and original PDE functions are shown in figure~\ref{sipm:pde}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{material/PDE_interpolation.pdf}
-	\caption[Photon detection efficiency of the MicroFJ-60035-TSV SiPM]{\textbf{Photon detection efficiency of the MicroFJ-60035-TSV SiPM.} The data for over voltages of \SI{6.0}{\volt} and \SI{2.5}{\volt} is taken from~\cite{sipm:datasheet}, the curve for \SI{5.0}{\volt} -- which is used in the \geant simulation -- is interpolated linearly.}
+	\caption[Photon detection efficiency of the MicroFJ-60035-TSV SiPM]{\textbf{Photon detection efficiency of the MicroFJ-60035-TSV SiPM.} The data for over voltages of \SI{6}{\volt} and \SI{2.5}{\volt} is taken from~\cite{sipm:datasheet}, the curve for \SI{5}{\volt} -- which is used in the \geant simulation -- is interpolated linearly.}
 	\label{sipm:pde}	
 \end{figure}
