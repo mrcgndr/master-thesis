@@ -8,7 +8,7 @@
 	\includegraphics[width=0.5\textwidth]{Geant4Logo.png}
 	\caption[\geant logo]{\textbf{\geant logo.} \cite{geant4:logo}}	
 \end{wrapfigure}
-\geant is a multi-purpose simulation framework for the passage of particles trough matter, written in \textit{C++} and developed by the \geant Collaboration at CERN. It includes physics models, geometry, tracking, hits, and digitization and thus allows a detailed simulation and response analysis for particle detectors in many application fields like particle and accelerator physics, space engineering or medical science. In the framework's source some basic and advanced use cases are implemented and provided as examples. The toolkit is built up of multiple categories (or modules) using each other (cf. figure \ref{geant4:categories}). \cite{geant4}
+\geant is a multi-purpose simulation framework for the passage of particles trough matter, written in \textit{C++} and developed by the \geant Collaboration at CERN. It includes physics models, geometry, tracking, hits, and digitization and thus allows a detailed simulation and response analysis for particle detectors in many application fields like particle and accelerator physics, space engineering or medical science. In the framework's source some basic and advanced use cases are implemented and provided as examples. The toolkit is built up of multiple categories (or modules) using each other (cf. figure \ref{geant4:categories}).~\cite{geant4}
 
 \begin{figure}[H]
 	\centering
@@ -21,7 +21,7 @@ Especially for the use case of IceAct \geant is capable of simulating Cherenkov 
 
 Since this thesis is about an approach of an all-encompassing telescope simulation, \geant provides all major possibilities to get a distinct analysis of the entire optical system of IceAct.
 
-\subsection{FAMOUS telescope simulation}
+\subsection{FAMOUS telescope simulation}\label{sec:famous_simulation}
 The fluorescence telescope FAMOUS\footnote{\textbf{F}irst \textbf{A}uger \textbf{M}ulti-pixel
 photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy air \textbf{S}howers} for the Pierre Auger Observatory in Argentina is developed at RWTH Aachen to measure fluorescence light originating from ultra-high-energy cosmic rays (UHECR) by using Silicon Photomultipliers (SiPMs). Withing the development, a detailed \geant simulation has been elaborated. \cite{famous:sim_github,famous:sim_github} The telescope design of FAMOUS is very similar since the detection technique and the optics system is basically the same. Therefore, the IceAct telescope simulation is heavily based on this FAMOUS \geant framework. A detailed discourse and a summary of previous analyses can be found in \cite{famous:niggemann}.
 
@@ -29,9 +29,9 @@ photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy
 
 For an optical device, the material that the light should pass has to be chosen deliberately. Especially the transmission properties, processability, and for IceAct in particular the resistance against harsh weather conditions are of interest.
 
-The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass. Borosilicate is chosen for its high durability, transparency in the interesting spectral region, flatness, and weak fluorescence intensities. The refractive index is evaluated at some wavelength. Since we need to have a full dispersion relation the points are spline interpolated (cf. orange curve in figure \ref{iceact:model:material:refractive_index}). \cite{iceact:borosilicate:datasheet}. 
+The glass plate on top of IceAct is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass. Borosilicate is chosen for its high durability, transparency in the interesting spectral region, flatness, and weak fluorescence intensities. The refractive index is evaluated at some wavelength. Since we need to have a full dispersion relation the points are spline interpolated (cf. orange curve in figure~\ref{iceact:model:material:refractive_index}).~\cite{iceact:borosilicate:datasheet}
 
-In the data sheet \cite{iceact:borosilicate:datasheet} the transmission properties are given for a vertical light and a glass plate of a thickness of $d = \SI{6.5}{\milli\meter}$. Therefore, the transmission curve $T_\text{total}(\lambda)$ includes the internal absorption as well as the two interface transitions into and out of the borosilicate.
+In the data sheet~\cite{iceact:borosilicate:datasheet} the transmission properties are given for a vertical light and a glass plate of a thickness of $d = \SI{6.5}{\milli\meter}$. Therefore, the transmission curve $T_\text{total}(\lambda)$ includes the internal absorption as well as the two interface transitions into and out of the borosilicate.
 \begin{align}
 	T_\text{total}(\lambda) = T_\text{interface}^2(\lambda)\cdot T_\text{internal}(d=\SI{6.5}{\milli\meter},\lambda)
 	\label{eq:transmission}
@@ -46,7 +46,7 @@ In \geant the wavelength dependent absorption length $a(\lambda)$ has to be impl
 	I(x) = I_0 e^{-\frac{x}{a}} \Leftrightarrow a = - \frac{x}{\ln\left(\frac{I(x)}{I_0}\right)}
 	\label{eq:absorptionlaw}
 \end{align}
-Thus, one gets the absorption length by using equations \eqref{eq:transmission}, \eqref{eq:perp_interface_transmission}, and \eqref{eq:absorptionlaw}.
+Thus, one gets the absorption length by using equations~\eqref{eq:transmission}, \eqref{eq:perp_interface_transmission}, and \eqref{eq:absorptionlaw}.
 \begin{align}
 	a(\lambda) &= - \frac{d}{\ln T_\text{internal}(d,\lambda)}\\
 	&= \frac{d}{2\ln\left(1 - \left(\frac{n(\lambda)-n_\text{air}}{n(\lambda)+n_\text{air}}\right)^2\right)-\ln T_\text{total}(\lambda)}\,,
@@ -58,7 +58,7 @@ The Fresnel lens and the Winston Cones in IceAct are made of polymethyl methacry
 	n^2(\lambda) = 1 + \frac{B_1\lambda^2}{\lambda^2-C_1} + \frac{B_2\lambda^2}{\lambda^2-C_2} + \frac{B_3\lambda^2}{\lambda^2-C_3}\,,
 	\label{eq:sellmeier}
 \end{align}
-with the \textit{Sellmeier coefficients} $B_{1,2,3}$ and $C_{1,2,3}$. \cite{iceact:sellmeier} Table \ref{iceact:model:pmma_sellmeiercoeffs} shows the used coefficients and the function is plotted in figure \ref{iceact:model:material:refractive_index} (blue curve).
+with the \textit{Sellmeier coefficients} $B_{1,2,3}$ and $C_{1,2,3}$.~\cite{iceact:sellmeier} Table \ref{iceact:model:pmma_sellmeiercoeffs} shows the used coefficients and the function is plotted in figure~\ref{iceact:model:material:refractive_index} (blue curve).
 
 \begin{table}[H]
 	\centering
@@ -159,19 +159,19 @@ A detailed discussion and measurement of point spread functions and optical aber
 
 \begin{figure}[H]
 	\centering
-	\saveimageheight[width=0.59\textwidth]{Camera.png}
-	\begin{subfigure}[t]{0.59\textwidth}
-		\usebox{\savedimage}
-		\subcaption{Picture of the assembled IceAct camera. \cite{iceact:camera:burgmann} 61 \enquote{hex-to-square} Winston cones are glued onto the hexagonal SiPM grid. Besides, one can see two of the overall three additional pixels for reference measurements.}
+	\saveimageheight[width=0.49\textwidth]{SiPMs.pdf}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\raiseimage[width=\textwidth]{Camera.png}
+		\subcaption{Picture of the assembled IceAct camera.~\cite{iceact:camera:burgmann} 61 \enquote{hex-to-square} Winston cones are glued onto the hexagonal SiPM grid. Besides, one can see two of the overall three additional pixels for reference measurements.}
 		\label{iceact:camera:picture}	
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.39\textwidth}
-		\raiseimage[width=\textwidth]{CameraPixels.pdf}
-		\subcaption{Pixel numbering of the camera where the 61 pixels are numbered in a spiral scheme starting with the central pixel.}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\usebox{\savedimage}
+		\subcaption{Placing sketch and pixel numbering of the camera where the 61 pixels are numbered in a spiral scheme starting with the central pixel with the \geant coordinate system. In the hexagonal grid all SiPM centers have a distance of \SI{15}{\milli\meter} to their next neighboring pixels. The brigt blue SiPMs are \enquote{open} pixels without a Winston cone on top and the dark blue SiPM is a \enquote{blind} pixel.}
 		\label{iceact:camera:pixelnumbering}	
 	\end{subfigure}
-	\caption[The IceAct camera]{\textbf{The IceAct camera.}}
+	\caption[The IceAct camera]{\textbf{The IceAct camera.}}	
 \end{figure}
 
 The IceAct Camera is the compound of 61 Silicon Photomultipliers (SiPMs, cf. section~\ref{sec:sipm}) arranged in a hexagonal grid together with 61 Winston cones (cf. section~\ref{sec:winstoncones}) glued on them and obviously the readout instrumentation. In addition to the 61 instrumented pixels there are three pixels aside for reference measurements. Two of them are just placed without Winston cones on top to measure optical noise while one pixel is completely \enquote{blind} by being masked. This makes it possible to measure the pure electronic noise of the SiPM. Figure~\ref{iceact:camera:picture} shows an assembled IceAct camera. To address each pixel, they are numbered in a spiral scheme starting with the central \enquote{0$\text{th}$} pixel and going outside counterclockwise as seen from the top (cf. figure~\ref{iceact:camera:pixelnumbering}).
@@ -181,6 +181,8 @@ The IceAct Camera is the compound of 61 Silicon Photomultipliers (SiPMs, cf. sec
 In the following sections, the working principle as well as the implementation in \geant is discussed.
 
 \subsubsection{Winston Cones}\label{sec:winstoncones}
+
+\paragraph{Working Principle}
 
 The IceAct telescopes use a light collection technique to enlarge the detection area of the SiPM grid based on \textit{compound parabolic concentrators} (CPC) \cite{wico:book}. In the following, this concentrators are named \textit{Winston cones}. 
 Primarily, a Winston cone is a rotationally symmetrical paraboloid formed by an off-axis parabola revolving around the axis of symmetry (\textit{CPC axis}, cf. figure \ref{iceact:camera:wico_sketch}). Hence, the entrance area $A_\text{en}=\pi a_\text{en}^2$ and the exit area $A_\text{ex}=\pi a_\text{ex}^2$ are circular. The concentration effect works for every ray hitting the entrance area up to the maximum angle $\vartheta_\text{M}$. A relation between $\vartheta_M$ and the characteristic lengths shown in figure~\ref{iceact:camera:wico_sketch} can be found: \cite{wico:book,iceact:camera}
@@ -214,7 +216,7 @@ Another important quantity is the cone length $L$ which is given by \cite{wico:b
 \end{figure}
 
 By appropriate design, Winston cones fulfill all requirements for light concentrators in IceAct given by the optical layout (cf. figure~\ref{iceact:camera:layout}).
-However, one can design an improved Winston cone for the purposes in IceAct since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used \todo{referenz zur techn. Zeichnung der Kamera}. Instead of a radially symmetrical cone, the IceAct Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's detectional area (cf. figure~\ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the IceAct Winston cone is shown in figure~\ref{iceact:camera:iceact_wico_sketch}. In it, one can see a green dashed line and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations~\eqref{eq:wico:param}.
+However, one can design an improved Winston cone for the purposes in IceAct since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used (cf. figure~\ref{iceact:camera:pixelnumbering}). Instead of a radially symmetrical cone, the IceAct Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's detectional area (cf. figure~\ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the IceAct Winston cone is shown in figure~\ref{iceact:camera:iceact_wico_sketch}. In it, one can see a green dashed line and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations~\eqref{eq:wico:param}.
 
 \begin{figure}[H]
 	\centering
@@ -228,9 +230,13 @@ Hence, the application of Winston cones extend the detectional area of the pixel
 	\frac{A_\text{camera with WiCos}}{A_\text{camera without WiCos}} = \frac{61\cdot \frac{3}{2}\sqrt{3}\cdot\left(\frac{\SI{17.09}{\milli\meter}}{2}\right)^2}{61\cdot(\SI{6}{\milli\meter})^2}\approx\num{5.27}\,.
 \end{align}
 
-Due to its complex shape the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshgrid}. This meshed geometry is then translated into \geant by using the toolkit \textit{CADMesh} \cite{wico:cadmesh}. More about Winston cone meshing is discussed in section \ref{sec:wico_meshing}.
+\paragraph{Implementation in \geant with CADMesh}
+
+Due to its complex shape the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshgrid}. \todo{bisschen mehr ins detail (FreeCAD, welcher Algorithmus ...)} This meshed geometry is then translated into \geant by using the toolkit \textit{CADMesh} \cite{wico:cadmesh}. More about Winston cone meshing is discussed in section \ref{sec:wico_meshing}.
 
 \subsubsection{Silicon Photomultipliers}\label{sec:sipm}
+
+\paragraph{Working Principle}\label{sec:sipm:working_principle}
 
 Silicon Photomultipliers (\textit{SiPM}s) are semiconductor devices used for photon detection in multiple applications. In comparison to conventional photon detection devices like Photomultiplier Tubes (\textit{PMT}s) they are rather compact and offer a higher detection efficiency. These features made them interesting devices for application in imaging detectors.
 
@@ -243,7 +249,7 @@ An SiPM is the composition of an array of so called \textit{Geiger-mode avalanch
 	\label{sipm:pn_junction}	
 \end{figure}
 
-If a photon now traverses the diode, a possible impact can ionize an atom and thus produce an electron-hole-pair. While the electron is accelerated along the electrical field it can ionize further atoms if the electric field is strong enough -- an avalanche is formed that induces a highly temperature-dependent breakdown voltage $V_\text{breakdown}$. Here, the \enquote{Geiger-mode} prefix additionally indicates that the signal is not dependent from the number of total detected photons. A quenching resistor allows to stop the avalanche and enables the cell to recover quickly. This working principle is referred to as an \textit{avalanche photo diode} (\textit{APD}). Usually, photo diodes are based on germanium (Ge) or silicon (Si). Since the band gap of silicon-based photo diodes is higher (\SI{1.12}{\electronvolt}) than for germanium-based ones (\SI{0.67}{\electronvolt}), the electrons in silicon-based photo diodes need higher energies to produce a significant photo currents. Thus, a Si photo diodes generate less noise than photo diodes based on Ge. \cite{sipm:renker_lorenz} An important operation parameter of a G-APD is the over voltage $V_\text{OV}$ since many features (e.g. the gain) of G-APDs are proportional to it. It is defined as the difference of bias and breakdown voltage
+If a photon now traverses the diode, a possible impact can ionize an atom and thus produce an electron-hole-pair. While the electron is accelerated along the electrical field it can ionize further atoms if the electric field is strong enough -- an avalanche is formed that induces a highly temperature-dependent breakdown voltage $V_\text{breakdown}$. Here, the \enquote{Geiger-mode} prefix additionally indicates that the signal is not dependent from the number of total detected photons. A quenching resistor allows to stop the avalanche and enables the cell to recover quickly. This working principle is referred to as an \textit{avalanche photo diode} (\textit{APD}). Usually, photo diodes are based on germanium (Ge) or silicon (Si). Since the band gap of silicon-based photo diodes is higher (\SI{1.12}{\electronvolt}) than for germanium-based ones (\SI{0.67}{\electronvolt}), the electrons in silicon-based photo diodes need higher energies to produce a significant photo currents. Thus, Si photo diodes generate less noise than photo diodes based on Ge. \cite{sipm:renker_lorenz} An important operation parameter of a G-APD is the over voltage $V_\text{OV}$ since many features (e.g. the gain) of G-APDs are proportional to it. It is defined as the difference of bias and breakdown voltage~\cite{sipm:renker_lorenz}
 \begin{align}
 	V_\text{OV} = V_\text{bias} - V_\text{breakdown}\,.
 \end{align}
@@ -254,9 +260,6 @@ Basically, there are two types of G-APD cells: $p$-on-$n$ which is shown in figu
 	\caption[Sketch of a \enquote{$p$-on-$n$} G-APD cell]{\textbf{Sketch of a \enquote{$p$-on-$n$} G-APD cell.} \cite{sipm:renker_lorenz} This type is optimized to have a high photon detection efficiency in the blue and UV wavelength regime.}
 	\label{sipm:apd_cell}	
 \end{figure}
-
-The step from a G-APD to an SiPM is done if one now combines many G-APDs in a grid structure in parallel connection which is shown in figure~\ref{sipm:circuit_picture}. 
-\todo{addition der Amplituden, Proportionalität (siehe Renker, Lorenz), Pulsparametrisierung (FACT paper)}\cite{sipm:renker_lorenz} \cite{sipm:fact_calibration}
 
 \begin{figure}[H]
 	\centering
@@ -275,22 +278,47 @@ The step from a G-APD to an SiPM is done if one now combines many G-APDs in a gr
 	\label{sipm:circuit_picture}
 \end{figure}
 
+The step from a G-APD to an SiPM is done if one now combines many G-APDs in a grid structure in parallel connection which is shown in figure~\ref{sipm:circuit_picture}. Figure~\ref{sipm:pulses} shows measured waveforms (or \enquote{pulses}) of SiPM with linear amplification. A discretization of puls heights which correspond to the number of single cell breakdowns can be observed. The amplitude $A_i$ of a standard pulse is proportional the capacitance $C$ and anti-proportional to the electron charge $q$ and the over voltage $V_\text{OV}$,~\cite{sipm:renker_lorenz}
+\begin{align}
+	A_i\propto\frac{C}{qV_\text{OV}}\,.
+\end{align}
+If now multiple cell breakdowns occur, the total pulse height just sums up over the number of triggered cells which is commonly knows as \textit{PE} (\textit{photo electron equivalent}),~\cite{sipm:renker_lorenz}
+\begin{align} 
+	A = \sum_{i=0}^{PE} A_i\,.
+\end{align}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{SiPM_pulseplot}
-	\caption[Pulse waveforms of an SiPM]{\textbf{Pulse waveforms of an SiPM.} \cite{sipm:hamamatsu_handbook} Multiple measured SiPM waveforms (\enquote{pulses}) with amplitude plotted against time.}
-	\label{sipm:pde}
+	\caption[Pulse waveforms of an SiPM]{\textbf{Pulse waveforms of an SiPM.} \cite{sipm:hamamatsu_handbook} Multiple measured SiPM waveforms (\enquote{pulses}) with amplitude plotted against time. A discretization of pulse heights can be observed which is dependent from the number of single cell breakdowns marked with \enquote{p.e.} in the plot. One can see a few afterpulses at later times as well.}
+	\label{sipm:pulses}
 \end{figure}
-\todo{pulse plot besser beschreiben}	
 
-Moreover, figure~\ref{sipm:iceact_sipm} shows the SiPM used for the IceAct camera.
-\todo{technische Daten IceAct SiPM (auch das mit SensL erwähnen)}
+In addition, the pulse shape can be parameterized by a function of two exponential functions,
+\begin{align}
+	A(t,PE) = c\cdot PE \cdot \left(1-\frac{1}{1+\exp\left(\frac{t-t_0}{\tau}\right)}\right)\cdot\exp\left(-\frac{t-t_0}{\lambda}\right)\,,
+\end{align}
+where $c$ is a calibration factor, that corresponds to the amplitude of a \SI{1}{PE} pulse, $t_0$ is the starting time of the pulse, and $\tau$ and $\lambda$ are the rise and fall times respectively, which are typically in a range of $\tau=\SIrange{0.9}{1.1}{\nano\meter}$ and $\lambda=\SIrange{18}{20}{\nano\second}$.~\cite{sipm:fact_calibration}
+
+Moreover, figure~\ref{sipm:iceact_sipm} shows the SiPM used for the IceAct camera. It is the MicroFJ-60035-TSV SiPM by ON Semiconductor\footnote{In former theses and publications on IceAct the SiPM is called SensL J-Series 60035. Since 2018, SensL is fully integrated in the head organization ON Semiconductor which took over the sales of SensL products.}. 
+It consists of \num{22292} G-APD cells with the dimensions $\SI{35}{\micro\meter}\times\SI{35}{\micro\meter}$ each. The active area is $\SI{6.07}{\milli\meter}\times\SI{6.07}{\milli\meter}$ and the package area is $\SI{6.13}{\milli\meter}\times\SI{6.13}{\milli\meter}$ which results in a fill factor\footnote{Percentage of the active area that is actually equipped with cells.} of $\epsilon_\text{fill}=\SI{75}{\percent}$. On top of the active area, a glass plate with a thickness of \SI{0.37}{\milli\meter} and a refractive index of $n = \SI{1.53}{\nano\meter}$ at a wavelength of $\lambda = \SI{436}{\nano\meter}$ is mounted (cf. figure~\ref{sipm:tec_sketch}). More technical properties can be found in the datasheet~\cite{sipm:datasheet}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{SiPM_sketch.pdf}
+	\caption[Technical sketch of the MicroFJ-60035-TSV SiPM used in IceAct]{\textbf{Technical sketch of the MicroFJ-60035-TSV SiPM used in IceAct.}~\cite{sipm:datasheet} All dimensions given in \si{\milli\meter}.}
+	\label{sipm:tec_sketch}	
+\end{figure}
+
+\paragraph{Implementation in \geant with G4SiPM}
+
+In the IceAct \geant simulation -- as well as in the one for the FAMOUS telescope which is the basis of this simulation (cf. section~\ref{sec:famous_simulation}) -- the SiPM is implemented via the plug-in \textit{G4SiPM} \cite{sipm:g4sipm}. It allows a convenient implementation of geometry, materials, photon detection efficiency, and many other physics and performance parameters in \geant. It is even possible to do waveform simulation with background from cross talk, after pulses, thermal noise, etc. Since the signal simulation is beyond the scope of this thesis, only the material and detection properties are of interest. 
+
+\todo{Material, Detection Efficiency}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{material/PDE_interpolation.pdf}
-	\caption[Photon detection efficiency of SensL J-Series SiPM]{\textbf{Photon detection efficiency of SensL J-Series SiPM.} The data for over voltages of \SI{6.0}{\volt} and \SI{2.5}{\volt} is taken from \cite{sipm:datasheet}, the curve for \SI{5.0}{\volt} -- which is used in the \geant simulation -- is interpolated linearly.}
+	\caption[Photon detection efficiency of the MicroFJ-60035-TSV SiPM]{\textbf{Photon detection efficiency of the MicroFJ-60035-TSV SiPM.} The data for over voltages of \SI{6.0}{\volt} and \SI{2.5}{\volt} is taken from~\cite{sipm:datasheet}, the curve for \SI{5.0}{\volt} -- which is used in the \geant simulation -- is interpolated linearly.}
 	\label{sipm:pde}	
 \end{figure}
-
-\todo{Trivia : FACT}
