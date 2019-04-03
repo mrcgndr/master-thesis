@@ -234,6 +234,13 @@ Hence, the application of Winston cones extend the detectional area of the pixel
 
 Due to its complex shape the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshing}. For the IceAct Winston cone this is done with the CAD software \textit{FreeCAD}, more precisely with the algorithm \enquote{Mefisto}. This meshing routine only need the maximum edge length as a free parameter. The smaller the maximum edge length the more detailed the mesh gets but the more computation time is needed to translate this mesh into \geant. Thus, a good compromise has to be found.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{wicomeshes/all_hi-res.png}
+	\caption[IceAct Winston cone meshing with different maximum edge lengths]{\textbf{IceAct Winston cone meshing with different maximum edge lengths.}}
+	\label{wico:meshing}	
+\end{figure}
+
 The meshed geometry is then translated into \geant by using the toolkit \textit{CADMesh} \cite{wico:cadmesh}. More about Winston cone meshing is discussed in section \ref{sec:wico_meshing}.
 
 \subsubsection{Silicon Photomultipliers}\label{sec:sipm}
