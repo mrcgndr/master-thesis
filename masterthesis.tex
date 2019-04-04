@@ -67,9 +67,6 @@
 % Gibt an, wie viele Ebenen nummeriert werden sollen
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
-% Einheiten
-\usepackage[per-mode=reciprocal, separate-uncertainty=true]{siunitx}
-\sisetup{mode=text,range-phrase = {\text{~to~}}}
 % Serifenschrift
 \rmfamily
 % Seitenränder
@@ -80,7 +77,17 @@
 \usepackage{todonotes}
 % Schriftart
 %\usepackage{lmodern}
-\renewcommand{\familydefault}{\sfdefault}
+%\fontencoding{T1}
+%\fontfamily{bch}
+%\fontseries{m}
+%\fontshape{it}
+%\fontsize{12}{15}
+%\selectfont
+%\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\familydefault}{bch}
+% Einheiten
+\usepackage[per-mode=reciprocal, separate-uncertainty=true]{siunitx}
+\sisetup{mode=text,range-phrase={\text{~to~}},text-rm=\sffamily}
 % für Subcaptions
 \usepackage{subcaption}
 % mehere Referenzen in einem
