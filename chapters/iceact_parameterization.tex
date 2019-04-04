@@ -122,9 +122,9 @@ Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth ref
 
 For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the zenith at $\theta = \SI{0}{\degree}$ which reduces the number of needed HEALPix by a factor of
 \begin{align}
-	\Gamma = 2\pi\left(1-\cos\theta_\text{max}\right)\,.
+	\Gamma = \frac{1}{4\pi}\int\limits_{0}^{2\pi}\int\limits_{0}^{\theta_\text{max}}\sin{\theta} d\theta d\phi = \frac{1-\cos\theta_\text{max}}{2}\,.
 \end{align}
-For the IceAct simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to the fact that only about $\SI{9.5}{\percent}$ of the HEALPixes are needed.
+For the IceAct simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to the fact that only about \SI{0.76}{\percent} of the HEALPixes are needed.
 
 \section{Lookup Table}
 
