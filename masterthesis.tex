@@ -1,6 +1,14 @@
 % !TeX spellcheck = en_US
+% Dokument
 \documentclass[12pt,twoside,paper=a4,bibliography=totoc, listof=totoc,headsepline,footsepline,chapterprefix=true,open=right,headings=twolinechapter,headings=big]{scrbook}
 % -----------------------------------
+% Sprache und Codierung
+\usepackage[utf8]{inputenc}
+%\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+% Schriftart
+\usepackage{mathpazo}
 % für große Kapitelzahlen
 \usepackage{anyfontsize}
 %\setkomafont{chapter}{\normalfont\Huge}
@@ -26,11 +34,6 @@
 \makeatother	
 \usepackage{url}		
 \usepackage{mdwlist}
-% Sprache und Codierung
-\usepackage[utf8]{inputenc}
-%\usepackage[ngerman]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{csquotes}
 % Kopf- und Fußzeilen
 \usepackage{scrlayer-scrpage}
 \ofoot*{\raisebox{-2mm}{\pagemark}}
@@ -75,19 +78,10 @@
 \usepackage{hyperref}
 % Todonotes
 \usepackage{todonotes}
-% Schriftart
-%\usepackage{lmodern}
-%\fontencoding{T1}
-%\fontfamily{bch}
-%\fontseries{m}
-%\fontshape{it}
-%\fontsize{12}{15}
-%\selectfont
-%\renewcommand{\familydefault}{\sfdefault}
-\renewcommand{\familydefault}{bch}
 % Einheiten
 \usepackage[per-mode=reciprocal, separate-uncertainty=true]{siunitx}
-\sisetup{mode=text,range-phrase={\text{~to~}},text-rm=\sffamily}
+%\sisetup{detect-family}
+%\sisetup{range-phrase={\text{~to~}}}
 % für Subcaptions
 \usepackage{subcaption}
 % mehere Referenzen in einem
