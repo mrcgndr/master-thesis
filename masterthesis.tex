@@ -23,6 +23,7 @@
 \renewcommand*\othersectionlevelsformat[3]{%
 	\llap{#3\autodot\enskip}%
 }
+% Bibliographie
 \usepackage[backend=biber,style=numeric-comp,sorting=none,backref=true,sortcites=true]{biblatex}
 \addbibresource{bibliography.bib}	
 \renewcommand*{\bibfont}{\small}
@@ -102,13 +103,14 @@
 \newcommand{\raiseimage}[2][]{%
 	\raisebox{.5\dimexpr\ht\savedimage-\height}{%
 		\includegraphics[#1]{#2}}}%
-% Zeilenumbruch nach "paragraph"
-\makeatletter
-\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
-	{-3.25ex\@plus -1ex \@minus -.2ex}%
-	{1.5ex \@plus .2ex}%
-	{\normalfont\normalsize\bfseries}}
-\makeatother
+% Farbe von Überschriften
+\usepackage{xcolor}
+\addtokomafont{chapter}{\color[cmyk]{1,0.6,0,0.5}}
+\addtokomafont{section}{\color[cmyk]{1,0.6,0,0.33}}
+\addtokomafont{subsection}{\color[cmyk]{1,0.54,0,0.22}}
+\addtokomafont{subsubsection}{\color[cmyk]{1,0.6,0,0}}
+\addtokomafont{paragraph}{\color[cmyk]{0.67,0.4,0,0}}
+\addtokomafont{subparagraph}{\color[cmyk]{0.5,0.3,0,0}}
 % Geant4
 \newcommand{\geant}{\textsc{Geant4}\xspace}
 
