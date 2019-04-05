@@ -55,7 +55,7 @@ Thus, the protons effectively lose about \SI{20}{\percent} of their energy. Addi
 
 If a high energetic particle -- a photon or hadron -- incidentally reaches the Earth's atmosphere, it interacts with their atoms. A common way to describe the traversed atmospheric matter for an air shower is the \textit{slant depth}
 \begin{align}
-X(h) = \int_{h}^{\infty}\rho(h')dh'\,
+X(h) = \int_{h}^{\infty}\rho(h')dh'\,,
 \end{align}
 with the height dependent air density $\rho(h)$. Once a high energetic \enquote{primary} particle interacts with an atmospheric atom, it initiates a cascade of secondary particles. Typically, one differentiates between hadronic and electro-magnetic cascades or showers (cf. figure \ref{airshowers:cascades}). For electro-magnetic showers or sub-showers \textit{Heitler's model} is used as a simple conception. The model is based on two-body splittings of electrons, positrons, and photons by $e^+ e^-$ pair production or bremsstrahlung which occur after a fixed distance $d=\lambda_\text{em}\ln{2}$ by using the medium-specific \textit{radiation length} $\lambda_\text{em}$. In other words: after $n$ splitting processes the shower consists out of $N = 2^n = e^{x/\lambda_\text{em}}$ electrons and photons.
 
@@ -67,7 +67,7 @@ with the height dependent air density $\rho(h)$. Once a high energetic \enquote{
 
 The multiplication process holds, until the particle energies are high enough for pair production and bremsstrahlung. Below this energy, which Heitler named as the \textit{critical energy}~$\xi_c^e$, the shower size decreases. Hence, the maximum number of particles $N_\text{max} = 2^{n_c}$ is reached after $n_c$ splitting steps. The energy of a considered primary photon $E_\circ$ is then distributed over all secondary shower particles so that $E_\circ = \xi_c^e N_\text{max} = \xi_c^e 2^{n_c}$. With this information, one can derive the slant depth $X_\text{max}$ at which the shower has the largest size. It is
 \begin{align}
-	X_\text{max}^\gamma = n_c\lambda_\text{em}\ln{2} = \lambda_\text{em}\ln{\left(\frac{E_\circ}{\xi_c^e}\right)}\,.
+	X_\text{max}^\gamma = n_c\lambda_\text{em}\ln{2} = \lambda_\text{em}\ln{\frac{E_\circ}{\xi_c^e}}\,.
 	\label{airshowers:eq:xmax}
 \end{align}
 It should be mentioned that this calculation only holds for pure electro-magnetic showers which is the reason for the superscript $\gamma$ in equation \eqref{airshowers:eq:xmax}. \cite{airshowers:heitlermodel}
