@@ -43,7 +43,7 @@ The transmission at the interface can be calculated by using the Fresnel equatio
 \end{align}
 In \geant the wavelength dependent absorption length $a(\lambda)$ has to be implemented which is given by the exponential absorption law
 \begin{align}
-	I(x) = I_0 e^{-\frac{x}{a}} \Leftrightarrow a = - \frac{x}{\ln\left(\frac{I(x)}{I_0}\right)}
+	I(x) = I_0 e^{-\frac{x}{a}} \Leftrightarrow a = - \frac{x}{\ln{\frac{I(x)}{I_0}}}
 	\label{eq:absorptionlaw}
 \end{align}
 Thus, one gets the absorption length by using equations~\eqref{eq:transmission}, \eqref{eq:perp_interface_transmission}, and \eqref{eq:absorptionlaw}.
@@ -168,7 +168,7 @@ A detailed discussion and measurement of point spread functions and optical aber
 	\hfill
 	\begin{subfigure}[t]{0.49\textwidth}
 		\usebox{\savedimage}
-		\subcaption{Placing sketch and pixel numbering of the camera where the 61 pixels are numbered in a spiral scheme starting with the central pixel with the \geant coordinate system. In the hexagonal grid all SiPM centers have a distance of \SI{15}{\milli\meter} to their next neighboring pixels. The brigt blue SiPMs are \enquote{open} pixels without a Winston cone on top and the dark blue SiPM is a \enquote{blind} pixel.}
+		\subcaption{Placing sketch and pixel numbering of the camera where the 61 pixels are numbered in a spiral scheme starting with the central pixel with the \geant coordinate system. In the hexagonal grid all SiPM centers have a distance of \SI{15}{\milli\meter} to their next neighboring pixels. The bright blue SiPMs are \enquote{open} pixels without a Winston cone on top and the dark blue SiPM is a \enquote{blind} pixel.}
 		\label{iceact:camera:pixelnumbering}	
 	\end{subfigure}
 	\caption[The IceAct camera]{\textbf{The IceAct camera.}}	
