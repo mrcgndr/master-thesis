@@ -1,6 +1,6 @@
 % !TeX spellcheck = en_US
 % Dokument
-\documentclass[12pt,twoside,paper=a4,bibliography=totoc, listof=totoc,headsepline,footsepline,chapterprefix=true,open=right,headings=twolinechapter,headings=big]{scrbook}
+\documentclass[12pt,twoside,paper=a4,bibliography=totoc, listof=totoc,headsepline,footsepline,chapterprefix=true,open=right,headings=twolinechapter,headings=big,headings=standardclasses]{scrbook}
 % -----------------------------------
 % Sprache und Codierung
 \usepackage[utf8]{inputenc}
@@ -26,6 +26,9 @@
 \usepackage[backend=biber,style=numeric-comp,sorting=none,backref=true,sortcites=true]{biblatex}
 \addbibresource{bibliography.bib}	
 \renewcommand*{\bibfont}{\small}
+\renewcommand*{\mkbibnamefamily}[1]{\textsc{#1}}
+\renewcommand*{\mkbibnameprefix}[1]{\textsc{#1}}
+\renewcommand*{\mkbibnamegiven}[1]{\textsc{#1}}
 \usepackage{ragged2e}
 \AtBeginBibliography{\RaggedRight}
 \makeatletter
