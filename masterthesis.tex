@@ -103,6 +103,8 @@
 \newcommand{\raiseimage}[2][]{%
 	\raisebox{.5\dimexpr\ht\savedimage-\height}{%
 		\includegraphics[#1]{#2}}}%
+% Zeilenumbruch nach Paragraph und Subparagraph
+\RedeclareSectionCommands[afterskip=1sp]{paragraph,subparagraph}
 % Farbe von Überschriften
 \usepackage{xcolor}
 \addtokomafont{chapter}{\color[cmyk]{1,0.6,0,0.5}}
