@@ -182,14 +182,18 @@ From the former considerations one can conclude the densities given by
 			N_{\text{det},i,\Delta\lambda}\cdot KDE_{i,\Delta\lambda}(\theta,\phi) & ,\,\theta\leq\theta_\text{max}\\
 			0 & ,\, \theta > \theta_\text{max}
 		\end{cases}\,,
+		\label{eq:rho_det}
 		\\
 		\rho_{\text{sim},\Delta\lambda}(\theta,\phi) &= 
 		\begin{cases}
 			\frac{N_{\text{sim},\Delta\lambda}}{4\pi\Gamma} & ,\,\theta\leq\theta_\text{max}\\
 			0 & ,\, \theta > \theta_\text{max}
 		\end{cases}\,.
+		\label{eq:rho_sim}
 	\end{align}
 \end{subequations}
+
+In equation \eqref{eq:rho_det}, $N_{\text{det},i,\Delta\lambda}$ rescales the KDE to be normed to the total amount of detected photons. The factor $(4\pi\Gamma)^{-1}$ in equation \eqref{eq:rho_sim} takes account of the zenith angle limit in the simulation.
 
 Additionally, one can exploit the equal area properties of the HEALPixes by evaluating the detection efficiency at the central points of each HEALPix $(\theta^\ast_\text{HP},\phi^\ast_\text{HP})$ and setting this value to be a constant in each HEALPix area. Hence we can calculate the detection efficiency by
 \begin{align}
@@ -198,7 +202,7 @@ Additionally, one can exploit the equal area properties of the HEALPixes by eval
 	&= \frac{N_{\text{det},i,\Delta\lambda,\text{HP}}}{N_{\text{sim},\Delta\lambda}}\cdot 4\pi\Gamma\cdot KDE_{i,\Delta\lambda,\text{HP}}\nonumber\\
 	&\overset{\eqref{eq:spherefactor}}{=} \frac{N_{\text{det},i,\Delta\lambda,\text{HP}}}{N_{\text{sim},\Delta\lambda}}\cdot 2\pi(1-\cos\theta_\text{max})\cdot KDE_{i,\Delta\lambda,\text{HP}}\,,
 \end{align}
-which yields to a detection efficiency value for each SiPM $i$, wavelength range $\Delta\lambda$, and HEALPix $\text{HP}$.
+with. $N_{\text{det},i,\Delta\lambda,\text{HP}}\coloneqq N_{\text{det},i,\Delta\lambda}(\theta^\ast_\text{HP},\phi^\ast_\text{HP})$ and $KDE_{i,\Delta\lambda,\text{HP}}\coloneqq KDE_{i,\Delta\lambda}(\theta^\ast_\text{HP},\phi^\ast_\text{HP})$. This yields to a detection efficiency value for each SiPM $i$, wavelength range $\Delta\lambda$, and HEALPix $\text{HP}$.
 
 \section{Application on Simulated Data}
 
