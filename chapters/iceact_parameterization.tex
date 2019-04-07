@@ -1,9 +1,11 @@
 % !TeX spellcheck = en_US
 \chapter{IceAct Parameterization}
 
-The simulation results discussed in chapter \ref{chap:iceact_sim} can now be used to parameterize the telescope response of IceAct. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). In the following sections, the method of transferring the produced simulation data into this LUT is described.
+The simulation results discussed in chapter \ref{chap:iceact_sim} can now be used to parameterize the telescope response of IceAct. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). Afterwards, the high computational effort by propagating each Cherenkov photon through the whole \geant model is not needed any more. To achieve this, one needs a well-defined strategy to convert the simulated raw data into a meaningful parameterization. 
 
 \section{Parameterization Strategy}
+
+The following sections discuss the step-by-step strategy to get \textit{detection efficiency maps} out of the \geant data. These maps will describe the direction-dependent detection probabilty for a certain wavelength range and a certain camera pixel.
 
 \subsection{Kernel Density Estimation (KDE)}
 
@@ -96,6 +98,7 @@ In order to account for the spherical shape of the angles of incidence it is use
 The basic idea is to subdivide the sphere into 12 quadrilateral panes which can then further divided into more sub-panes as shown in figure \todo{figure reference}. A parameter $k$ numbers the subdivision step so that the number of sub-panes per each of the 12 panes is $N_{\text{side}}^2=\left(2^k\right)^2$. Hence, the total amount of pixels on the sphere is then
 \begin{align}
 N_\text{pix} = 12N_\text{side}^2\,.
+\label{eq:npix}
 \end{align}
 Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth referred to as \enquote{pixel}.
 
@@ -126,14 +129,80 @@ Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth ref
 For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the zenith at $\theta = \SI{0}{\degree}$ which reduces the number of needed HEALPix by a factor of
 \begin{align}
 	\Gamma = \frac{1}{4\pi}\int\limits_{0}^{2\pi}\int\limits_{0}^{\theta_\text{max}}\sin{\theta} d\theta d\phi = \frac{1-\cos\theta_\text{max}}{2}\,.
+	\label{eq:spherefactor}
 \end{align}
 For the IceAct simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized.
 
 \subsection{KDE Renormalizaion: Detection Efficiency}
 
-By using the adaptive KDE method one gets a is normed (cf. equation \eqref{kde:norm})
+By using the adaptive KDE method one gets a probability density function which implies normalization (cf. equation \eqref{kde:norm}). In order to get to an actual efficiency, one has to do a renormalization.
+
+The ansatz is made by describing the differential detection efficiency of the $i$-th SiPM in the angular area $d\Omega$ as a ratio of \textit{detection density} in the $i$-th SiPM $\rho_{\text{det},i,\Delta\lambda}(\theta,\phi)$ and \textit{simulation density} $\rho_{\text{sim},\Delta\lambda}(\theta,\phi)$ for each wavelength range $\Delta\lambda$ by
+\begin{align}
+\frac{d\epsilon_{i,\Delta\lambda}}{d\Omega}(\theta,\phi) = \frac{1}{d\Omega} \frac{\rho_{\text{det},i,\Delta\lambda}(\theta,\phi)}{\rho_{\text{sim},\Delta\lambda}(\theta,\phi)}\,,
+\end{align}
+
+Hereafter, the densities are derived by asking following questions.
+
+\minisec{How many photons are detected in SiPM $i$ and wavelength range $\Delta\lambda$?} 
+Follows directly from the amount of data points used for KDE. $\rightarrow~N_{\text{det},i,\Delta\lambda}$
+
+\minisec{How many photons are simulated in the wavelength range $\Delta\lambda$?}
+Obviously needed to make a statement on the ratio of detected photons. $\rightarrow N_{\text{sim},\Delta\lambda}$\\
+The ratio of detected and simulated photons in the $i$-th SiPM and the wavelength range $\Delta\lambda$ can then be defined as the average detection efficiency 
+\begin{align}
+	\bar{\epsilon}_{i,\Delta\lambda} = \frac{N_{\text{det},i,\Delta\lambda}}{N_{\text{sim},\Delta\lambda}}\,.
+\end{align}
+
+\minisec{What is the maximum simulated zenith angle?}
+Needed to calculate the ratio $\Gamma$ of the total spherical area that is evaluated (cf. equation~\eqref{eq:spherefactor}). For the IceAct simulation this is $\theta_\text{max} = \SI{10}{\degree}$. $\rightarrow \theta_\text{max}$
+
+\minisec{What size does the angular area have which the KDE is evaluated for?}
+This is caused by the evaluation of a continuous PDF at discrete points. To do so, one has to consider the angular area $\Omega_\text{HP}$ a discrete value is set to be constant for. Thanks to the use of HEALPixes, the angular area of all pixels is constant and follows from the resolution parameter $N_\text{side}$ by
+\begin{align}
+	\Omega_\text{HP} = \frac{4\pi}{N_\text{pix}} \overset{\eqref{eq:npix}}{=} \frac{\pi}{3N_\text{side}^2}\,.
+\end{align}
+
+To visualize the four questions, figure \ref{deteff:1d_example} shows a 1D example.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{KDE_renorm_example.pdf}
+	\caption[Example: KDE renormalization]{\textbf{Example: KDE renormalization.} 1D example to justify the different renormalization factors. The simulation is done uniformly in the interval given by the blue shaded area. Small black lines at the $x$-axis visualize the \enquote{detected} 1D data sample for with the adaptive KDE is calculated (blue line). Since the response is not a uniform distribution, the shape is different from a \enquote{box}. The orange dots are the positions at with the adaptive KDE is evaluated and the respective orange area represents then the resulting binned PDF. The annotated variable names connect this example to the used variables in the IceAct parameterization.}
+	\label{deteff:1d_example}	
+\end{figure}
+\todo{beispielplot verbessern}
+
+From the former considerations one can conclude the densities given by
+
+\begin{subequations}
+	\begin{align}
+		\rho_{\text{det},i,\Delta\lambda}(\theta,\phi) &= 
+		\begin{cases}
+			N_{\text{det},i,\Delta\lambda}\cdot KDE_{i,\Delta\lambda}(\theta,\phi) & ,\,\theta\leq\theta_\text{max}\\
+			0 & ,\, \theta > \theta_\text{max}
+		\end{cases}\,,
+		\\
+		\rho_{\text{sim},\Delta\lambda}(\theta,\phi) &= 
+		\begin{cases}
+			\frac{N_{\text{sim},\Delta\lambda}}{4\pi\Gamma} & ,\,\theta\leq\theta_\text{max}\\
+			0 & ,\, \theta > \theta_\text{max}
+		\end{cases}\,.
+	\end{align}
+\end{subequations}
+
+Additionally, one can exploit the equal area properties of the HEALPixes by evaluating the detection efficiency at the central points of each HEALPix $(\theta^\ast_\text{HP},\phi^\ast_\text{HP})$ and setting this value to be a constant in each HEALPix area. Hence we can calculate the detection efficiency by
+\begin{align}
+	\epsilon_{i,\Delta\lambda,\text{HP}}(\theta\leq\theta_\text{max}) &= \iint_{\Omega_\text{HP}}  \frac{d\epsilon_{i,\Delta\lambda}}{d\Omega}(\theta^\ast_\text{HP},\phi^\ast_\text{HP}) d\Omega\nonumber\\
+	&= \iint_{\Omega_\text{HP}}\frac{1}{d\Omega}\frac{N_{\text{det},i,\Delta\lambda}(\theta^\ast_\text{HP},\phi^\ast_\text{HP})}{N_{\text{sim},\Delta\lambda}}\cdot 4\pi\Gamma\cdot KDE_{i,\Delta\lambda}(\theta^\ast_\text{HP},\phi^\ast_\text{HP})d\Omega\nonumber\\
+	&= \frac{N_{\text{det},i,\Delta\lambda,\text{HP}}}{N_{\text{sim},\Delta\lambda}}\cdot 4\pi\Gamma\cdot KDE_{i,\Delta\lambda,\text{HP}}\nonumber\\
+	&\overset{\eqref{eq:spherefactor}}{=} \frac{N_{\text{det},i,\Delta\lambda,\text{HP}}}{N_{\text{sim},\Delta\lambda}}\cdot 2\pi(1-\cos\theta_\text{max})\cdot KDE_{i,\Delta\lambda,\text{HP}}\,,
+\end{align}
+which yields to a detection efficiency value for each SiPM $i$, wavelength range $\Delta\lambda$, and HEALPix $\text{HP}$.
 
 \section{Application on Simulated Data}
+
+\subsection{Wavelength Binning}
 
 \subsection{Coordinate Transformation for KDE}
 
@@ -154,8 +223,6 @@ To get an idea of the given data points for which the KDE should be calculated, 
 	\caption[Comparison: adaptive vs. non-adaptive KDE]{\textbf{Comparison: adaptive vs. non-adaptive KDE.} The difference between an adaptive (left) and non-adaptive (right) KDE approach is visible. Especially in the region with low statistics, the non-adaptive KDE is dominated by the fluctuations.}
 	\label{kde:comparison}	
 \end{figure}
-
-\subsection{Wavelength Binning}
 
 \subsection{Detection Efficiency Maps}
 
