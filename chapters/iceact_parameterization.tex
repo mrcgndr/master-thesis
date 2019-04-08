@@ -77,7 +77,7 @@ More specifically, the \textit{bootstrapping} method is used. It is type of resa
 \begin{align}
 	\left(1-\frac{1}{n}\right)^n \overset{n\to\infty}{\longrightarrow} \approx\SI{37}{\percent}\,.
 \end{align}
-For a large sample size $n$ this means that $1-\left(1-\frac{1}{n}\right)^n\approx\SI{63}{\percent}$ of the data points in a bootstrapped data sample are statistically independent.
+For a large sample size $n\to\infty$ this means that $1-\left(1-\frac{1}{n}\right)^n\approx\SI{63}{\percent}$ of the data points in a bootstrapped data sample are statistically independent.
 
 The bootstrapping can now be repeated $k$ times and for each sub-sample $\{\vec{X}_i^\ast\}$ an adaptive KDE is done resulting in $k$ KDE functions $f_{\{\vec{X}_i^\ast\}}(\vec{x})$. The final KDE function $f(\vec{x})$ and its uncertainty is then given by the mean and the standard deviation,~\cite{kde:bootstrapping,kde:schoenen}
 \begin{subequations}
@@ -93,19 +93,41 @@ The bootstrapping can now be repeated $k$ times and for each sub-sample $\{\vec{
 
 In order to account for the spherical shape of the angles of incidence it is useful to have angular bins with equal areas. Therefore, in this parameterization method, the \textit{HEALPix} (\textbf{H}ierarchical \textbf{E}qual \textbf{A}rea iso\textbf{L}atitude \textbf{Pix}elization) algorithm is used. It allows a uniform pixelization of incidence angles to the telescope.\\
 
-\todo{healpix pixelization image}
+\begin{figure}[H]
+	\centering
+	\saveimageheight[width=0.48\textwidth]{HEALPix_pixelization_steps.png}
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\raiseimage[width=\textwidth]{HEALPix_pixelization_standard.pdf}
+		\subcaption{Orthographic (top) and cylindrical (bottom) view of the pixelization scheme at the initial step ($k=0$). The sphere is tessellated into 12 quadrilateral equal-area panes with $N_\theta=3$ divisions in zenith and $N_\phi=4$ divisions in azimuth angle. }
+		\label{}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\usebox{\savedimage}
+		\subcaption{Further subdivision steps starting with the initial base resolution $k=0$ (top left) and $k=1,2,3$ clockwise. The light gray shaded area marks one of the 8 identical polar base-resolution pixels while the dark light shaded area marks one of the 4 identical equatorial base-resolution pixels.}
+		\label{}
+	\end{subfigure}
+	\caption[Pixelization scheme of the HEALPix algorithm]{\textbf{Pixelization scheme of the HEALPix algorithm.} \cite[adapted]{healpix:paper}}
+	\label{healpix:pixelization}
+\end{figure}
 
-The basic idea is to subdivide the sphere into 12 quadrilateral panes which can then further divided into more sub-panes as shown in figure \todo{figure reference}. A parameter $k$ numbers the subdivision step so that the number of sub-panes per each of the 12 panes is $N_{\text{side}}^2=\left(2^k\right)^2$. Hence, the total amount of pixels on the sphere is then
+The basic idea is to subdivide the sphere into 12 quadrilateral equal-area panes which can then further divided uniformly into more sub panes as shown in figure \ref{healpix:pixelization}. A parameter $k$ numbers the subdivision step starting with the base resolution at $k=0$ so that the number of sub panes per each of the 12 panes is $N_{\text{side}}^2=\left(2^k\right)^2$. Hence, the total amount of pixels on the sphere is then \cite{healpix:paper}
 \begin{align}
 N_\text{pix} = 12N_\text{side}^2\,.
 \label{eq:npix}
 \end{align}
-Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth referred to as \enquote{pixel}.
+
+The angular resolution $\theta_\text{pix}$ is defined to be the square root of the angular area $\Omega_\text{pix}$. Descriptively, it is the angular length of a pixel edge. $\Omega_\text{pix}$ in turn can be calculated by dividing the total angular area of a sphere $4\pi$ by the total number of pixels $N_\text{pix}$, which yields \cite{healpix:paper}
+\begin{align}
+	\theta_\text{pix} = \sqrt{\Omega_\text{pix}} = \sqrt{\frac{4\pi}{N_\text{pix}}} \overset{\eqref{eq:npix}}{=} \sqrt{\frac{4\pi}{12N_\text{side}^2}} = \sqrt{\frac{\pi}{3}}N_\text{side}^{-1}\,[\si{\radian}]\,.
+\end{align} 
 
 \begin{table}[h]
 \centering
 \begin{tabular}{S[table-format=2.0]|S[table-format=4.0]|S[table-format=9.0]|S[table-format=2.2]}
-\multicolumn{1}{l|}{$k$} & \multicolumn{1}{l|}{$N_\text{side} = 2^k$} & \multicolumn{1}{l|}{$N_\text{pix} = 12N_\text{nside}^2$} & \multicolumn{1}{l}{$\theta_\text{pix}$} \\
+\multicolumn{1}{l|}{$k$} & \multicolumn{1}{l|}{$N_\text{side} = 2^k$} & \multicolumn{1}{l|}{$N_\text{pix} = 12N_\text{side}^2$} & \multicolumn{1}{l}{$	\theta_\text{pix} = \sqrt{\Omega_\text{pix}}$} \\
 \hline
 0  & 1    & 12        &  \SI{58.6}{\degree}\\
 1  & 2    & 48        &  \SI{29.3}{\degree}\\
@@ -126,14 +148,16 @@ Obviously, the angular resolution is dependent on $N_\text{pix}$, henceforth ref
 \caption[HEALPix parameters and resulting angular resolutions]{\textbf{HEALPix parameters and resulting angular resolutions.} $k$ represents the number of dividing iterations on the 12 panes, $N_\text{side}$ the number of tiles per pane edge, $N_\text{pix}$ the total number of pixels, and $\theta_\text{pix}$ the angular resolution defined by the angular length of a pixel edge. \cite{healpix:paper}}
 \end{table}
 
-For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the zenith at $\theta = \SI{0}{\degree}$ which reduces the number of needed HEALPix by a factor of
+For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the zenith at $\theta = \SI{0}{\degree}$ which reduces the number of needed HEALPix to a factor of
 \begin{align}
 	\Gamma = \frac{1}{4\pi}\int\limits_{0}^{2\pi}\int\limits_{0}^{\theta_\text{max}}\sin{\theta} d\theta d\phi = \frac{1-\cos\theta_\text{max}}{2}\,.
 	\label{eq:spherefactor}
 \end{align}
 For the IceAct simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized.
 
-\subsection{KDE Renormalizaion: Detection Efficiency}
+An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of IceAct simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates $(\theta, \phi)$ to be saved, but only the ordinal number $i_\text{HP}$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter $N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by $\theta_\text{max}$ result in a distinct maximum ordinal number $i_\text{HP}^\text{max}$ and one can just ignore all pixels beyond this number. This allows to save information very efficiently by using HEALPixes. 
+
+\subsubsection{KDE Renormalizaion: Detection Efficiency}
 
 By using the adaptive KDE method one gets a probability density function which implies normalization (cf. equation \eqref{kde:norm}). In order to get to an actual efficiency, one has to do a renormalization.
 
