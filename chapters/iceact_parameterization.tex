@@ -89,7 +89,38 @@ The bootstrapping can now be repeated $k$ times and for each subsample $\{\vec{X
 
 \subsection{Coordinate Transformation for KDE}
 
+The kernel density estimation method needs a well-defined coordinate system on which the data is represented. The problem with a polar coordinate system $(\theta,\phi)$ is the singularity at the zenith $\theta=\SI{0}{\degree}$. At this point, there is no defined azimuth value $\phi$. In order to get a \enquote{flat} and well-defined coordinate system, one introduces the coordinates
+\begin{align}
+	\begin{pmatrix}u\\v\end{pmatrix} = \begin{pmatrix}\sin\theta\cos\phi\\\sin\theta\sin\phi\end{pmatrix}
+\end{align}
+
 \todo{write}
+
+\begin{align}
+	\begin{pmatrix}
+		\theta\\
+		\phi
+	\end{pmatrix}
+	= 
+	\begin{pmatrix}
+		\arcsin\sqrt{u^2+v^2}\\
+		\pi+\arctantwo(v,u)
+		\end{pmatrix}
+\end{align} 
+
+\todo{write}
+
+\begin{align}
+	\arctantwo(v,u)=
+	\begin{cases}
+		\arctan\frac{v}{u} & u > 0\\
+		\arctan\frac{v}{u} + \pi & u < 0,\,v \geq 0\\
+		\arctan\frac{v}{z} - \pi & u < 0,\,v < 0 \\
+		+\frac{\pi}{2} & u = 0,\,v > 0\\
+		-\frac{\pi}{2} & u = 0,\,v < 0\\
+		\text{undefined} & u = 0,\,v = 0
+	\end{cases}
+\end{align}
 
 \subsection{KDE Evaluation}
 
@@ -99,7 +130,7 @@ The bootstrapping can now be repeated $k$ times and for each subsample $\{\vec{X
 
 In order to account for the spherical shape of the angles of incidence it is useful to have angular bins with equal areas. Therefore, in this parameterization method, the \textit{HEALPix} (\textbf{H}ierarchical \textbf{E}qual \textbf{A}rea iso\textbf{L}atitude \textbf{Pix}elization) algorithm is used. It allows a uniform pixelization of incidence angles to the telescope.\\
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\saveimageheight[width=0.48\textwidth]{HEALPix_pixelization_steps.png}
 	\begin{subfigure}[t]{0.48\textwidth}
@@ -151,7 +182,8 @@ The angular resolution $\theta_\text{pix}$ is defined to be the square root of t
 13 & 8192 & 805306368 &  \SI{25.8}{\arcsecond}\\
 \multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c}{\vdots} \\
 \end{tabular}
-\caption[HEALPix parameters and resulting angular resolutions]{\textbf{HEALPix parameters and resulting angular resolutions.} $k$ represents the number of dividing iterations on the 12 panes, $N_\text{side}$ the number of tiles per pane edge, $N_\text{pix}$ the total number of pixels, and $\theta_\text{pix}$ the angular resolution defined by the angular length of a pixel edge. \cite{healpix:paper}}
+\caption[HEALPix parameters and resulting angular resolutions]{\textbf{HEALPix parameters and resulting angular resolutions.}~\cite{healpix:paper} $k$ represents the number of dividing iterations on the 12 panes, $N_\text{side}$ the number of tiles per pane edge, $N_\text{pix}$ the total number of pixels, and $\theta_\text{pix}$ the angular resolution defined by the angular length of a pixel edge.}
+\label{healpix:table}
 \end{table}
 
 For the application in this simulation the pixelization of a whole sphere is not needed since the telescope only has a field of view of about \SI{12}{\degree} (i.e. $\theta \leq \SI{6}{\degree}$). Considering that, one only needs a smaller sector of pixels around the zenith at $\theta = \SI{0}{\degree}$ which reduces the number of needed HEALPix to a factor of
@@ -161,7 +193,7 @@ For the application in this simulation the pixelization of a whole sphere is not
 \end{align}
 For the IceAct simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized.
 
-An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of IceAct simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates $(\theta, \phi)$ to be saved, but only the ordinal number $i_\text{HP}$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter $N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by $\theta_\text{max}$ result in a distinct maximum ordinal number $i_\text{HP}^\text{max}$ and one can just ignore all pixels beyond this number. This allows to save information very efficiently by using HEALPixes. 
+An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of IceAct simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates $(\theta, \phi)$ to be saved, but only the ordinal number $HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter $N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by $\theta_\text{max}$ result in a distinct maximum ordinal number $HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
 
 \subsubsection{KDE Renormalizaion: Detection Efficiency}
 
@@ -199,15 +231,15 @@ From the former considerations one can conclude the densities given by
 	\begin{align}
 		\rho_{\text{det},i,\Delta\lambda}(\theta,\phi) &= 
 		\begin{cases}
-			N_{\text{det},i,\Delta\lambda}\cdot KDE_{i,\Delta\lambda}(\theta,\phi) & ,\,\theta\leq\theta_\text{max}\\
-			0 & ,\, \theta > \theta_\text{max}
+			N_{\text{det},i,\Delta\lambda}\cdot KDE_{i,\Delta\lambda}(\theta,\phi) & \theta\leq\theta_\text{max}\\
+			0 & \theta > \theta_\text{max}
 		\end{cases}\,,
 		\label{eq:rho_det}
 		\\
 		\rho_{\text{sim},\Delta\lambda}(\theta,\phi) &= 
 		\begin{cases}
-			\frac{N_{\text{sim},\Delta\lambda}}{4\pi\Gamma} & ,\,\theta\leq\theta_\text{max}\\
-			0 & ,\, \theta > \theta_\text{max}
+			\frac{N_{\text{sim},\Delta\lambda}}{4\pi\Gamma} & \theta\leq\theta_\text{max}\\
+			0 & \theta > \theta_\text{max}
 		\end{cases}\,.
 		\label{eq:rho_sim}
 	\end{align}
@@ -218,22 +250,22 @@ In equation \eqref{eq:rho_det}, $N_{\text{det},i,\Delta\lambda}$ rescales the KD
 	[\rho] = \frac{\text{particles}}{\text{angular area}}\,.
 \end{align}
 
-Additionally, one can exploit the equal area properties of the HEALPixes by evaluating the detection efficiency at the central points of each HEALPix $(\theta^\ast_\text{HP},\phi^\ast_\text{HP})$ and setting this value to be a constant in each HEALPix area. Hence we can calculate the detection efficiency by
+Additionally, one can exploit the equal area properties of the HEALPixes by evaluating the detection efficiency at the central points of each HEALPix $(\theta^\ast_{HP},\phi^\ast_{HP})$ and setting this value to be a constant in each HEALPix area. Hence, we can calculate the detection efficiency by
 \begin{align}
-	\epsilon_{i,\Delta\lambda,\text{HP}}(\theta\leq\theta_\text{max}) &= \iint_{\Omega_\text{HP}}  \frac{d\epsilon_{i,\Delta\lambda}}{d\Omega}(\theta^\ast_\text{HP},\phi^\ast_\text{HP}) d\Omega\nonumber\\
-	&= \iint_{\Omega_\text{HP}}\frac{1}{d\Omega}\frac{N_{\text{det},i,\Delta\lambda}(\theta^\ast_\text{HP},\phi^\ast_\text{HP})}{N_{\text{sim},\Delta\lambda}}\cdot 4\pi\Gamma\cdot KDE_{i,\Delta\lambda}(\theta^\ast_\text{HP},\phi^\ast_\text{HP})d\Omega\nonumber\\
-	&= \frac{N_{\text{det},i,\Delta\lambda,\text{HP}}}{N_{\text{sim},\Delta\lambda}}\cdot 4\pi\Gamma\cdot KDE_{i,\Delta\lambda,\text{HP}}\nonumber\\
-	&\overset{\eqref{eq:spherefactor}}{=} \frac{N_{\text{det},i,\Delta\lambda,\text{HP}}}{N_{\text{sim},\Delta\lambda}}\cdot 2\pi(1-\cos\theta_\text{max})\cdot KDE_{i,\Delta\lambda,\text{HP}}\,,
+	\epsilon_{i,\Delta\lambda,HP}(\theta\leq\theta_\text{max}) &= \iint_{\Omega_\text{HP}}  \frac{d\epsilon_{i,\Delta\lambda}}{d\Omega}(\theta^\ast_{HP},\phi^\ast_{HP}) d\Omega\nonumber\\
+	&= \iint_{\Omega_\text{HP}}\frac{1}{d\Omega}\frac{N_{\text{det},i,\Delta\lambda}(\theta^\ast_{HP},\phi^\ast_{HP})}{N_{\text{sim},\Delta\lambda}}\cdot 4\pi\Gamma\cdot KDE_{i,\Delta\lambda}(\theta^\ast_{HP},\phi^\ast_{HP})d\Omega\nonumber\\
+	&= \frac{N_{\text{det},i,\Delta\lambda,HP}}{N_{\text{sim},\Delta\lambda}}\cdot 4\pi\Gamma\cdot KDE_{i,\Delta\lambda,HP}\nonumber\\
+	&\overset{\eqref{eq:spherefactor}}{=} \frac{N_{\text{det},i,\Delta\lambda,HP}}{N_{\text{sim},\Delta\lambda}}\cdot 2\pi(1-\cos\theta_\text{max})\cdot KDE_{i,\Delta\lambda,HP}\,,
 	\label{eq:deteff}
 \end{align}
-with $N_{\text{det},i,\Delta\lambda,\text{HP}}\coloneqq N_{\text{det},i,\Delta\lambda}(\theta^\ast_\text{HP},\phi^\ast_\text{HP})$ and $KDE_{i,\Delta\lambda,\text{HP}}\coloneqq KDE_{i,\Delta\lambda}(\theta^\ast_\text{HP},\phi^\ast_\text{HP})$. This yields to a detection efficiency value for each SiPM~$i$, wavelength range~$\Delta\lambda$, and HEALPix~$\text{HP}$.
+with $N_{\text{det},i,\Delta\lambda,HP}\coloneqq N_{\text{det},i,\Delta\lambda}(\theta^\ast_{HP},\phi^\ast_{HP})$ and $KDE_{i,\Delta\lambda,HP}\coloneqq KDE_{i,\Delta\lambda}(\theta^\ast_{HP},\phi^\ast_{HP})$. This yields to a detection efficiency value for each SiPM~$i$, wavelength range~$\Delta\lambda$, and HEALPix~$HP$.
 
 To visualize the renormalization process, figure~\ref{deteff:1d_example} shows a 1D example.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{KDE_renorm_example.pdf}
-	\caption[Example: KDE renormalization]{\textbf{Example: KDE renormalization.} 1D example to visualize the renormalization process. In this \enquote{toy simulation} \num{1000}~\enquote{photons} are simulated uniformly in the interval $[\SI{0}{\au},\SI{70}{\au}]$ for which the blue dashed line is the corresponding PDF. \num{200}~\enquote{photons} are detected (black dashes on the $x$ axis) and the PDF is calculated by adaptive kernel density estimation (green dashed line). Since the PDFs are both normalized to $1$ (w.r.t. left $y$ axis), a rescaling is now done (cf. right $y$ axis). The KDE for detected \enquote{photons} is scaled (green solid line) so that the enclosed area is $N_\text{det}=\num{200}$. This is also done with the PDF of simulated data (blue solid line) to correspond to an enclosed area $N_\text{sim}=\num{1000}$. The scaled detection and simulation densities $\rho_\text{det}$ and $\rho_\text{sim}$ are evaluated in bins with size $\Delta x$ which is analogous to the the HEALPix area $\Omega_\text{HP}$ (cf. equation~\eqref{eq:omega_hp}). One gets the detection efficiency $\epsilon(x)$ for each bin by dividing the emphasized hatched areas by each other. The division of areas incorporates the integration over the HEALPix area done in the \enquote{real} evaluation (cf. equation~\eqref{eq:deteff}).}
+	\caption[Example: KDE renormalization]{\textbf{Example: KDE renormalization.} 1D example to visualize the renormalization process. In this \enquote{toy simulation} \num{1000}~\enquote{photons} are simulated uniformly in the interval $[\SI{0}{\au},\SI{70}{\au}]$ for which the blue dashed line is the corresponding PDF. \num{200}~\enquote{photons} are detected (black dashes on the $x$ axis) and the PDF is calculated by adaptive kernel density estimation (green dashed line). Since the PDFs are both normalized to $1$ (w.r.t. left $y$ axis), a rescaling is now done (cf. right $y$ axis). The KDE for detected \enquote{photons} is scaled (green solid line) so that the enclosed area is $N_\text{det}=\num{200}$. This is also done with the PDF of simulated data (blue solid line) to correspond to an enclosed area $N_\text{sim}=\num{1000}$. The scaled detection and simulation densities $\rho_\text{det}$ and $\rho_\text{sim}$ are evaluated in bins with size $\Delta x$ which is analogous to the HEALPix area $\Omega_\text{HP}$ (cf. equation~\eqref{eq:omega_hp}). One gets the detection efficiency $\epsilon(x)$ for each bin by dividing the emphasized hatched areas by each other. The division of areas incorporates the integration over the HEALPix area done in the \enquote{real} evaluation (cf. equation~\eqref{eq:deteff}).}
 	\label{deteff:1d_example}	
 \end{figure}
 
@@ -241,11 +273,11 @@ To visualize the renormalization process, figure~\ref{deteff:1d_example} shows a
 
 The parameterization process introduced in section~\ref{sec:param:strategy} can now be applied to the simulation results from \geant. In the following sections, some comparisons and results are shown and discussed.
 
-\subsection{Wavelength Binning}
+\subsection{Wavelength Binning}\label{sec:wvl_binning}
 
 Since the photon detection efficiency of the SiPMs is a non-constant function of the wavelength (cf. figure~\ref{sipm:pde}), one can optimize the different wavelength ranges or \textit{bin sizes}~$\Delta\lambda$ by equalizing not the bin sizes (\textit{constant binning}) but the detected photons per bin which is further referred to as \textit{adaptive binning}. Figure~\ref{param:wvl_binning} shows a comparison between constant and adaptive wavelength binning.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{constant_wvl_bins_hist.pdf}
@@ -264,14 +296,14 @@ Since the photon detection efficiency of the SiPMs is a non-constant function of
 \end{figure}
 \todo{plot mit adaptiven bins}
 
-The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPM (i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive})). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).
-With the adaptive wavelength binning it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable kernel density estimation.
+The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPM, i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive}). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).
+With the adaptive wavelength binning it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable probability density estimation.
 
 \subsection{Adaptive vs. Non-adaptive KDE}\label{sec:adaptive_vs_nonadaptive}
 
-Now that the wavelength binning is defined, the next step is to take a look on the camera pixels individually. Due to the distinct field of view of each pixel, the direction distribution of each pixel is characteristic. In order to get an idea of the given direction distributions for which the KDE should be calculated, figure \ref{param:example_scatter} shows some exemplary scatter plots of detected photons by an arbitrary camera pixel~$i$ in a wavelength range~$\Delta\lambda$. The need for an adaptive KDE approach is clearly visible by regions with very different statistical densities.
+Now that the wavelength binning is defined, the next step is to take a look on the camera pixels individually. Due to the distinct field of view of each pixel, the direction distribution of each pixel is characteristic. In order to get an idea of the given direction distributions for which the KDE should be calculated, figure \ref{param:example_scatter} shows some exemplary scatter plots of detected photons by an arbitrary camera pixel~$i$ in a wavelength range~$\Delta\lambda$.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{scatter_px00_wvl450-455nm.png}
@@ -300,9 +332,9 @@ Now that the wavelength binning is defined, the next step is to take a look on t
 	\label{param:example_scatter}	
 \end{figure}
 
-The regions with very sparse \enquote{dots} can only come from random scattering processes inside the optical system since they are outside the main field of view and the \textit{ghost image} region (cf. section~\ref{sec:ghost_image}). Thus, the probabilty density should be rather constant in these scattering regions. For the KDE, one achieves this by increasing the kernel bandwith. Simultaneously, the \enquote{real} detection regions should be described precisely which is done by reducing the bandwith. The need of an adaptive kernel density approach is given. Figure~\ref{param:kde_comparison} strikingly shows the difference between an adaptive and a non-adaptive KDE. Since the KDEs calculated there are only based on a small subsample of the simulation data, they may give the impression that the adaptive KDE still is very inaccurate in the scattering regions but on the full data sample this is not the case any more by having more scattered photons (cf. section~\ref{sec:deteff_maps}).
+The regions with very sparse \enquote{dots} can only come from random scattering processes inside the optical system since they are outside the main field of view and the \textit{ghost image} region (cf. section~\ref{sec:ghost_image}). Thus, the probability density should be rather constant in these scattering regions. For the KDE, one achieves this by increasing the kernel bandwith. Simultaneously, the \enquote{real} detection regions should be described precisely which is done by reducing the bandwith. The need of an adaptive kernel density approach is given. Figure~\ref{param:kde_comparison} strikingly shows the difference between an adaptive and a non-adaptive KDE. Since the KDEs calculated there are only based on a small subsample of the simulation data, they may give the impression that the adaptive KDE still is very inaccurate in the scattering regions but on the full data sample this is not the case any more by having more scattered photons.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\begin{subfigure}[t]{0.41\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px00_wvl450-455.pdf}
@@ -331,9 +363,26 @@ The regions with very sparse \enquote{dots} can only come from random scattering
 	\label{param:kde_comparison}		
 \end{figure}
 
+Anyway, the detection distributions can now be calculated and renormalized for each of the \num{61} camera pixels and \num{50} wavelength bins which result in \num{3050} so called \textit{detection efficiency maps} shown in the next section~\ref{sec:deteff_maps}.
 
 \subsection{Detection Efficiency Maps}\label{sec:deteff_maps}
 
+By follow the strategy described in section~\ref{sec:param:strategy} and considering the findings from sections~\ref{sec:wvl_binning} and \ref{sec:adaptive_vs_nonadaptive}, one can now finally calculate \textit{detection efficiency maps}. For each camera pixel $i$ and wavelength bin $\Delta\lambda$, these maps show the probability $\epsilon_{i,\Delta\lambda,HP}$ to detect a photon with wavelength $\lambda\in\Delta\lambda$ in camera pixel $i$ as a function of its origin direction~$(\theta,\phi)$ which is coded in the ordinal number~$HP$ of the corresponding HEALPix. For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to choose a reasonable value (cf. table~\ref{healpix:table}): too fine pixelization would obviously result in a very detailed parameterization. Due to KDE, an \enquote{unbinned} detection efficiency is available -- at least in origin directions -- so that it is technically possible to choose a very fine binning. The problem is, that the main goal of the IceAct parameterization is to produce a lookup table that is efficient and capable of evaluating large amounts of Cherenkov photons. A unnecessarily fine HEALPix binning would just blow up the lookup table and quick evaluation is not feasible any more.
+
+\todo{central pixel, FOV einzeichen, vernünftige wahl von Nside zeigen}
+
+\todo{map von neuer rechnung, die hoffentlich noch fertig wird}
+
+
+
 \section{Lookup Table Production}
+
+As the detection efficiency maps are ready now, one has to store the information in such a way, that a quick lookup is possible. 
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{LUT_transposition_example.pdf}
+	\caption[short caption]{\textbf{short caption.} long caption}
+	\label{lut:transpose_example}
+\end{figure}
 
 \section{Application on CORSIKA Air Showers Events}
