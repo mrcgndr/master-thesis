@@ -71,7 +71,7 @@ For the IceAct parameterization the sensitivity parameter $\alpha$ is set to $\a
 
 \subsubsection{Bootstrapping}
 
-One problem of kernel density estimation is that it does not provide any statistical information, i.e. \enquote{how precise} the probability density is estimated. Since the data set used for the KDE is just a random sample of the underlying \textit{probability density function} (\textit{PDF}), one needs a method to draw multiple sub-samples from the given data which is known as \textit{resampling}.
+One problem of kernel density estimation is that it does not provide any statistical information, i.e. \enquote{how precise} the probability density is estimated. Since the data set used for the KDE is just a random sample of the underlying \textit{probability density function} (\textit{PDF}), one needs a method to draw multiple subsamples from the given data which is known as \textit{resampling}.
 
 More specifically, the \textit{bootstrapping} method is used. It is type of resampling where $n$ data points are drawn from $n$ data points with replacement, so that one data point can possibly be chosen multiple times or not at all. The probability of drawing a point is equal for all points given by $\frac{1}{n}$. Hence, the probability of a not drawing a single data point in a bootstrapped sample is
 \begin{align}
@@ -79,7 +79,7 @@ More specifically, the \textit{bootstrapping} method is used. It is type of resa
 \end{align}
 For a large sample size $n\to\infty$ this means that $1-\left(1-\frac{1}{n}\right)^n\approx\SI{63}{\percent}$ of the data points in a bootstrapped data sample are statistically independent.
 
-The bootstrapping can now be repeated $k$ times and for each sub-sample $\{\vec{X}_i^\ast\}$ an adaptive KDE is done resulting in $k$ KDE functions $f_{\{\vec{X}_i^\ast\}}(\vec{x})$. The final KDE function $f(\vec{x})$ and its uncertainty is then given by the mean and the standard deviation,~\cite{kde:bootstrapping,kde:schoenen}
+The bootstrapping can now be repeated $k$ times and for each subsample $\{\vec{X}_i^\ast\}$ an adaptive KDE is done resulting in $k$ KDE functions $f_{\{\vec{X}_i^\ast\}}(\vec{x})$. The final KDE function $f(\vec{x})$ and its uncertainty is then given by the mean and the standard deviation,~\cite{kde:bootstrapping,kde:schoenen}
 \begin{subequations}
 	\begin{align}
 		f(\vec{x}) &= \frac{1}{k}\sum_{i=1}^{k} f_{\{\vec{X}_i^\ast\}}(\vec{x})\\
@@ -269,23 +269,70 @@ With the adaptive wavelength binning it is ensured that in each range $\Delta\la
 
 \subsection{Adaptive vs. Non-adaptive KDE}\label{sec:adaptive_vs_nonadaptive}
 
-To get an idea of the given data points for which the KDE should be calculated, figure \ref{kde:example_scatter} shows a scatter plot of detected photons for an arbitrary camera pixel in a possible range of wavelengths. The need for an adaptive KDE approach is clearly visible by regions with very different statistical densities. In addition, figure \ref{kde:comparison} strikingly shows the difference between an adaptive and a non-adaptive KDE.
+Now that the wavelength binning is defined, the next step is to take a look on the camera pixels individually. Due to the distinct field of view of each pixel, the direction distribution of each pixel is characteristic. In order to get an idea of the given direction distributions for which the KDE should be calculated, figure \ref{param:example_scatter} shows some exemplary scatter plots of detected photons by an arbitrary camera pixel~$i$ in a wavelength range~$\Delta\lambda$. The need for an adaptive KDE approach is clearly visible by regions with very different statistical densities.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{scatter_px20_wvl410-420nm.png}
-	\caption[Example: directions of detected photons as a scatter plot]{\textbf{Example: directions of detected photons as a scatter plot.} A subset of simulated photon directions that are detected in camera pixel 20 with wavelengths between \SI{410}{\nano\meter} and \SI{420}{\nano\meter} are shown in a polar plot. One can clearly see that there are regions with high and low statistical significance.}
-	\label{kde:example_scatter}	
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{scatter_px00_wvl450-455nm.png}
+		\subcaption{}
+		\label{param:example_scatter:1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{scatter_px10_wvl800-900nm.png}
+		\subcaption{}
+		\label{param:example_scatter:2}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{scatter_px20_wvl410-415nm.png}
+		\subcaption{}
+		\label{param:example_scatter:3}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{scatter_px54_wvl600-615nm.png}
+		\subcaption{}
+		\label{param:example_scatter:4}
+	\end{subfigure}
+	\caption[Example: directions of detected photons as a scatter plot]{\textbf{Example: directions of detected photons as a scatter plot.} A subset of simulated photon directions that are detected in a given camera pixel $i$ and the wavelength range $\Delta\lambda$ are shown in a polar plot. One can clearly see that there are regions with high and low statistical significance. Additionally, the \textit{ghost image} effect (cf. section~\ref{sec:ghost_image}) is visible in the non-central pixels ((\subref{param:example_scatter:2}), (\subref{param:example_scatter:3}), (\subref{param:example_scatter:4})).}
+	\label{param:example_scatter}	
 \end{figure}
 
-\begin{figure}[h]
+The regions with very sparse \enquote{dots} can only come from random scattering processes inside the optical system since they are outside the main field of view and the \textit{ghost image} region (cf. section~\ref{sec:ghost_image}). Thus, the probabilty density should be rather constant in these scattering regions. For the KDE, one achieves this by increasing the kernel bandwith. Simultaneously, the \enquote{real} detection regions should be described precisely which is done by reducing the bandwith. The need of an adaptive kernel density approach is given. Figure~\ref{param:kde_comparison} strikingly shows the difference between an adaptive and a non-adaptive KDE. Since the KDEs calculated there are only based on a small subsample of the simulation data, they may give the impression that the adaptive KDE still is very inaccurate in the scattering regions but on the full data sample this is not the case any more by having more scattered photons (cf. section~\ref{sec:deteff_maps}).
+
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive.pdf}
-	\caption[Comparison: adaptive vs. non-adaptive KDE]{\textbf{Comparison: adaptive vs. non-adaptive KDE.} The difference between an adaptive (left) and non-adaptive (right) KDE approach is visible. Especially in the region with low statistics, the non-adaptive KDE is dominated by the fluctuations.}
-	\label{kde:comparison}	
+	\begin{subfigure}[t]{0.41\textwidth}
+		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px00_wvl450-455.pdf}
+		\subcaption{}
+		\label{param:kde_comparison:1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.41\textwidth}
+		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px10_wvl800-900.pdf}
+		\subcaption{}
+		\label{param:kde_comparison:2}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[b]{0.41\textwidth}
+		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px20_wvl410-415.pdf}
+		\subcaption{}
+		\label{param:kde_comparison:3}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.41\textwidth}
+		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px54_wvl600-615.pdf}
+		\subcaption{}
+		\label{param:kde_comparison:4}
+	\end{subfigure}
+	\caption[Comparison: adaptive vs. non-adaptive KDE]{\textbf{Comparison: adaptive vs. non-adaptive KDE.} Evaluation of the direction distributions shown in figure~\ref{param:example_scatter} on a HEALPix grid with $N_\text{side}=\num{512}$. The concentric white dashed circles have a zenith distance of $\SI{2}{\degree}$ and the meridians an azimuth distance of $\SI{10}{\degree}$. Differences between an adaptive (top) and non-adaptive (bottom) KDE approach are visible. Especially in the region with low statistics (scattering region), the non-adaptive KDE is dominated by the fluctuations while adaptive KDE blurres the probability density more strongly.}
+	\label{param:kde_comparison}		
 \end{figure}
 
-\subsection{Detection Efficiency Maps}
+
+\subsection{Detection Efficiency Maps}\label{sec:deteff_maps}
 
 \section{Lookup Table Production}
 
