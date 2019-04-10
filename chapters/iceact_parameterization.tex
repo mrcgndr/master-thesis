@@ -3,7 +3,7 @@
 
 The simulation results discussed in chapter \ref{chap:iceact_sim} can now be used to parameterize the telescope response of IceAct. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). Afterwards, the high computational effort by propagating each Cherenkov photon through the whole \geant model is not needed any more. To achieve this, one needs a well-defined strategy to convert the simulated raw data into a meaningful parameterization. 
 
-\section{Parameterization Strategy}
+\section{Parameterization Strategy}\label{sec:param:strategy}
 
 The following sections discuss the step-by-step strategy to get \textit{detection efficiency maps} out of the \geant data. These maps will describe the direction-dependent detection probabilty for a certain wavelength range and a certain camera pixel.
 
@@ -87,7 +87,13 @@ The bootstrapping can now be repeated $k$ times and for each sub-sample $\{\vec{
 	\end{align}
 \end{subequations}
 
+\subsection{Coordinate Transformation for KDE}
+
+\todo{write}
+
 \subsection{KDE Evaluation}
+
+\todo{write?}
 
 \subsubsection{The HEALPix Algorithm}
 
@@ -173,7 +179,7 @@ Follows directly from the amount of data points used for KDE. $\rightarrow~N_{\t
 
 \minisec{How many photons are simulated in the wavelength range $\Delta\lambda$?}
 Obviously needed to make a statement on the ratio of detected photons. $\rightarrow N_{\text{sim},\Delta\lambda}$\\
-The ratio of detected and simulated photons in the $i$-th SiPM and the wavelength range $\Delta\lambda$ can then be defined as the average detection efficiency 
+The ratio of detected and simulated photons in the $i$-th SiPM and the wavelength range~$\Delta\lambda$ can then be defined as the average detection efficiency 
 \begin{align}
 	\bar{\epsilon}_{i,\Delta\lambda} = \frac{N_{\text{det},i,\Delta\lambda}}{N_{\text{sim},\Delta\lambda}}\,.
 \end{align}
@@ -233,13 +239,37 @@ To visualize the renormalization process, figure~\ref{deteff:1d_example} shows a
 
 \section{Application on Simulated Data}
 
+The parameterization process introduced in section~\ref{sec:param:strategy} can now be applied to the simulation results from \geant. In the following sections, some comparisons and results are shown and discussed.
+
 \subsection{Wavelength Binning}
 
-\subsection{Coordinate Transformation for KDE}
+Since the photon detection efficiency of the SiPMs is a non-constant function of the wavelength (cf. figure~\ref{sipm:pde}), one can optimize the different wavelength ranges or \textit{bin sizes}~$\Delta\lambda$ by equalizing not the bin sizes (\textit{constant binning}) but the detected photons per bin which is further referred to as \textit{adaptive binning}. Figure~\ref{param:wvl_binning} shows a comparison between constant and adaptive wavelength binning.
 
-\subsection{Adaptive vs. Non-adaptive KDE}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{constant_wvl_bins_hist.pdf}
+		\subcaption{constant binning}
+		\label{param:wvl_binning:constant}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{wvl_bins_hist.pdf}
+		\includegraphics[draft, width=\textwidth]{wvl_bins_hist.pdf}
+		\subcaption{adaptive binning}
+		\label{param:wvl_binning:adaptive}
+	\end{subfigure}
+	\caption[Constant vs. adaptive wavelength binning]{\textbf{Constant vs. adaptive wavelength binning.} all wavelengths of photons that are detected by any camera SiPM are histogramized in \num{50} bins between \SI{272}{\nano\meter} and \SI{900}{\nano\meter}. In (\subref{param:wvl_binning:constant}), the \num{50} bins are distributed uniformly in wavelength so that one can see a shape that is quite similar to the PDE of the SiPMs. Figure~(\subref{param:wvl_binning:adaptive}) shows the same data with adaptive bin sizes to equalize the counts per bin. The resulting bin edges are rounded to integer numbers which causes the visible fluctuations.}
+	\label{param:wvl_binning}
+\end{figure}
+\todo{plot mit adaptiven bins}
 
-To get an idea of the given data points for which the KDE should be calculated, figure \ref{kde:example_scatter} shows a scatter plot of detected photons for an arbitrary camera pixel in a possible range of wavelengths. The need for an adaptive KDE approach is clearly visible by regions with very different statistical densities. In addition, figure \ref{kde:comparison} shows strikingly the difference between an adaptive and a non-adaptive KDE.
+The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPM (i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive})). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).
+With the adaptive wavelength binning it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable kernel density estimation.
+
+\subsection{Adaptive vs. Non-adaptive KDE}\label{sec:adaptive_vs_nonadaptive}
+
+To get an idea of the given data points for which the KDE should be calculated, figure \ref{kde:example_scatter} shows a scatter plot of detected photons for an arbitrary camera pixel in a possible range of wavelengths. The need for an adaptive KDE approach is clearly visible by regions with very different statistical densities. In addition, figure \ref{kde:comparison} strikingly shows the difference between an adaptive and a non-adaptive KDE.
 
 \begin{figure}[h]
 	\centering
