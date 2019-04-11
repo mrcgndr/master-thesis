@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_US
-\chapter{IceAct Parameterization}
+\chapter{\iceact Parameterization}
 
-The simulation results discussed in chapter \ref{chap:iceact_sim} can now be used to parameterize the telescope response of IceAct. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). Afterwards, the high computational effort by propagating each Cherenkov photon through the whole \geant model is not needed any more. To achieve this, one needs a well-defined strategy to convert the simulated raw data into a meaningful parameterization. 
+The simulation results discussed in chapter \ref{chap:iceact_sim} can now be used to parameterize the telescope response of \iceact. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). Afterwards, the high computational effort by propagating each Cherenkov photon through the whole \geant model is not needed any more. To achieve this, one needs a well-defined strategy to convert the simulated raw data into a meaningful parameterization. 
 
 \section{Parameterization Strategy}\label{sec:param:strategy}
 
@@ -64,7 +64,7 @@ with
 	\ln{g} = n^{-1} \sum_{i=1}^{n} \ln{\hat{f}(\vec{X_i})}\,,\\
 	\alpha\in[0,1]\,.
 \end{vardescription}
-For the IceAct parameterization the sensitivity parameter $\alpha$ is set to $\alpha=\num{0.3}$, since this has been shown to be an appropriate value as well as in \cite{kde:schoenen}. Additionally, all $n$ photon hits have the same weight, which results in \cite{kde:schoenen,kde:wangwang}
+For the \iceact parameterization the sensitivity parameter $\alpha$ is set to $\alpha=\num{0.3}$, since this has been shown to be an appropriate value as well as in \cite{kde:schoenen}. Additionally, all $n$ photon hits have the same weight, which results in \cite{kde:schoenen,kde:wangwang}
 \begin{align}
 	w_i = \frac{1}{n}\,.
 \end{align}
@@ -191,9 +191,9 @@ For the application in this simulation the pixelization of a whole sphere is not
 	\Gamma = \frac{1}{4\pi}\int\limits_{0}^{2\pi}\int\limits_{0}^{\theta_\text{max}}\sin{\theta} d\theta d\phi = \frac{1-\cos\theta_\text{max}}{2}\,.
 	\label{eq:spherefactor}
 \end{align}
-For the IceAct simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized.
+For the \iceact simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized.
 
-An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of IceAct simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates $(\theta, \phi)$ to be saved, but only the ordinal number $HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter $N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by $\theta_\text{max}$ result in a distinct maximum ordinal number $HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
+An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of \iceact simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates $(\theta, \phi)$ to be saved, but only the ordinal number $HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter $N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by $\theta_\text{max}$ result in a distinct maximum ordinal number $HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
 
 \subsubsection{KDE Renormalizaion: Detection Efficiency}
 
@@ -217,7 +217,7 @@ The ratio of detected and simulated photons in the $i$-th SiPM and the wavelengt
 \end{align}
 
 \minisec{What is the maximum simulated zenith angle?}
-Needed to calculate the ratio $\Gamma$ of the total spherical area that is evaluated (cf. equation~\eqref{eq:spherefactor}). For the IceAct simulation this is $\theta_\text{max} = \SI{10}{\degree}$. $\rightarrow \theta_\text{max}$
+Needed to calculate the ratio $\Gamma$ of the total spherical area that is evaluated (cf. equation~\eqref{eq:spherefactor}). For the \iceact simulation this is $\theta_\text{max} = \SI{10}{\degree}$. $\rightarrow \theta_\text{max}$
 
 \minisec{What size does the angular area have which the KDE is evaluated for?}
 This is caused by the evaluation of a continuous PDF at discrete points. To do so, one has to consider the angular area $\Omega_\text{HP}$ a discrete value is set to be constant for. Thanks to the use of HEALPixes, the angular area of all pixels is constant and follows from the resolution parameter $N_\text{side}$ by
@@ -367,7 +367,7 @@ Anyway, the detection distributions can now be calculated and renormalized for e
 
 \subsection{Detection Efficiency Maps}\label{sec:deteff_maps}
 
-By follow the strategy described in section~\ref{sec:param:strategy} and considering the findings from sections~\ref{sec:wvl_binning} and \ref{sec:adaptive_vs_nonadaptive}, one can now finally calculate \textit{detection efficiency maps}. For each camera pixel $i$ and wavelength bin $\Delta\lambda$, these maps show the probability $\epsilon_{i,\Delta\lambda,HP}$ to detect a photon with wavelength $\lambda\in\Delta\lambda$ in camera pixel $i$ as a function of its origin direction~$(\theta,\phi)$ which is coded in the ordinal number~$HP$ of the corresponding HEALPix. For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to choose a reasonable value (cf. table~\ref{healpix:table}): too fine pixelization would obviously result in a very detailed parameterization. Due to KDE, an \enquote{unbinned} detection efficiency is available -- at least in origin directions -- so that it is technically possible to choose a very fine binning. The problem is, that the main goal of the IceAct parameterization is to produce a lookup table that is efficient and capable of evaluating large amounts of Cherenkov photons. A unnecessarily fine HEALPix binning would just blow up the lookup table and quick evaluation is not feasible any more.
+By follow the strategy described in section~\ref{sec:param:strategy} and considering the findings from sections~\ref{sec:wvl_binning} and \ref{sec:adaptive_vs_nonadaptive}, one can now finally calculate \textit{detection efficiency maps}. For each camera pixel $i$ and wavelength bin $\Delta\lambda$, these maps show the probability $\epsilon_{i,\Delta\lambda,HP}$ to detect a photon with wavelength $\lambda\in\Delta\lambda$ in camera pixel $i$ as a function of its origin direction~$(\theta,\phi)$ which is coded in the ordinal number~$HP$ of the corresponding HEALPix. For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to choose a reasonable value (cf. table~\ref{healpix:table}): too fine pixelization would obviously result in a very detailed parameterization. Due to KDE, an \enquote{unbinned} detection efficiency is available -- at least in origin directions -- so that it is technically possible to choose a very fine binning. The problem is, that the main goal of the \iceact parameterization is to produce a lookup table that is efficient and capable of evaluating large amounts of Cherenkov photons. A unnecessarily fine HEALPix binning would just blow up the lookup table and quick evaluation is not feasible any more.
 
 \todo{central pixel, FOV einzeichen, vernünftige wahl von Nside zeigen}
 
