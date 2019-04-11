@@ -35,8 +35,9 @@ is used.
 
 In order to get the KDE describing the probability density appropriately, one has to choose a reasonable bandwith for the given data sample size. As shown in figure \ref{kde:example_1d}, too low bandwith results in a spiky, fluctuating KDE. If the bandwidth is too high, one might get a rather inaccurate estimator. Therefore it seems reasonable to choose different bandwidth in regions with different amount of statistics which then is called \textit{adaptive} kernel density estimation. \cite{kde:schoenen, kde:wangwang}
 
-\subsubsection{Adaptive KDE with Gaussian Kernel}
-As one can see in the simulation results (cf. \todo{verweis zu map}) and in figure \ref{kde:example_scatter}, each pixel has a certain region of photon directions where it is efficient. However, each pixel is almost \enquote{blind} for most other directions. This results in statistically stable -- \enquote{dense} -- regions but also \enquote{sparse} regions dominated by scattered photons that undergo large statistical fluctuations. Thus, and based on the former conclusions, an approach to adapt the bandwidth to the local statistics should perform well. In this thesis, an algorithm presented by \textsc{B. Wang} and \textsc{X. Wang} in \cite{kde:wangwang} which has been implemented within the scope of \cite{kde:schoenen} is used. The adaptive (in principle weighted) kernel density estimator is calculated by \cite{kde:schoenen,kde:wangwang}
+\subsubsection{Adaptive KDE with Gaussian Kernel}\label{sec:adaptive_kde}
+
+One the IceAct camera, each pixel has a certain region of photon directions where it is efficient. However, each pixel is almost \enquote{blind} for most other directions. This results in statistically stable -- \enquote{dense} -- regions but also \enquote{sparse} regions dominated by scattered photons that undergo large statistical fluctuations. Thus, and based on the former conclusions, an approach to adapt the bandwidth to the local statistics should perform well. In this thesis, an algorithm presented by \textsc{B. Wang} and \textsc{X. Wang} in \cite{kde:wangwang} which has been implemented within the scope of \cite{kde:schoenen} is used. The adaptive (in principle weighted) kernel density estimator is calculated by \cite{kde:schoenen,kde:wangwang}
 \begin{align}
 	f(\vec{x}) = \sum_{i=1}^{n} \frac{w_i}{N_i}e^{-\frac{1}{2}(\vec{x}-\vec{X_i})^T \frac{1}{h\lambda_i} \mathbf{C}^{-1} (\vec{x}-\vec{X_i})}\,,
 \end{align}
@@ -91,11 +92,9 @@ The bootstrapping can now be repeated $k$ times and for each subsample $\{\vec{X
 
 The kernel density estimation method needs a well-defined coordinate system on which the data is represented. The problem with a polar coordinate system $(\theta,\phi)$ is the singularity at the zenith $\theta=\SI{0}{\degree}$. At this point, there is no defined azimuth value $\phi$. In order to get a \enquote{flat} and well-defined coordinate system, one introduces the coordinates
 \begin{align}
-	\begin{pmatrix}u\\v\end{pmatrix} = \begin{pmatrix}\sin\theta\cos\phi\\\sin\theta\sin\phi\end{pmatrix}
+	\begin{pmatrix}u\\v\end{pmatrix} = \begin{pmatrix}\sin\theta\cos\phi\\\sin\theta\sin\phi\end{pmatrix}\,.
 \end{align}
-
-\todo{write}
-
+One gets a sphere projected to a flat coordinate space with $u\in[-1,1]$ and $v\in[-1,1]$ without any singularities. The direction coordinates $(\theta,\phi)$ of detected photons are transformed into $uv$ space in which the KDE is calculated as well. Thus, the KDE has to be evaluated in $uv$ space. Subsequently, the back transformation to spherical coordinates can be performed by
 \begin{align}
 	\begin{pmatrix}
 		\theta\\
@@ -105,11 +104,9 @@ The kernel density estimation method needs a well-defined coordinate system on w
 	\begin{pmatrix}
 		\arcsin\sqrt{u^2+v^2}\\
 		\pi+\arctantwo(v,u)
-		\end{pmatrix}
+		\end{pmatrix}\,.
 \end{align} 
-
-\todo{write}
-
+Here, the function $\arctantwo(v,u)$ is an extension of the arctangent to be defined in all four quadrants of a two-dimensional Cartesian coordinate system. Descriptively, $\arctantwo(v,u)$ gives the angle between the positive $x$ axis and the position vector of the point $(u|v)$ yielding angles between $0$ and $2\pi$ (\SI{0}{\degree} and \SI{360}{\degree}, respectively). Therefore, it is convenient to be used in the transformation from Cartesian into polar coordinates. Concretely, the $\arctantwo$ is defined by
 \begin{align}
 	\arctantwo(v,u)=
 	\begin{cases}
@@ -119,16 +116,16 @@ The kernel density estimation method needs a well-defined coordinate system on w
 		+\frac{\pi}{2} & u = 0,\,v > 0\\
 		-\frac{\pi}{2} & u = 0,\,v < 0\\
 		\text{undefined} & u = 0,\,v = 0
-	\end{cases}
+	\end{cases}\,.
 \end{align}
 
 \subsection{KDE Evaluation}
 
-\todo{write?}
+Thanks to the former considerations, a proper evaluation of the estimated PDFs is now possible. Next, a reasonable method has to be found which means that one has to think about on which \enquote{grid} to evaluate the calculated probability densities and how to translate them into actual detection efficiency statements.
 
 \subsubsection{The HEALPix Algorithm}
 
-In order to account for the spherical shape of the angles of incidence it is useful to have angular bins with equal areas. Therefore, in this parameterization method, the \textit{HEALPix} (\textbf{H}ierarchical \textbf{E}qual \textbf{A}rea iso\textbf{L}atitude \textbf{Pix}elization) algorithm is used. It allows a uniform pixelization of incidence angles to the telescope.\\
+In order to account for the spherical shape of the angles of incidence, it is useful to have angular bins with equal areas. Therefore, in this parameterization method, the \textit{HEALPix} (\textbf{H}ierarchical \textbf{E}qual \textbf{A}rea iso\textbf{L}atitude \textbf{Pix}elization) algorithm is used. It allows a uniform pixelization of incidence angles to the telescope.\\
 
 \begin{figure}[h]
 	\centering
@@ -156,7 +153,7 @@ N_\text{pix} = 12N_\text{side}^2\,.
 \label{eq:npix}
 \end{align}
 
-The angular resolution $\theta_\text{pix}$ is defined to be the square root of the angular area $\Omega_\text{pix}$. Descriptively, it is the angular length of a pixel edge. $\Omega_\text{pix}$ in turn can be calculated by dividing the total angular area of a sphere $4\pi$ by the total number of pixels $N_\text{pix}$, which yields \cite{healpix:paper}
+The angular resolution $\theta_\text{pix}$ is defined to be the square root of the angular area $\Omega_\text{pix}$, thus the angular length of a pixel edge. $\Omega_\text{pix}$ in turn can be calculated by dividing the total angular area of a sphere $4\pi$ by the total number of pixels $N_\text{pix}$ which yields \cite{healpix:paper}
 \begin{align}
 	\theta_\text{pix} = \sqrt{\Omega_\text{pix}} = \sqrt{\frac{4\pi}{N_\text{pix}}} \overset{\eqref{eq:npix}}{=} \sqrt{\frac{4\pi}{12N_\text{side}^2}} = \sqrt{\frac{\pi}{3}}N_\text{side}^{-1}\,[\si{\radian}]\,.
 \end{align} 
@@ -193,7 +190,7 @@ For the application in this simulation the pixelization of a whole sphere is not
 \end{align}
 For the \iceact simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized.
 
-An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of \iceact simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates $(\theta, \phi)$ to be saved, but only the ordinal number $HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter $N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by $\theta_\text{max}$ result in a distinct maximum ordinal number $HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
+An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of \iceact simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates~$(\theta, \phi)$ to be saved, but only the ordinal number~$HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter~$N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by~$\theta_\text{max}$ result in a distinct maximum ordinal number~$HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
 
 \subsubsection{KDE Renormalizaion: Detection Efficiency}
 
@@ -301,7 +298,7 @@ With the adaptive wavelength binning it is ensured that in each range $\Delta\la
 
 \subsection{Adaptive vs. Non-adaptive KDE}\label{sec:adaptive_vs_nonadaptive}
 
-Now that the wavelength binning is defined, the next step is to take a look on the camera pixels individually. Due to the distinct field of view of each pixel, the direction distribution of each pixel is characteristic. In order to get an idea of the given direction distributions for which the KDE should be calculated, figure \ref{param:example_scatter} shows some exemplary scatter plots of detected photons by an arbitrary camera pixel~$i$ in a wavelength range~$\Delta\lambda$.
+Now that the wavelength binning is defined, the next step is to take a look on the camera pixels individually. Due to the distinct field of view of each pixel, the direction distribution of each pixel is characteristic and has regions with very different statistical densities as already stated in section~\ref{sec:adaptive_kde}. In order to get an idea of the given direction distributions for which the KDE should be calculated, figure \ref{param:example_scatter} shows some exemplary scatter plots of detected photons by an arbitrary camera pixel~$i$ in a wavelength range~$\Delta\lambda$.
 
 \begin{figure}[h]
 	\centering
@@ -336,30 +333,30 @@ The regions with very sparse \enquote{dots} can only come from random scattering
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}[t]{0.41\textwidth}
+	\begin{subfigure}[t]{0.40\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px00_wvl450-455.pdf}
 		\subcaption{}
 		\label{param:kde_comparison:1}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.41\textwidth}
+	\begin{subfigure}[t]{0.40\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px10_wvl800-900.pdf}
 		\subcaption{}
 		\label{param:kde_comparison:2}
 	\end{subfigure}
 	\vfill
-	\begin{subfigure}[b]{0.41\textwidth}
+	\begin{subfigure}[b]{0.40\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px20_wvl410-415.pdf}
 		\subcaption{}
 		\label{param:kde_comparison:3}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.41\textwidth}
+	\begin{subfigure}[b]{0.40\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px54_wvl600-615.pdf}
 		\subcaption{}
 		\label{param:kde_comparison:4}
 	\end{subfigure}
-	\caption[Comparison: adaptive vs. non-adaptive KDE]{\textbf{Comparison: adaptive vs. non-adaptive KDE.} Evaluation of the direction distributions shown in figure~\ref{param:example_scatter} on a HEALPix grid with $N_\text{side}=\num{512}$. The concentric white dashed circles have a zenith distance of $\SI{2}{\degree}$ and the meridians an azimuth distance of $\SI{10}{\degree}$. Differences between an adaptive (top) and non-adaptive (bottom) KDE approach are visible. Especially in the region with low statistics (scattering region), the non-adaptive KDE is dominated by the fluctuations while adaptive KDE blurres the probability density more strongly.}
+	\caption[Comparison: adaptive vs. non-adaptive KDE]{\textbf{Comparison: adaptive vs. non-adaptive KDE.} Evaluation of the direction distributions shown in figure~\ref{param:example_scatter} on a HEALPix grid with $N_\text{side}=\num{512}$. The concentric white dashed circles have a zenith distance of $\SI{2}{\degree}$ and the meridians an azimuth distance of $\SI{10}{\degree}$. The azimuth $\phi$ starts at the solid white curve and goes around counter-clockwise. Differences between an adaptive (top) and non-adaptive (bottom) KDE approach are visible. Especially in the region with low statistics (scattering region), the non-adaptive KDE is dominated by the fluctuations while adaptive KDE blurres the probability density more strongly.}
 	\label{param:kde_comparison}		
 \end{figure}
 
