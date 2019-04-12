@@ -23,7 +23,7 @@ Especially for \iceact, \geant is capable of simulating Cherenkov (optical) phot
 
 Since this thesis is about an approach of an all-encompassing telescope simulation, \geant provides all major possibilities to get a distinct analysis of the entire optical system of \iceact.
 
-\subsection{FAMOUS telescope simulation}\label{sec:famous_simulation}
+\subsection{FAMOUS Telescope Simulation}\label{sec:famous_simulation}
 The fluorescence telescope FAMOUS\footnote{\textbf{F}irst \textbf{A}uger \textbf{M}ulti-pixel
 photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy air \textbf{S}howers} for the Pierre Auger Observatory in Argentina is developed at RWTH Aachen to measure fluorescence light originating from ultra-high-energy cosmic rays (UHECR) by using Silicon Photomultipliers (SiPMs). Within the development, a detailed \geant simulation has been elaborated \cite{famous:sim_github,famous:sim_github}. The telescope design of FAMOUS is similar since the detection technique and the optics system is basically the same. Therefore, the \iceact telescope simulation is based on this FAMOUS \geant framework. A detailed discourse and a summary of previous analyses can be found in~\cite{famous:niggemann}.
 
@@ -324,9 +324,9 @@ It consists of \num{22292} G-APD cells with the dimensions $\SI{35}{\micro\meter
 
 \subsubsection{SiPM Implementation in \geant with G4SiPM}
 
-In the \iceact \geant simulation, the SiPM is implemented via the plug-in \textit{G4SiPM}~\cite{sipm:g4sipm}. It allows a convenient implementation of geometry, materials, photon detection efficiency, and many other physics and performance parameters in \geant. It is even possible to do waveform simulation with background from cross talk, after pulses, thermal noise, etc. Since the signal simulation is beyond the scope of this thesis, only the material and detection properties are of interest.
+In the \iceact \geant simulation, the SiPM is implemented via the plug-in \textit{G4SiPM}~\cite{sipm:g4sipm}. It allows a convenient implementation of geometry, materials, photon detection efficiency, and many other physics and performance parameters in \geant. It is even possible to do waveform simulation with background from cross talk, after pulses, thermal noise, etc. Since the signal simulation is beyond the scope of this thesis, only the material and detection properties are of interest.\\
 
-For the material properties of the \SI{0.37}{\milli\meter} thick covering glass plate on the SiPM, only the refractive index of $n = \SI{1.53}{\nano\meter}$ at a wavelength of $\lambda = \SI{436}{\nano\meter}$ is given in the data sheet~\cite{sipm:datasheet}. Since there are no detailed information about the glass, $n$ is assumed to be constant for the simulation.
+For the material properties of the \SI{0.37}{\milli\meter} thick covering glass plate on the SiPM, only the refractive index of $n = \SI{1.53}{\nano\meter}$ at a wavelength of $\lambda = \SI{436}{\nano\meter}$ is given in the data sheet~\cite{sipm:datasheet}. Since there are no detailed information about the glass, $n$ is assumed to be constant for the simulation.\\
 
 The other important property is the \textit{photon detection efficiency} $PDE(\lambda,V_\text{OV})$ which is given for the over voltages $V_\text{OV}=\SI{2.5}{\volt}$ and $V_\text{OV}=\SI{6}{\volt}$ and for wavelengths $\lambda = \SI{200}{\nano\meter}$ to $\SI{900}{\nano\meter}$. In \iceact the SiPMs are operated with an over voltage of $V_\text{OV} = \SI{5}{\volt}$. Measurements in the data sheet show that the relation between over voltage and PDE is linear.~\cite{sipm:datasheet} Therefore, one gets the needed $PDE_{\SI{5}{\volt}}\coloneqq PDE(\lambda,V_\text{OV}=\SI{5}{\volt})$ by linear interpolation,
 \begin{align}
