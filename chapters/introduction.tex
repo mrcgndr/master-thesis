@@ -73,19 +73,33 @@ The multiplication process holds, until the particle energies are high enough fo
 It should be mentioned that this calculation only holds for pure electro-magnetic showers which is the reason for the superscript $\gamma$ in equation \eqref{airshowers:eq:xmax}. \cite{airshowers:heitlermodel}
 Since the maximum depth $X_\text{max}$ is dependent from energy and type of the primary particle it is very important for composition studies of cosmic rays. A detailed discussion on several interaction models and comparisons to simulation is done in \cite{airshowers:heitlermodel}.
 
-\section{Detection of Air Showers via Atmospheric Cherenkov Light}\label{sec:cherenkov}
+\section{Detection of Cosmic-ray Air Showers via Atmospheric Cherenkov Light}\label{sec:cherenkov}
 
 \subsection{Detection Techniques}
 
+Various detection techniques have been developed in the last decades. Overall, they can be divided into two categories:
+\begin{itemize}
+	\item Direct detection of air shower particles on ground or underground
+	\item Detection of electromagnetic radiation originating directly or indirectly from the electromagnetic air shower component (and the muonic component in a minor part)
+\end{itemize}
+Commonly used particle detection experiments are based on scintillation or water-Cherenkov light.
+For the second category, there are some different effects to look at, in particular fluorescence light, radio, and air-Cherenkov light (cf. section~\ref{sec:intro:cherenkov}) emission. Figure~\ref{intro:airshower_detection_sketch} gives a schematic overview of the operating techniques.~\cite{airshowers:schroeder}\\
+
 \begin{figure}[h]
 	\includegraphics[width=\textwidth]{AirShowerDetection.pdf}
-	\caption[Different techniques for air shower detection]{\textbf{Different techniques for the detection of atmospheric air showers.} \cite{airshowers:schroeder} }	
+	\caption[Different techniques for air shower detection]{\textbf{Different techniques for the detection of atmospheric air showers.} \cite{airshowers:schroeder} Most of the detection techniques (radio antennas, air-Cherenkov, and fluorescence light detectors) use the electromagnetic (e.m.) shower component. Muons typically reach further than the e.m. component and can be measured by particle detectors. There are more different particles than depicted contributing to real air showers. In addition, the right plot shows the longitudinal shower profile for hadrons, electrons/positrons, and muons/anti-muons.}	
+	\label{intro:airshower_detection_sketch}
 \end{figure}
-\todo{short explanation for the different techniques}
 
-\subsection{The Cherenkov Effect}
+Important parameters to be detected are direction and energy of air showers. Directional information can be reconstructed by measuring arrival times or an imaging system. The energy can be determined by the integrated signal strength, i.e. the amount of detected particles in the case of (under-)ground particle detectors or, respectively, the amount of electromagnetic radiation. Composition dependent air shower variables like $X_\text{max}$ are more difficult to detect.
 
-The Cherenkov effect is named after the Soviet physicist \textit{Pavel A. Cherenkov} and describes the emission of radiation if a charged particle traverses a medium with a speed exceeding speed of light in that medium. \cite{airshowers:cherenkov} This is possible due to the fact that speed of light in a medium with a refractive index $n > 1$ is always below vacuum speed of light $c_0$ since
+A major challenge all detection varieties have in common is the low flux of primary cosmic rays. One tries to compensate for this by maximizing the instrumented or observed volume. Fluorescence light detectors typically have a large observable atmospheric volume and a sensitivity for air showers up to a few \SI{10}{\kilo\meter}. For other techniques, large surface arrays instrumenting areas up to several \SI{1000}{\cubic\kilo\meter} have to be build.~\cite{airshowers:schroeder}\\
+
+In this thesis, the focus is on the air shower detection by Cherenkov light typically at optical and ultraviolet wavelengths. Thus, the underlying \textit{Cherenkov effect} is introduced in the next section.
+
+\subsection{The Cherenkov Effect}\label{sec:intro:cherenkov}
+
+The \textit{Cherenkov effect} is named after the Soviet physicist \textsc{Pavel A. Cherenkov} and describes the emission of radiation if a charged particle traverses a medium with a speed exceeding speed of light in that medium. \cite{airshowers:cherenkov} This is possible due to the fact that speed of light in a medium with a refractive index $n > 1$ is always below vacuum speed of light $c_0$ since
 \begin{align}
 	c = \frac{c_0}{n} \overset{n>1}{\Rightarrow} c < c_0\,.
 \end{align} 
@@ -118,13 +132,13 @@ The effect is describable in two ways which are shown in figure \ref{airshowers:
 	\caption[Illustration for the Cherenkov effect]{\textbf{Illustration for the Cherenkov effect.} A charged particle is traversing the medium with a refractive index $n$ from left to right with velocity $v$. $c_0$ is the vacuum speed of light. In (\subref{airshowers:cherenkov1pol}) and (\subref{airshowers:cherenkov2pol}) the dipole interpretation of the Cherenkov effect is shown. (\subref{airshowers:cherenkov1huy}) and (\subref{airshowers:cherenkov2huy}) show the effect by exploiting Huygens' principle.}
 	\label{airshowers:cherenkov}
 \end{figure}
-A \textit{Cherenkov angle} $\theta_C$ as introduced in figure \ref{airshowers:cherenkov2huy} can be calculated by applying trigonometry:
+A \textit{Cherenkov angle} $\theta_C$ -- as introduced in figure~\ref{airshowers:cherenkov2huy} -- can be calculated by applying trigonometry:
 \begin{align}
 	\cos{\theta_C} = \frac{c_0}{nv} = \frac{1}{n\beta}\,,
 \end{align}
 with the dimensionless velocity $\beta = \frac{v}{c_0}$.
 
-Furthermore, the two Soviet physicists \textsc{Ilya M. Frank} and \textsc{Igor Y. Tamm} found a relation for the differential emission per wavelength and spatial interval known as the \textit{Frank-Tamm formula} \cite{airshowers:franktamm}:
+Furthermore, the two Soviet physicists \textsc{Ilya M. Frank} and \textsc{Igor Y. Tamm} found a relation for the differential emission per wavelength and spatial interval known as the \textit{Frank-Tamm formula}~\cite{airshowers:franktamm}:
 \begin{align}
 	\frac{d^2N}{dxd\lambda} = 2\pi\alpha q^2 \frac{1}{\lambda^2}\left(1-\frac{1}{n^2(\lambda)\beta^2}\right)\,,
 \end{align}
@@ -154,4 +168,4 @@ The cone-like radiation profile of Cherenkov light with respect to the air showe
 
 \subsection{Photon Detection}
 
-\subsection{The IceCube Air Cherenkov Telescopes \iceact}\label{sec:iceact_intro}
+\section{The IceCube Air Cherenkov Telescopes \iceact}\label{sec:iceact_intro}
