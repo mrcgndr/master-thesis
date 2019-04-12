@@ -188,7 +188,7 @@ For the application in this simulation the pixelization of a whole sphere is not
 	\Gamma = \frac{1}{4\pi}\int\limits_{0}^{2\pi}\int\limits_{0}^{\theta_\text{max}}\sin{\theta} d\theta d\phi = \frac{1-\cos\theta_\text{max}}{2}\,.
 	\label{eq:spherefactor}
 \end{align}
-For the \iceact simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized.
+For the \iceact simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized\footnote{In the IceAct parameterization, a few more HEALPix are actually needed. The reason is, that all HEALPixes that at least overlap partly with the region $\theta\leq\theta_\text{max}$ are included.}.
 
 An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of \iceact simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates~$(\theta, \phi)$ to be saved, but only the ordinal number~$HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter~$N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by~$\theta_\text{max}$ result in a distinct maximum ordinal number~$HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
 
@@ -400,8 +400,16 @@ The advantage of saving the cumulative sum rather than actual responses gets cle
 		\lambda & \rightarrow \Delta\lambda
 	\end{cases}
 	\Rightarrow \epsilon^\text{abs}_{HP,\Delta\lambda} = \{\epsilon^\text{abs}_k\}_{k=0}^{60}\,.
-\end{align}
+\end{align}\\
+
+The HEALPix resolution used for parameterization of IceAct is $N_\text{side}=\num{512}$. With $\theta_\text{max} = \SI{10}{\degree}$, this results in a total \enquote{active} HEALPix number of $N_{HP}=\num{24420}$. Additionally, the wavelengths are divided into $N_{\Delta\lambda} = \num{50}$ bins (cf. section~\ref{sec:wvl_binning}). For the \num{61} pixel camera this results in $N_{HP}\cdot N_{\Delta\lambda}\cdot \num{61} = \num{74481000}$ numbers to be saved. The needed disk space for this lookup table is \SI{284}{\mebi\byte} by using \SI{32}{\bit} float as data type.
 
 \subsection{LUT Readout -- \enquote{Event Dicing}}\label{sec:lut_readout}
+
+Now that the data is ready, a evaluation algorithm has to be elaborated. 
+
+\begin{enumerate}
+	\item 
+\end{enumerate}
 
 \section{Application on CORSIKA Air Showers Events}
