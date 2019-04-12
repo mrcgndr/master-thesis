@@ -366,20 +366,42 @@ Anyway, the detection distributions can now be calculated and renormalized for e
 
 By follow the strategy described in section~\ref{sec:param:strategy} and considering the findings from sections~\ref{sec:wvl_binning} and \ref{sec:adaptive_vs_nonadaptive}, one can now finally calculate \textit{detection efficiency maps}. For each camera pixel $i$ and wavelength bin $\Delta\lambda$, these maps show the probability $\epsilon_{i,\Delta\lambda,HP}$ to detect a photon with wavelength $\lambda\in\Delta\lambda$ in camera pixel $i$ as a function of its origin direction~$(\theta,\phi)$ which is coded in the ordinal number~$HP$ of the corresponding HEALPix. For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to choose a reasonable value (cf. table~\ref{healpix:table}): too fine pixelization would obviously result in a very detailed parameterization. Due to KDE, an \enquote{unbinned} detection efficiency is available -- at least in origin directions -- so that it is technically possible to choose a very fine binning. The problem is, that the main goal of the \iceact parameterization is to produce a lookup table that is efficient and capable of evaluating large amounts of Cherenkov photons. A unnecessarily fine HEALPix binning would just blow up the lookup table and quick evaluation is not feasible any more.
 
-\todo{central pixel, FOV einzeichen, vernünftige wahl von Nside zeigen}
+\todo{central pixel, FOV einzeichnen, vernünftige wahl von Nside zeigen}
 
-\todo{map von neuer rechnung, die hoffentlich noch fertig wird}
+\todo{maps von neuer rechnung, die hoffentlich noch fertig wird}
 
 
 
-\section{Lookup Table Production}
+\section{Lookup Table (LUT)}
 
-As the detection efficiency maps are ready now, one has to store the information in such a way, that a quick lookup is possible. 
+As the detection efficiency maps are ready now, one has to think about a way to access the information as fast as possible. Usually, this is done by storing the parameterization function evaluated at certain points in a multidimensional array structure known as \textit{lookup table}. Afterwards, events can be \enquote{diced} with the given information yielding count histograms for the camera -- named \textit{images}.
+
+\subsection{LUT Production}
+
+First of all, one has to define how to iterate over the given information. In this case, one starts with a photon direction $(\theta,\phi)$ translated into the corresponding HEALPix number~$HP$ and the wavelength~$\lambda$ of this photon which is assigned to the proper wavelength bin~$\Delta\lambda$. The result then should be the response of each pixel to the very same photon, i.e. how probable is it for the photon to be detected in camera pixel $i$. In order to achieve this, one can evaluate the detection efficiency maps by fist considering just one HEALPix. For this HEALPix, the detection efficiency for all wavelength bins and all camera pixels is read out, which is shown exemplary in figure~\ref{lut:transpose_example}. 
 
 \begin{figure}[H]
 	\includegraphics[width=\textwidth]{LUT_transposition_example.pdf}
-	\caption[short caption]{\textbf{short caption.} long caption}
+	\caption[Visualization for the lookup table transposition]{\textbf{Visualization for the lookup table transposition.} A certain HEALPix (here: $HP=\num{3950}$) is considered. For one camera pixel, the detection efficiency is read from the maps throughout all wavelength bins. In this example, some maps for pixel \num{20} are chosen. Doing this for all camera pixels yields to the blue-framed plot. For the considered HEALPix one gets the wavelength-dependent detection efficiency for each camera pixel. The \enquote{camera top view} plot shows the camera as seen from the lens. Pixels that have a maximum detection efficiency greater than~\SI{0.1}{\percent} are emphasized with colors. The detection efficiency functions of all other pixels are not plotted. Besides, the HEALPix center coordinates are given with a polar plot.}
 	\label{lut:transpose_example}
 \end{figure}
+
+By iterating over each HEALPix of one gets $N_{HP}\times N_{\Delta\lambda}$ pixel-by-pixel detection efficiency arrays where $N_{HP}$ is the total number of HEALPix covered by simulation and $N_{\Delta\lambda}$ the number of wavelength bins. These sub-arrays are further named as $\epsilon_{HP,\Delta\lambda}$ and contain the detection efficiency $\epsilon_i$ for each camera pixel $i$ (also called \textit{pixel response}). 
+
+Additionally, one can even improve the structure of these sub-array by not just saving the single responses $\epsilon_i$ ordered by pixel number, but saving the cumulative responses. Then, the $k$-th of totally \num{60} elements in the sub-array is defined as 
+\begin{align}
+	\epsilon^\text{abs}_k = \sum_{i=0}^{k} \epsilon_i\,.
+\end{align}
+The advantage of saving the cumulative sum rather than actual responses gets clear in the next section~\ref{sec:lut_readout}. Schematically, the lookup process can be described by
+\begin{align}
+	\gamma \rightarrow
+	\begin{cases}
+		(\theta,\phi) & \rightarrow HP\\
+		\lambda & \rightarrow \Delta\lambda
+	\end{cases}
+	\Rightarrow \epsilon^\text{abs}_{HP,\Delta\lambda} = \{\epsilon^\text{abs}_k\}_{k=0}^{60}\,.
+\end{align}
+
+\subsection{LUT Readout -- \enquote{Event Dicing}}\label{sec:lut_readout}
 
 \section{Application on CORSIKA Air Showers Events}
