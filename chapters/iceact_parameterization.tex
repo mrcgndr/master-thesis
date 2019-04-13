@@ -295,6 +295,7 @@ Since the photon detection efficiency of the SiPMs is a non-constant function of
 
 The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPM, i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive}). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).
 With the adaptive wavelength binning it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable probability density estimation.
+\todo{wavelength range erwähnen}
 
 \subsection{Adaptive vs. Non-adaptive KDE}\label{sec:adaptive_vs_nonadaptive}
 
@@ -370,13 +371,11 @@ By follow the strategy described in section~\ref{sec:param:strategy} and conside
 
 \todo{maps von neuer rechnung, die hoffentlich noch fertig wird}
 
-
-
 \section{Lookup Table (LUT)}
 
 As the detection efficiency maps are ready now, one has to think about a way to access the information as fast as possible. Usually, this is done by storing the parameterization function evaluated at certain points in a multidimensional array structure known as \textit{lookup table}. Afterwards, events can be \enquote{diced} with the given information yielding count histograms for the camera -- named \textit{images}.
 
-\subsection{LUT Production}
+\subsection{LUT Production}\label{sec:lut_production}
 
 First of all, one has to define how to iterate over the given information. In this case, one starts with a photon direction $(\theta,\phi)$ translated into the corresponding HEALPix number~$HP$ and the wavelength~$\lambda$ of this photon which is assigned to the proper wavelength bin~$\Delta\lambda$. The result then should be the response of each pixel to the very same photon, i.e. how probable is it for the photon to be detected in camera pixel $i$. In order to achieve this, one can evaluate the detection efficiency maps by fist considering just one HEALPix. For this HEALPix, the detection efficiency for all wavelength bins and all camera pixels is read out, which is shown exemplary in figure~\ref{lut:transpose_example}. 
 
@@ -390,9 +389,14 @@ By iterating over each HEALPix of one gets $N_{HP}\times N_{\Delta\lambda}$ pixe
 
 Additionally, one can even improve the structure of these sub-array by not just saving the single responses $\epsilon_i$ ordered by pixel number, but saving the cumulative responses. Then, the $k$-th of totally \num{60} elements in the sub-array is defined as 
 \begin{align}
-	\epsilon^\text{abs}_k = \sum_{i=0}^{k} \epsilon_i\,.
+	\epsilon^\text{abs}_k = \sum_{i=0}^{k} \epsilon_i\,,
+	\label{eq:eps_cumulative}
 \end{align}
-The advantage of saving the cumulative sum rather than actual responses gets clear in the next section~\ref{sec:lut_readout}. Schematically, the lookup process can be described by
+i.e. $\epsilon^\text{abs}_k$ is the probability to detect the photon in any pixel with number $i\in[0,k]$. Additionally, it is
+\begin{align}
+\epsilon_k^\text{abs} < 1\,,
+\end{align}
+where the last element $\epsilon_{60}^\text{abs}$ is the total detection probability of the camera and distances between the elements represent the responses of the individual camera pixels. The advantage of saving the cumulative sum rather than actual responses gets clear in the next section~\ref{sec:lut_readout}. Schematically, the lookup process can be described by
 \begin{align}
 	\gamma \rightarrow
 	\begin{cases}
@@ -402,14 +406,32 @@ The advantage of saving the cumulative sum rather than actual responses gets cle
 	\Rightarrow \epsilon^\text{abs}_{HP,\Delta\lambda} = \{\epsilon^\text{abs}_k\}_{k=0}^{60}\,.
 \end{align}\\
 
-The HEALPix resolution used for parameterization of IceAct is $N_\text{side}=\num{512}$. With $\theta_\text{max} = \SI{10}{\degree}$, this results in a total \enquote{active} HEALPix number of $N_{HP}=\num{24420}$. Additionally, the wavelengths are divided into $N_{\Delta\lambda} = \num{50}$ bins (cf. section~\ref{sec:wvl_binning}). For the \num{61} pixel camera this results in $N_{HP}\cdot N_{\Delta\lambda}\cdot \num{61} = \num{74481000}$ numbers to be saved. The needed disk space for this lookup table is \SI{284}{\mebi\byte} by using \SI{32}{\bit} float as data type.
+The HEALPix resolution used for parameterization of IceAct is $N_\text{side}=\num{512}$. With $\theta_\text{max}=\SI{10}{\degree}$, this results in a total \enquote{active} HEALPix number of $N_{HP}=\num{24420}$. Additionally, the wavelengths are divided into $N_{\Delta\lambda} = \num{50}$ bins in the interval $[\SI{272}{\nano\meter},\SI{900}{\nano\meter}]$ (cf. section~\ref{sec:wvl_binning}). For the \num{61} pixel camera this results in $N_{HP}\cdot N_{\Delta\lambda}\cdot \num{61} = \num{74481000}$ numbers to be saved. The needed disk space for this lookup table is \SI{284}{\mebi\byte} by using \SI{32}{\bit} float as data type\footnote{Since also the information about wavelength binning, HEALPix model, and maximum simulated zenith angle has to be included, the lookup table file might need slightly more space}.
 
 \subsection{LUT Readout -- \enquote{Event Dicing}}\label{sec:lut_readout}
 
-Now that the data is ready, a evaluation algorithm has to be elaborated. 
+Now that the data is ready, an evaluation algorithm has to be elaborated. In the following, the principle to evaluate $N$ photons is described step by step.
 
 \begin{enumerate}
-	\item 
+	\item For each direction the corresponding HEALPix number is calculated.\footnote{In this thesis, the evaluation algorithm is implemented with Python. For HEALPix calculations, the package \textit{healpy} is used.}
+	\begin{align}
+		\{(\theta_i, \phi_i)\}_{i=1}^N \rightarrow \{HP_i\}_{i=1}^N
+	\end{align}
+	\item Only valid photons are evaluated. A photon is valid if its HEALPix number~$HP_i$ is in the lookup table -- i.e. below the cutoff -- and if its wavelength~$\lambda_i$ is in the wavelength range covered by the lookup table $[\lambda_\text{min},\lambda_\text{max}]$. $N^\ast\leq N$ photons are valid. Invalid photons are counted.
+	\begin{align}
+		\text{valid} \coloneqq HP_i < N_{HP} \wedge \lambda_i \in [\lambda_\text{min},\lambda_\text{max}]
+	\end{align} 
+	\item For all $N^\ast$ photons, the corresponding wavelength bin is determined.
+	\begin{align}
+		\{\lambda_{i^\ast}\}_{i^\ast=1}^{N^\ast} \rightarrow \{ \Delta\lambda_{i^\ast} \}_{i^\ast=1}^{N^\ast}
+	\end{align}
+	Here, the index of the assigned wavelength bin rather than the actual range is important for the lookup table query.
+	\item The actual lookup table query is performed. Thus, every valid photon gets its proper pixel response array.
+	\begin{align}
+		\{HP_{i^\ast}, \Delta\lambda_{i^\ast}\}_{i^\ast=1}^{N^\ast} \rightarrow \{ \epsilon^\text{abs}_{HP_{i^\ast},\Delta\lambda_{i^\ast}}\}_{i^\ast=1}^{N^\ast}
+	\end{align}
+	\item For each valid photon $i^\ast$, a random number $r_{i^\ast}\in[0,1)$ is diced and sorted into the corresponding response array. Now, the advantage of saving the cumulative rather than the absolute responses (cf. section~\ref{sec:lut_production}) becomes clear. By definition, the cumulative responses are sorted in ascending order\footnote{This is the case if all numbers are non-negative like it is the case for the camera pixel responses. Otherwise, the cumulative sequence may not be sorted.}. As a result, the position $k$ where the random number is sorted in equals the number of the camera pixel where the photon is detected. If the random number is sorted in at the \num{61}-th position -- i.e. at the end -- this means that the photon is not detected. The cumulative saving enables a lookup process that is only based on comparative operations which are very fast.
+	\item The resulting sorting positions $k_{i^\ast}$ can now be histogramized which gives the final image seen by the camera.
 \end{enumerate}
 
 \section{Application on CORSIKA Air Showers Events}
