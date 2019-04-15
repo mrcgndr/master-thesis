@@ -39,10 +39,18 @@ When it comes to cosmic rays, ascertaining the mass composition is a key measure
 \begin{align}
 \frac{dE}{dN}\propto E^\gamma\,,
 \end{align}
-introducing a spectral index $\gamma$ which is dependent from the considered energy region.\todo{in welchen Regionen welcher Spektralindex?}
+introducing a spectral index $\gamma$ which is dependent from the considered energy region. Measurements show \cite{cosmicrays:hoerandel, cosmicrays:fowler}
+\begin{align}
+	\gamma(E)=
+	\begin{cases}
+		\num{2.7} & \sim\SI{10}{\giga\electronvolt} < E < \SI{4e6}{\giga\electronvolt}\\
+		\num{3.1} & \SI{4e6}{\giga\electronvolt} < E < \SI{4e9}{\giga\electronvolt}\\
+		\num{2.6} & \SI{4e9}{\giga\electronvolt} < E < \SI{3e11}{\giga\electronvolt}
+	\end{cases}
+\end{align}
 Due to this interesting features, composition measurements at these \enquote{transition points} are desired in particular.
 
-Due to the shape the spectrum is referred to as \textit{poly gonato} (Greek for \enquote{many knees}). The \enquote{knee} is assumed to be based on different rigidity\footnote{property of a magnetic field to bend a particle's trajectory} dependent cut-off energies for sub-spectra of element groups which sum up to the spectrum we observe. \cite{cosmicrays:hoerandel, cosmicrays:shapiro} At energies beyond \SI{e11}{\giga\electronvolt} a strong suppression is observed. The GZK-effect (named after Kenneth \textsc{Greisen}, Georgiy \textsc{Zatsepin}, and Vadim \textsc{Kuzmin}) is supposed to be the reason. Protons with energies above a threshold of \SI{5e19}{\electronvolt} can interact with photons of the cosmic microwave background in such a way that they produce $\pi^0$ and $\pi^+$ mesons via $\Delta^+$ resonance:
+Due to the shape, the phenomenological model to describe the spectrum is referred to as \textit{poly gonato} (Greek for \enquote{many knees}). The \enquote{knee} is assumed to be based on different rigidity\footnote{property of a magnetic field to bend a particle's trajectory} dependent cut-off energies for sub-spectra of element groups which sum up to the spectrum we observe. \cite{cosmicrays:hoerandel, cosmicrays:shapiro} At energies beyond \SI{e11}{\giga\electronvolt} a strong suppression is observed. The GZK-effect (named after Kenneth \textsc{Greisen}, Georgiy \textsc{Zatsepin}, and Vadim \textsc{Kuzmin}) is supposed to be the reason. Protons with energies above a threshold of \SI{5e19}{\electronvolt} can interact with photons of the cosmic microwave background in such a way that they produce $\pi^0$ and $\pi^+$ mesons via $\Delta^+$ resonance:
 \begin{subequations}
 	\begin{align}
 	\gamma_\text{CMB} + p \rightarrow \Delta^+ &\rightarrow p + \pi^0\\
@@ -82,12 +90,12 @@ Various detection techniques have been developed in the last decades. Overall, t
 	\item Direct detection of air shower particles on ground or underground
 	\item Detection of electromagnetic radiation originating directly or indirectly from the electromagnetic air shower component (and the muonic component in a minor part)
 \end{itemize}
-Commonly used particle detection experiments are based on scintillation or water-Cherenkov light.
-For the second category, there are some different effects to look at, in particular fluorescence light, radio, and air-Cherenkov light (cf. section~\ref{sec:intro:cherenkov}) emission. Figure~\ref{intro:airshower_detection_sketch} gives a schematic overview of the operating techniques.~\cite{airshowers:schroeder}\\
+Commonly used particle detection experiments are based on scintillation or water Cherenkov light.
+For the second category, there are some different effects to look at, in particular fluorescence light, radio, and air Cherenkov light (cf. section~\ref{sec:intro:cherenkov}) emission. Figure~\ref{intro:airshower_detection_sketch} gives a schematic overview of the operating techniques.~\cite{airshowers:schroeder}\\
 
 \begin{figure}[h]
 	\includegraphics[width=\textwidth]{AirShowerDetection.pdf}
-	\caption[Different techniques for air shower detection]{\textbf{Different techniques for the detection of atmospheric air showers.} \cite{airshowers:schroeder} Most of the detection techniques (radio antennas, air-Cherenkov, and fluorescence light detectors) use the electromagnetic (e.m.) shower component. Muons typically reach further than the e.m. component and can be measured by particle detectors. There are more different particles than depicted contributing to real air showers. In addition, the right plot shows the longitudinal shower profile for hadrons, electrons/positrons, and muons/anti-muons.}	
+	\caption[Different techniques for air shower detection]{\textbf{Different techniques for the detection of atmospheric air showers.} \cite{airshowers:schroeder} Most of the detection techniques (radio antennas, air Cherenkov, and fluorescence light detectors) use the electromagnetic (e.m.) shower component. Muons typically reach further than the e.m. component and can be measured by particle detectors. There are more different particles than depicted contributing to real air showers. In addition, the right plot shows the longitudinal shower profile for hadrons, electrons/positrons, and muons/anti-muons.}	
 	\label{intro:airshower_detection_sketch}
 \end{figure}
 
@@ -162,17 +170,20 @@ The factor $\frac{1}{\lambda^2}$ suppresses higher wavelengths so that the Chere
 
 The cone-like radiation profile of Cherenkov light with respect to the air shower axis makes it possible to reconstruct the shower direction by observing the direction of the Cherenkov photons.
 
-\section{Imaging Air-Cherenkov Telescopes (IACTs)}
+\section{Imaging Air Cherenkov Telescopes (IACTs)}
+
+For the observation of cosmic-ray air showers and especially gamma-ray air showers, \textit{imaging air Cherenkov telescopes} (\text{IACT}s) are very suitable instruments. The common principle is to mount a camera looking down to a segmented mirror in order to detect reflecting Cherenkov photons with the ability to reconstruct their directions. State-of-the-art IACTs have mirrors with diameters up to \SI{17}{\meter} by gaining an angular resolution down to \SI{0.07}{\degree}. The typical energy range of primary gamma rays that can be observed with these IACTs is $\sim\SI{50}{\giga\electronvolt}$ up to $\sim\SI{10}{\tera\electronvolt}$.~\cite{iacts:magic}. Established IACT experiments are for instance \textit{H.E.S.S.} (Namibia)~\cite{iacts:hess}, \textit{VERITAS} (Arizona)~\cite{iacts:veritas}, and \textit{MAGIC} (La Palma)~\cite{iacts:magic}. The \text{Cherenkov Telescope Array} (\text{CTA}) will be a next-generation IACT array operating at two sites at the northern and southern hemisphere. In total, \num{118} telescopes are planned with three different sizes of \SI{4}{\meter}, \SI{12}{\meter}, \SI{23}{\meter}. It will extend the observable energy range up to $\sim\SI{100}{\tera\electronvolt}$.~\cite{iacts:cta} An artwork of a possible array is shown in figure~\ref{cta_artwork}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth]{eso_cta.jpg}
-	\caption[short caption]{\textbf{short caption.}~\cite{iacts:cta_artwork} long caption}
-	\label{label}
+	\caption[Artwork of the proposed CTA site at ESO's Paranal Observatory]{\textbf{Artwork of the proposed CTA site at ESO's Paranal Observatory.}~\cite{iacts:cta_artwork} In this picture, the three classes of IACTs planned are rendered. This CTA site is located at the Paranal Observatory (Atacama desert, Chile) at an altitude of \SI{2100}{\meter} a.s.l. administrated by the European Southern Observatory (ESO). The final array layout may be different.~\cite{iacts:cta}}
+	\label{cta_artwork}
 \end{figure}
 
-\subsection{Imaging Technique}
+Even small IACTs can improve the energy measurement of other ground-based particle detectors since the Cherenkov light yield is proportional to the primary particle energy. Hybrid measurements of IACTs and particle detectors can seriously improve the energy resolution as recent studies show~\cite{iacts:extension}.
 
-\subsection{Photon Detection}
+In contrast to large IACTs where the camera usually consists of an array of photomultiplier tubes (PMTs), smaller IACTs are based on Geiger-mode avalanche photo diodes (G-APDs) section or SiPMs which are linkages of many G-APDs. These devices are discussed in more detail in section~\ref{sec:sipm:working_principle}. In 2011, the \textbf{F}irst G-\textbf{A}PD \textbf{C}herenkov \textbf{T}elescope FACT started taking data with G-APDs as the first Cherenkov telescope of that kind~\cite{iacts:fact}.
 
-\section{The IceCube Air-Cherenkov Telescopes \iceact}\label{sec:iceact_intro}
+\section{The IceCube Air Cherenkov Telescopes \iceact}\label{sec:iceact_intro}
+
