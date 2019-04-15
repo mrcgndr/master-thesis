@@ -7,27 +7,29 @@
 
 \todo{Motivation}
 
-\section{The IceCube Neutrino Observatory}
+\section{The \icecube Neutrino Observatory}
 
-Since January 2011, the IceCube Neutrino Observatory at the South Pole is measuring neutrinos emanating from various sources. For this purpose a detector instrumented with digital optical modules (\enquote{DOMs}) is installed deep in the antarctic ice. 5160 of these optical sensors are arranged on 86 strings at a height between \SI{1450}{\meter} and \SI{2450}{\meter} below the surface. The central region of this In-Ice Array which has a higher density of DOMs is called \enquote{DeepCore}. Figure \ref{icecube:detector} shows a sketch of the detector arrangement.
+Since January 2011, the \icecube Neutrino Observatory at the Amundsen-Scott South Pole station is measuring neutrinos emanating from various sources. For this purpose a detector instrumented with digital optical modules (\enquote{DOMs}) is installed deep in the antarctic ice. 5160 of these optical sensors are arranged on 86 strings at a height between \SI{1450}{\meter} and \SI{2450}{\meter} below the surface. The central region of this In-Ice Array which has a higher density of DOMs is called \enquote{DeepCore}. Figure \ref{icecube:detector} shows a sketch of the detector arrangement.\\
 
 \begin{figure}[h]
 	\includegraphics[width=\textwidth]{IceCubeDetector.pdf}
-	\caption[Schematic view of IceCube]{\textbf{Schematic view of the IceCube Neutrino Observatory.} \cite{icecube:instrumentation} The in-ice array with the denser sub-array DeepCore as well as the surface array IceTop is sketched. Different station colors represent different deployment stages.}
+	\caption[Schematic view of \icecube]{\textbf{Schematic view of the \icecube Neutrino Observatory.} \cite{icecube:instrumentation} The in-ice array with the denser sub-array DeepCore as well as the surface array \icetop is sketched. Different station colors represent different deployment stages.}
 	\label{icecube:detector}
 \end{figure}
 
-Neutrinos are very interesting elementary particles because of their weak interaction cross section and their electrical neutrality. This fact makes it possible for neutrinos to let them point back to their sources which is exploited in the search for astrophysical processes like active galactic nuclei, supernovae, or gamma-ray bursts. Since they are able to reach us without scattering processes, neutrinos can even give information about sources at cosmological distances. Simultaneously, the weak interaction potential is what neutrino detection makes challenging. Therefore, a detector with a large scale active volume is needed. In the case of IceCube, this is \SI{1}{\cubic\kilo\meter} of ice.
+Neutrinos are very interesting elementary particles because of their weak interaction cross section and their electrical neutrality. This fact makes it possible for neutrinos to let them point back to their sources which is exploited in the search for astrophysical processes like active galactic nuclei, supernovae, or gamma-ray bursts. Since they are able to reach us without scattering processes, neutrinos can even give information about sources at cosmological distances. Simultaneously, the weak interaction potential is what neutrino detection makes challenging. Therefore, a detector with a large scale active volume is needed. In the case of \icecube, this is \SI{1}{\cubic\kilo\meter} of ice.\\
 
-At the surface on top of the in-ice detector the cosmic ray air shower array IceTop is installed to detect Cherenkov radiation (cf. \ref{sec:cherenkov}). IceTop consists of 81 stations approximately arranged in the same grid as the in-ice strings. Each station has two tanks filled up with ice and two standard IceCube DOMs. This arrangement makes it possible for IceTop to detect primary cosmic rays (cf. \ref{sec:cosmicrays}) in the energy range of \si{\peta\electronvolt} to \si{\exa\electronvolt}. One purpose of IceTop is to provide a veto for downward-going neutrinos in the IceCube detector originating from coincident atmospheric air shower events. \cite{icecube:instrumentation} Since IceCube is investigating astrophysical neutrinos, atmospheric neutrinos are a major background.
+At the surface on top of the in-ice detector the cosmic ray air shower array \icetop is installed to detect Cherenkov radiation (cf. \ref{sec:cherenkov}). \icetop consists of 81 stations approximately arranged in the same grid as the in-ice strings. Each station has two tanks filled up with ice and two standard \icecube DOMs. This arrangement makes it possible for \icetop to detect primary cosmic rays (cf. \ref{sec:cosmicrays}) in the energy range of \si{\peta\electronvolt} to \si{\exa\electronvolt}. One purpose of \icetop is to provide a veto for downward-going neutrinos in the \icecube detector originating from coincident atmospheric air shower events. \cite{icecube:instrumentation} Since \icecube is mainly investigating astrophysical neutrinos, atmospheric neutrinos are a major background.\\
 
-\todo{TXS?}
+Since start of operation, \icecube has achieved two important breakthroughs. In 2013, high-energy extraterrestrial neutrinos were observed~\cite{icecube:he_neutrino}. Four years later -- on \num{22} September 2017 -- \icecube has detected a high-energy neutrino from the blazar \textit{TXS+0506-056} which was coincident in time and direction with a gamma-ray flare of this source. As a result, this was the first time that an extra-galactic accelerator could be identified as a source of an astrophysical neutrino~\cite{icecube:txs}.
 
-\todo{IceCube-Gen2}
+\subsection{\icecube-Gen2}
+
+\textit{\icecube-Gen2} is proposed to be a substantial enhancement of the \icecube Neutrino Observatory. It es planned to have a much better sensitivity to high-energy neutrinos by an instrumented volume about ten times bigger than \icecube has today. Studies of extra-galactic neutrino sources and resolving their location require a much higher rate of detected neutrino than \icecube provides by now. For this purpose, more strings with a denser spacing of further improved DOMs will be deployed covering a much lager in-ice volume.~\cite{icecube:gen2:1,icecube:gen2:2} Additionally, a large upgrade of \icetop concerning veto capabilities (\textit{IceVeto}) is discussed with different approaches. These are scintillation detectors (\textit{IceScint})~\cite{icecube:gen2:icescint}, a radio antenna array~\cite{icecube:gen2:radio}, or imaging air Cherenkov telescopes (\textit{IceAct})~\cite{iacts:extension,icecube:gen2:1}.
 
 \section{Cosmic Rays}\label{sec:cosmicrays}
 
-Charged particles or nuclei that are propagating through the universe and incidentally reach the Earth's atmosphere are called cosmic rays. They were discovered by the Austrian physicist \textsc{Victor Franz Hess} in 1912 when he observed an increasing discharge of electroscopes with increasing height in seven ballon flights. \cite{cosmicrays:hess} Hess initially called this underlying radiation \enquote{durchdringende Strahlung} (\textit{penetrating radiation}).
+Charged particles or nuclei that are propagating through the universe and incidentally reach the Earth's atmosphere are called \textit{cosmic rays}. They were discovered by the Austrian physicist \textsc{Victor Franz Hess} in 1912 when he observed an increasing discharge of electroscopes with increasing height in seven balloon flights. \cite{cosmicrays:hess} Hess initially called this underlying radiation \enquote{durchdringende Strahlung} (\textit{penetrating radiation}).
 
 \begin{figure}[h]
 	\includegraphics[width=\textwidth]{CosmicRayEnergySpectrum.pdf}
@@ -46,7 +48,7 @@ introducing a spectral index $\gamma$ which is dependent from the considered ene
 		\num{2.7} & \sim\SI{10}{\giga\electronvolt} < E < \SI{4e6}{\giga\electronvolt}\\
 		\num{3.1} & \SI{4e6}{\giga\electronvolt} < E < \SI{4e9}{\giga\electronvolt}\\
 		\num{2.6} & \SI{4e9}{\giga\electronvolt} < E < \SI{3e11}{\giga\electronvolt}
-	\end{cases}
+	\end{cases}\,.
 \end{align}
 Due to this interesting features, composition measurements at these \enquote{transition points} are desired in particular.
 
@@ -181,9 +183,18 @@ For the observation of cosmic-ray air showers and especially gamma-ray air showe
 	\label{cta_artwork}
 \end{figure}
 
-Even small IACTs can improve the energy measurement of other ground-based particle detectors since the Cherenkov light yield is proportional to the primary particle energy. Hybrid measurements of IACTs and particle detectors can seriously improve the energy resolution as recent studies show~\cite{iacts:extension}.
+Even small IACTs can improve the energy measurement of other ground-based particle detectors since the Cherenkov light yield is proportional to the primary particle energy. Hybrid measurements of IACTs and particle detectors can enhance the energy resolution as recent studies show~\cite{iacts:extension}.
 
 In contrast to large IACTs where the camera usually consists of an array of photomultiplier tubes (PMTs), smaller IACTs are based on Geiger-mode avalanche photo diodes (G-APDs) section or SiPMs which are linkages of many G-APDs. These devices are discussed in more detail in section~\ref{sec:sipm:working_principle}. In 2011, the \textbf{F}irst G-\textbf{A}PD \textbf{C}herenkov \textbf{T}elescope FACT started taking data with G-APDs as the first Cherenkov telescope of that kind~\cite{iacts:fact}.
 
-\section{The IceCube Air Cherenkov Telescopes \iceact}\label{sec:iceact_intro}
+\section{The \icecube Air Cherenkov Telescopes \iceact}\label{sec:iceact_intro}
 
+The \textit{\textbf{Ice}Cube \textbf{A}ir \textbf{C}herenkov \textbf{T}elescopes} \textit{\iceact} 
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{IceActDemonstrator.jpg}
+	\caption[The \iceact demonstrator on top of the \icecube laboratory]{\textbf{The \iceact demonstrator on top of the \icecube laboratory.}~\cite{iceact:demonstrator:picture} long caption}
+	\label{label}
+\end{figure}
