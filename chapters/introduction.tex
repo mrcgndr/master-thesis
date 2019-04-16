@@ -25,7 +25,7 @@ Since start of operation, \icecube has achieved two important breakthroughs. In 
 
 \subsection{\icecube-Gen2}
 
-\textit{\icecube-Gen2} is proposed to be a substantial enhancement of the \icecube Neutrino Observatory. It es planned to have a much better sensitivity to high-energy neutrinos by an instrumented volume about ten times bigger than \icecube has today. Studies of extra-galactic neutrino sources and resolving their location require a much higher rate of detected neutrino than \icecube provides by now. For this purpose, more strings with a denser spacing of further improved DOMs will be deployed covering a much lager in-ice volume.~\cite{icecube:gen2:1,icecube:gen2:2} Additionally, a large upgrade of \icetop concerning veto capabilities (\textit{IceVeto}) is discussed with different approaches. These are scintillation detectors (\textit{IceScint})~\cite{icecube:gen2:icescint}, a radio antenna array~\cite{icecube:gen2:radio}, or imaging air Cherenkov telescopes (\textit{IceAct})~\cite{iacts:extension,icecube:gen2:1}.
+\textit{\icecube-Gen2} is proposed to be a substantial enhancement of the \icecube Neutrino Observatory. It es planned to have a much better sensitivity to high-energy neutrinos by an instrumented volume about ten times bigger than \icecube has today. Studies of extra-galactic neutrino sources and resolving their location require a much higher rate of detected neutrino than \icecube provides by now. For this purpose, more strings with a denser spacing of further improved DOMs will be deployed covering a much lager in-ice volume.~\cite{icecube:iceact,icecube:gen2} Additionally, a large upgrade of \icetop concerning veto capabilities (\textit{IceVeto}) is discussed with different approaches. These are scintillation detectors (\textit{IceScint})~\cite{icecube:gen2:icescint}, a radio antenna array~\cite{icecube:gen2:radio}, or imaging air Cherenkov telescopes (\textit{IceAct})~\cite{iacts:extension,icecube:iceact}.
 
 \section{Cosmic Rays}\label{sec:cosmicrays}
 
@@ -174,7 +174,7 @@ The cone-like radiation profile of Cherenkov light with respect to the air showe
 
 \section{Imaging Air Cherenkov Telescopes (IACTs)}
 
-For the observation of cosmic-ray air showers and especially gamma-ray air showers, \textit{imaging air Cherenkov telescopes} (\text{IACT}s) are very suitable instruments. The common principle is to mount a camera looking down to a segmented mirror in order to detect reflecting Cherenkov photons with the ability to reconstruct their directions. State-of-the-art IACTs have mirrors with diameters up to \SI{17}{\meter} by gaining an angular resolution down to \SI{0.07}{\degree}. The typical energy range of primary gamma rays that can be observed with these IACTs is $\sim\SI{50}{\giga\electronvolt}$ up to $\sim\SI{10}{\tera\electronvolt}$.~\cite{iacts:magic}. Established IACT experiments are for instance \textit{H.E.S.S.} (Namibia)~\cite{iacts:hess}, \textit{VERITAS} (Arizona)~\cite{iacts:veritas}, and \textit{MAGIC} (La Palma)~\cite{iacts:magic}. The \text{Cherenkov Telescope Array} (\text{CTA}) will be a next-generation IACT array operating at two sites at the northern and southern hemisphere. In total, \num{118} telescopes are planned with three different sizes of \SI{4}{\meter}, \SI{12}{\meter}, \SI{23}{\meter}. It will extend the observable energy range up to $\sim\SI{100}{\tera\electronvolt}$.~\cite{iacts:cta} An artwork of a possible array is shown in figure~\ref{cta_artwork}.
+For the observation of cosmic-ray air showers and especially gamma-ray air showers, \textit{imaging air Cherenkov telescopes} (\textit{IACT}s) are very suitable instruments. The common principle is to mount a camera looking down to a segmented mirror in order to detect reflecting Cherenkov photons with the ability to reconstruct their directions. State-of-the-art IACTs have mirrors with diameters up to \SI{17}{\meter} by gaining an angular resolution down to \SI{0.07}{\degree}. The typical energy range of primary gamma rays that can be observed with these IACTs is $\sim\SI{50}{\giga\electronvolt}$ up to $\sim\SI{10}{\tera\electronvolt}$.~\cite{iacts:magic}. Established IACT experiments are for instance \textit{H.E.S.S.} (Namibia)~\cite{iacts:hess}, \textit{VERITAS} (Arizona)~\cite{iacts:veritas}, and \textit{MAGIC} (La Palma)~\cite{iacts:magic}. The \text{Cherenkov Telescope Array} (\text{CTA}) will be a next-generation IACT array operating at two sites at the northern and southern hemisphere. In total, \num{118} telescopes are planned with three different sizes of \SI{4}{\meter}, \SI{12}{\meter}, \SI{23}{\meter}. It will extend the observable energy range up to $\sim\SI{100}{\tera\electronvolt}$.~\cite{iacts:cta} An artwork of a possible array is shown in figure~\ref{cta_artwork}.
 
 \begin{figure}[H]
 	\centering
@@ -189,12 +189,26 @@ In contrast to large IACTs where the camera usually consists of an array of phot
 
 \section{The \icecube Air Cherenkov Telescopes \iceact}\label{sec:iceact_intro}
 
-The \textit{\textbf{Ice}Cube \textbf{A}ir \textbf{C}herenkov \textbf{T}elescopes} \textit{\iceact} 
+The \textit{\textbf{Ice}Cube \textbf{A}ir \textbf{C}herenkov \textbf{T}elescopes} \textit{\iceact} are one of the proposed extensions of the surface detector \icetop within the scope of \icecube-Gen2. It is planned to be an array of small air Cherenkov telescopes which are compact and robust to stand the harsh weather conditions at South Pole.\\
 
+A major purpose of \iceact is to enlarge the veto capabilities of \icetop by reducing the energy threshold down to about \SI{30}{\tera\electronvolt}~\cite{icecube:iceact}. It can also be useful for calibration of \icecube and \icetop and is even able to do cosmic-ray composition measurements, especially together with \icecube and \icetop via different detection channels~\cite{iceact:composition}.\\
+
+The baseline design of \iceact is adapted from the \textit{FAMOUS}\footnote{\textbf{F}irst \textbf{A}uger \textbf{M}ulti-pixel photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy air \textbf{S}howers} fluorescence telescope designed for the Pierre Auger Observatory in Argentina. It utilizes silicon photomultipliers (SiPMs, cf. section~\ref{sec:sipm:working_principle}) rather than photomultiplier tubes (PMTs) for the detection of fluorescence light.~\cite{famous:telescope} Since Cherenkov and fluorescence light range in similar wavelength regimes, Cherenkov light detection is possible as well. In addition, a third derivative of FAMOUS -- namely \textit{HAWC's Eye} -- has operated together with the HAWC gamma ray observatory. Studies showed, that a hybrid measurement of HAWC and HAWC's Eye could improve the energy resolution significantly~\cite{hawcseye:merlin}.\\
+
+The \iceact camera consists of \num{61} SiPMs (cf. section~\ref{iceact:model:camera}). In 2015, a telescope demonstrator (called \textit{IceACT-2016}) with 7 pixels was deployed on the \icecube Laboratory (ICL) and has been operated in 2016. Analyses of the taken data have proven the concept to be successful~\cite{iceact:erik}. The figure~\ref{iceact:picture} shows the telescope the demonstrator was replaced with in January 2017.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{IceActDemonstrator.jpg}
-	\caption[The \iceact demonstrator on top of the \icecube laboratory]{\textbf{The \iceact demonstrator on top of the \icecube laboratory.}~\cite{iceact:demonstrator:picture} long caption}
-	\label{label}
+	\includegraphics[width=0.9\textwidth]{IceActDemonstrator.jpg}
+	\caption[The \iceact telescope on top of the \icecube Laboratory (ICL)]{\textbf{The \iceact telescope on top of the \icecube Laboratory (ICL).}~\cite{iceact:picture} The telescope seen in the picture was deployed in 2017 as a successor of the \iceact 7-pixel demonstrator.}
+	\label{iceact:picture}
+\end{figure}
+
+In this thesis, the focus in on the development of a full telescope simulation with a subsequent parameterization. Thus, the technical properties of the \iceact optics are described in more detail associated with the simulation model in chapter~\ref{chap:iceact_model}. Nevertheless, figure~\ref{iceact:sketch} shows an overview sketch of the \iceact telescope.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{IceActSketch.pdf}
+	\caption[Sketch of the \iceact telescope]{\textbf{Sketch of the \iceact telescope.}~\cite{iceact:erik} The mechanical design of \iceact is based on a carbon tube on a box where the electronics is stored. On top of the tube, a Fresnel lens and a glass plate are fixed. At the focal distance of the lens, the \num{61} pixel camera is placed. The components are described in more detail in chapter~\ref{chap:iceact_model}.}
+	\label{iceact:sketch}
 \end{figure}
