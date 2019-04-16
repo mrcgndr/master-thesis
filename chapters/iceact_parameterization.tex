@@ -283,19 +283,17 @@ Since the photon detection efficiency of the SiPMs is a non-constant function of
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[t]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{wvl_bins_hist.pdf}
-		\includegraphics[draft, width=\textwidth]{wvl_bins_hist.pdf}
+		\includegraphics[width=\textwidth]{lut_wvl_bins_hist.pdf}
 		\subcaption{adaptive binning}
 		\label{param:wvl_binning:adaptive}
 	\end{subfigure}
 	\caption[Constant vs. adaptive wavelength binning]{\textbf{Constant vs. adaptive wavelength binning.} all wavelengths of photons that are detected by any camera SiPM are histogramized in \num{50} bins between \SI{272}{\nano\meter} and \SI{900}{\nano\meter}. In (\subref{param:wvl_binning:constant}), the \num{50} bins are distributed uniformly in wavelength so that one can see a shape that is quite similar to the PDE of the SiPMs. Figure~(\subref{param:wvl_binning:adaptive}) shows the same data with adaptive bin sizes to equalize the counts per bin. The resulting bin edges are rounded to integer numbers which causes the visible fluctuations.}
 	\label{param:wvl_binning}
 \end{figure}
-\todo{plot mit adaptiven bins}
 
 The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPM, i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive}). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).
 
-With the adaptive wavelength binning it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable probability density estimation. The simulated wavelength range starts at $\lambda_\text{sim,min}=\SI{270}{\nano\meter}$ but there is no photon detected with a wavelength below \SI{272}{\nano\meter} due to the absorption properties or the glass plate (cf. \ref{sec:iceact:model:material}). Thus, the wavelength binning for the parameterization starts at $\lambda_\text{min}=\SI{272}{\nano\meter}$.
+With the adaptive wavelength binning it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable probability density estimation. The simulated wavelength range starts at $\lambda_\text{min}=\SI{272}{\nano\meter}$ since there is no photon detected with a wavelength below \SI{272}{\nano\meter} due to the absorption properties or the glass plate (cf. \ref{sec:iceact:model:material}).
 
 \subsection{Adaptive vs. Non-adaptive KDE}\label{sec:adaptive_vs_nonadaptive}
 
