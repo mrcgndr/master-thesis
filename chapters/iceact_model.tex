@@ -236,12 +236,12 @@ Hence, the application of Winston cones extend the detectional area of the pixel
 
 \subsubsection{Winston Cone Implementation in \geant with CADMesh}
 
-Due to its complex shape, the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshing}. For the \iceact Winston cone this is done with the CAD software \textit{FreeCAD}, more precisely with the algorithm \textit{Mefisto}. This meshing routine only needs the maximum edge length of the single tiles as a free parameter. The smaller the maximum edge length the more detailed the mesh gets but the more computational time is needed to translate this mesh into \geant. Thus, a good compromise has to be found. Figure~\ref{wico:meshing} shows the meshed cone dependent on the maximum edge length. Simulations show a good performance for a maximum egde length of \SI{0.2}{\milli\meter}. Higher lengths result in visible image artifacts. (cf. section~\ref{sec:wico_meshing}) 
+Due to its complex shape, the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshing}. For the \iceact Winston cone this is done with the CAD software \textit{FreeCAD}, more precisely with the algorithm \textit{Mefisto}. This meshing routine only needs the maximum edge length of the single tiles as a free parameter. The smaller the maximum edge length the more detailed the mesh gets but the more computational time is needed to translate this mesh into \geant. Thus, a good compromise has to be found. Figure~\ref{wico:meshing} shows the meshed cone dependent on the maximum edge length. Simulations show a good performance for a maximum egde length of \SI{0.4}{\milli\meter}. Higher lengths result in visible image artifacts. (cf. section~\ref{sec:wico_meshing}) 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{wicomeshes/WiCo_Meshes.pdf}
-	\caption[\iceact Winston cone meshing with different maximum edge lengths]{\textbf{\iceact Winston cone meshing with different maximum edge lengths.} The accuracy increases by reducing the maximum edge length of the tiles. The length of \SI{0.2}{\milli\meter} is used in the simulation.}
+	\caption[\iceact Winston cone meshing with different maximum edge lengths]{\textbf{\iceact Winston cone meshing with different maximum edge lengths.} The accuracy increases by reducing the maximum edge length of the tiles. The length of \SI{0.4}{\milli\meter} is used in the simulation.}
 	\label{wico:meshing}	
 \end{figure}
 
