@@ -5,7 +5,7 @@ This chapter will discuss the \geant simulation process. \todo{bisschen mehr?}
 
 \section{Simulation of Single Components}
 
-In order to make some first checks and optimization, the focus is on single essential components, i.e. the Fresnel lens and the Winston cones.
+In order to make some first checks and optimizations, the focus is on single essential components, i.e. the Fresnel lens and the Winston cones.
 
 \subsection{\enquote{Best} Wavelength}\label{sec:best_wvl}
 
@@ -14,7 +14,7 @@ Many of the \iceact telescope properties have (non-linear) wavelength dependenci
 \begin{itemize}
 	\item The Cherenkov spectrum. The data shown in figure~\ref{airshowers:cherenkovspectrum} (La Palma, \SI{2200}{\meter} a.s.l.) is chosen.
 	\item The internal transmission function of PMMA. It is assumed that a photon has to pass approximately \SI{30}{\milli\meter} of PMMA to get to the SiPMs. Thus, the internal transmission function shown in figure~\ref{iceact:model:material:transmission} as blue dotted-dashed line has to be exponentiated by \num{10} to hold for this case.
-	\item The internal transmission function of borosilicate, i.e. the material of the glass plate. The photons have to pass approximately \SI{2}{\milli\meter}. Exponentiation of a factor $\frac{2}{3}$ of the orange dotted-dashed line in figure~\ref{iceact:model:material:transmission} leads to the desired function.
+	\item The internal transmission function of borosilicate, i.e. the material of the glass plate. The photons have to pass approximately \SI{2}{\milli\meter}. Exponentiation of a factor~$\frac{2}{3}$ of the orange dotted-dashed line in figure~\ref{iceact:model:material:transmission} leads to the desired function.
 	\item The photon detection efficiency (PDE) function of the SiPMs interpolated for $V_\text{OV} = \SI{5}{\volt}$ (cf. orange curve in figure~\ref{sipm:pde}).
 \end{itemize}
 
@@ -92,20 +92,46 @@ Thus, the aberration radius can be calculated for each focal plane shift $\Delta
 
 
 
-\section{Simulation Strategy and Verification}
+\section{Verification of the Simulated Optics}
+
+In this section, possible uncertainties and aberration effects are investigated. On the one hand, the approximation of the Winston cones by a tessellated structure might imply some aberrations or artifacts. On the other hand, the effect of mounting a glass plate on top of the Fresnel lens is discussed.
 
 \subsection{Winston Cone Meshing}\label{sec:wico_meshing}
 
-\subsection{Aberration Effects -- \enquote{Ghost Image}}\label{sec:ghost_image}
+\subsection{\enquote{Ghost Image}}\label{sec:ghost_image}
+
+At all interfaces, the photon has to pass, reflection and transmission occur. In the \iceact optics, mainly the transmission is desired. Nevertheless, reflections occur as well. To get a rough estimate, one can assume perpendicular incidence and evaluate equation~\eqref{eq:perp_interface_transmission} with $n(\lambda)=\num{1.5}$, $n_\text{air}=1$. The result is, that a photon is transmitted by $\approx\SI{96}{\percent}$ and reflected by $\approx\SI{4}{\percent}$. Usually, an incidental reflection results in \enquote{diffuse} scattering of the photons and decreases the imaging quality of the optical system. Besides this effect which results in a kind of \enquote{noisy} image, there is a very systematic beam path that ends up with a accumulation of scattered photons in a distinct direction -- the \textit{ghost image}. The reason for this effect is the glass plate in combination with the Fresnel lens. The imaging character of a lens translates an incident direction into a position on the focal plane. It can appear, that a photon is reflected at the Winston cone entrance window and thus gets back to the Fresnel lens. The Fresnel lens can now refract the photon in such a way that it gets to the back of glass plate namely with the same inclination angle as in the initial state, but now with the reversed traveling direction. A possible reflection on the glass plate results in a shift of the azimuth angle by \SI{180}{\degree}. By a trasmission through the Fresnel lens once again, the photon is now refracted to the focal plane with a azimuth shift of \SI{180}{\degree} as well. If now this photon gets finally through the cone and is detected by the SiPM, it causes the ghost image. To visualize this, figure~\ref{ghostimage_path} shows the ghost image effect at \enquote{leading order}, i.e. the most probable beam path.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{GhostImage.pdf}
-	\caption[Schematic sketch for the \enquote{ghost image} ray path]{\textbf{Schematic sketch for the \enquote{ghost image} ray path.} long caption}
+	\includegraphics[width=0.7\textwidth]{GhostImage.pdf}
+	\caption[Schematic sketch for the \enquote{ghost image} beam path]{\textbf{Schematic sketch for the \enquote{ghost image} beam path.} The encircled numbers mark the order of interface interactions. At 1, 2, 3, 4, 6, 7, 9, 10, and 11, transmission is required whereas at 5 and 8, the photon needs to be reflected in order to produce the ghost image.}
 	\label{ghostimage_path}
 \end{figure}
 
+With the approximated transmission and reflection coefficient one can estimate the suppression factor. The ghost image occurs if a photon undergoes two reflections and four transmissions more than a \enquote{normal} photon that is detected in the right SiPM. Thus, we get to a suppression of
+\begin{align}
+	(\SI{4}{\percent})^2 \cdot (\SI{96}{\percent})^4 \sim \SI{0.1}{\percent}\,.
+\end{align}
+One obtains, that the ghost image is a per-mill effect, i.e. for an image where \num{1000} photons are detected, one would expect one ghost image photon.
+\todo{verweis auf plot, wo der effekt sichtbar ist (wahscheinlich detection efficiency maps section)}
+
 \section{Parametrization Simulation}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|c|l}
+		description 				   & symbol               & value\\\hline
+		minimum simulated wavelength   & $\lambda_\text{min}$ & \SI{270}{\nano\meter}\\
+		maximum simulated wavelength   & $\lambda_\text{max}$ & \SI{900}{\nano\meter}\\
+		maximum simulated zenith angle & $\theta_\text{max}$  & \SI{10}{\degree}\\
+		mesh size 					   & --				      & \SI{0.4}{\milli\meter}\\
+		focal plan shift 			   & $\Delta z$			  & \SI{1.25}{\milli\meter}\\
+		total simulated particles      & $N_\text{sim}$		  & \num{15e9}\\
+	\end{tabular}
+	\caption[Parameters chosen for the parameterization simulation]{\textbf{Parameters chosen for the parameterization simulation.}}
+	\label{paramsim:params}
+\end{table}
 
 \begin{figure}[H]
 	\centering
