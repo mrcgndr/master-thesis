@@ -114,24 +114,11 @@ With the approximated transmission and reflection coefficient one can estimate t
 	(\SI{4}{\percent})^2 \cdot (\SI{96}{\percent})^4 \sim \SI{0.1}{\percent}\,.
 \end{align}
 One obtains, that the ghost image is a per-mill effect, i.e. for an image where \num{1000} photons are detected, one would expect one ghost image photon.
-\todo{verweis auf plot, wo der effekt sichtbar ist (wahscheinlich detection efficiency maps section)}
+\todo{verweis auf plot, wo der effekt sichtbar ist (wahrscheinlich detection efficiency maps section)}
 
 \section{Parametrization Simulation}
 
-\begin{table}[H]
-	\centering
-	\begin{tabular}{r|c|l}
-		description 				   & symbol               & value\\\hline
-		minimum simulated wavelength   & $\lambda_\text{min}$ & \SI{270}{\nano\meter}\\
-		maximum simulated wavelength   & $\lambda_\text{max}$ & \SI{900}{\nano\meter}\\
-		maximum simulated zenith angle & $\theta_\text{max}$  & \SI{10}{\degree}\\
-		mesh size 					   & --				      & \SI{0.4}{\milli\meter}\\
-		focal plan shift 			   & $\Delta z$			  & \SI{1.25}{\milli\meter}\\
-		total simulated particles      & $N_\text{sim}$		  & \num{15e9}\\
-	\end{tabular}
-	\caption[Parameters chosen for the parameterization simulation]{\textbf{Parameters chosen for the parameterization simulation.}}
-	\label{paramsim:params}
-\end{table}
+The parameterization has the goal to give the detection efficiency of each pixel for a photon with given wavelength $\lambda$ and direction $(\theta,\phi)$. Therefore, a simulation has to be done for a wavelength range $[\lambda_\text{min}, \lambda_\text{max}]$ and a direction range -- given by a maximum inclination angle $\theta_\text{max}$ -- in which \iceact is capable of detecting Cherenkov photons. Firstly, the \geant coordinate system is introduced in figure~\ref{geant_coords}.\\
 
 \begin{figure}[H]
 	\centering
@@ -148,3 +135,21 @@ One obtains, that the ghost image is a per-mill effect, i.e. for an image where 
 	\caption[Coordinate system used in \geant and for the simulation]{\textbf{Coordinate system used in \geant and for the simulation.} }
 	\label{geant_coords}
 \end{figure}
+
+The wavelength range is mainly limited by the material properties and the photon detection efficiency of the SiPMs (cf. figures~\ref{iceact:model:material:transmission} and \ref{sipm:pde}). The layout of the optical system determines the maximum inclination angle. In figure~\ref{iceact:camera:layout} a maximum inclination angle of $\approx\SI{6.8}{\degree}$ is calculated. For this parameterization, a larger angle of $\theta_\text{max}=\SI{10}{\degree}$ is chosen in order to account for UV photons near $\lambda_\text{min}$  which are refracted more strongly and thus can be detected under higher zenith angles. Both, i.e. wavelengths and directions, are simulated uniformly distributed. For $\lambda$ and $\phi$ this can be done without problems. For the zenith angle $\theta$ one has to consider the curvilinear character of the spherical coordinate system, which causes a variable phase space depending on $\theta$. By taking the cosine of the zenith angle, this effect is compensated. Thus, the simulation is done uniformly in $\cos{\theta}$. Additionally, the focal plane shift (cf. section~\ref{sec:focalplaneshift}) and the reasonable mesh size (cf. section~\ref{sec:wico_meshing}) is applied. In total, \num{15e9} particles are simulated. Table~\ref{paramsim:params} gives a summary of the simulation parameters.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|c|l}
+		description 				   & symbol               & value\\\hline
+		minimum simulated wavelength   & $\lambda_\text{min}$ & \SI{272}{\nano\meter}\\
+		maximum simulated wavelength   & $\lambda_\text{max}$ & \SI{900}{\nano\meter}\\
+		maximum simulated zenith angle & $\theta_\text{max}$  & \SI{10}{\degree}\\
+		mesh size 					   & --				      & \SI{0.4}{\milli\meter}\\
+		focal plan shift 			   & $\Delta z$			  & \SI{1.25}{\milli\meter}\\
+		total simulated particles      & $N_\text{sim}$		  & \num{15e9}\\
+	\end{tabular}
+	\caption[Parameters chosen for the parameterization simulation]{\textbf{Parameters chosen for the parameterization simulation.} Wavelengths are simulated uniformly in the interval $[\lambda_\text{min}, \lambda_\text{max}]$. The direction are simulated uniformly in azimuth $\phi$ and cosine of the zenith angle $\cos{\theta}$. The reasonable mesh size determined in section~\ref{sec:wico_meshing} and the focal plane shift discussed in section~\ref{sec:focalplaneshift} is applied.}
+	\label{paramsim:params}
+\end{table}
+
