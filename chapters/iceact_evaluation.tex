@@ -1,6 +1,6 @@
 \chapter{Application on Simulated Data}
 
-The parameterization process introduced in section~\ref{chap:param_strategy} can now be applied to the simulation results from \geant. In the following sections, some comparisons and results are shown and discussed.
+The parameterization strategy introduced in chapter~\ref{chap:param_strategy} can now be applied to the simulation results from \geant. In the following sections, some comparisons and results are shown and discussed.
 
 \section{Wavelength Binning}\label{sec:wvl_binning}
 
@@ -95,11 +95,36 @@ Anyway, the detection distributions can now be calculated and renormalized for e
 
 \section{Detection Efficiency Maps}\label{sec:deteff_maps}
 
-By follow the strategy described in section~\ref{sec:param:strategy} and considering the findings from sections~\ref{sec:wvl_binning} and \ref{sec:adaptive_vs_nonadaptive}, one can now finally calculate \textit{detection efficiency maps}. For each camera pixel $i$ and wavelength bin $\Delta\lambda$, these maps show the probability $\epsilon_{i,\Delta\lambda,HP}$ to detect a photon with wavelength $\lambda\in\Delta\lambda$ in camera pixel $i$ as a function of its origin direction~$(\theta,\phi)$ which is coded in the ordinal number~$HP$ of the corresponding HEALPix. For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to choose a reasonable value (cf. table~\ref{healpix:table}): too fine pixelization would obviously result in a very detailed parameterization. Due to KDE, an \enquote{unbinned} detection efficiency is available -- at least in origin directions -- so that it is technically possible to choose a very fine binning. The problem is, that the main goal of the \iceact parameterization is to produce a lookup table that is efficient and capable of evaluating large amounts of Cherenkov photons. A unnecessarily fine HEALPix binning would just blow up the lookup table and quick evaluation is not feasible anymore.\\
+By following the strategy described in chapter~\ref{chap:param:strategy} and considering the findings from sections~\ref{sec:wvl_binning} and \ref{sec:adaptive_vs_nonadaptive}, one can now finally calculate \textit{detection efficiency maps}. For each camera pixel $i$ and wavelength bin $\Delta\lambda$, these maps show the probability $\epsilon_{i,\Delta\lambda,HP}$ to detect a photon with wavelength $\lambda\in\Delta\lambda$ in camera pixel $i$ as a function of its origin direction~$(\theta,\phi)$ which is coded in the ordinal number~$HP$ of the corresponding HEALPix. For the error estimation, the bootstrapping method presented in section~\ref{sec:bootstrapping} is used. To get a confident estimation with reasonable computational effort, $N_\text{bootstrap} = \num{10}$ bootstrapping iterations are performed.\\
 
-For the parameterization 
+\subsection{Choice of HEALPix Pixelization Parameter $N_\text{side}$}
 
-\todo{central pixel, FOV einzeichnen, vernünftige wahl von Nside zeigen}
+For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to choose a reasonable value as well (cf. table~\ref{healpix:table}): too fine pixelization would obviously result in a very detailed parameterization. Due to KDE, an \enquote{unbinned} detection efficiency is available -- at least in origin directions -- so that it is technically possible to choose a very fine binning. The problem is, that the main goal of the \iceact parameterization is to produce a lookup table that is efficient and capable of evaluating large amounts of Cherenkov photons. An unnecessarily fine HEALPix binning would just blow up the lookup table and quick evaluation is not feasible anymore. To determine the optimal $N_\text{side}$ of the HEALPix model, the detection efficiency of the central pixel $i=0$ is considered. As one can see in figure~\ref{deteffmap:px0}, the most efficient angular area is below a zenith angle of $\theta=\SI{0.7}{\degree}$. Usually, this regions are called \textit{field of view} (\textit{FOV}) which equals the doubled zenith angle $2\theta$ if the FOV is symmetrical around the zenith. Thus, the core field of view of the central pixel is $\SI{1.4}{\degree}$. In the transition region $\SI{1.4}{\degree} < 2\theta \leq \SI{2.5}{\degree}$, the detection efficiency decreases rapidly. Therefore, is it crucial to pixelize this region such that the hexagonal shape of the pixel's field of view -- which is caused by the Winston cones -- is described in a sufficient degree of detail in order to have a fairly precise approximation.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl413nm_px00_view1.5deg.pdf}
+	\caption[Detection efficiency of central camera pixel]{\textbf{Detection efficiency of central camera pixel.} The plot is zoomed into the main detection region up to a zenith angle $\theta=\SI{1.5}{\degree}$. As a wavelength, the bin around the most efficient wavelength~$\lambda^\ast$ (cf. section~\ref{sec:best_wvl}) is chosen. In a field of view below $\SI{1.4}{\degree}$, the central pixel has its maximal detection efficiency. The HEALPix parameter in this map is $N_\text{side}=\num{512}$. Bootstrapping leads to the relative error shown in the right plot.}
+	\label{deteffmap:px0}
+\end{figure}
+
+As figure~\ref{deteffmap:px0} shows, a HEALPix parameter of $N_\text{side}=\num{512}$ is sufficient to describe the hexagonal shape. By applying $N_\text{side}=\num{256}$, four HEALPix would reduce to just one HEALPix, which could hardly describe the edges. On the other side, one gets to $N_\text{side}=\num{1024}$ by dividing a HEALPix into four. This results in a unnecessarily high amount of HEALPix to describe the given shape. Table~\ref{n_healpix_fov} shows the number of enclosed HEALPix(-centers) in the core region ($2\theta\leq\SI{1.4}{\degree}$) and the transition region ($\SI{1.4}{\degree} < 2\theta \leq \SI{2.5}{\degree}$) depending on the used HEALPix parameter.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c|c|c}
+		\multirow{2}{*}{$N_\text{side}$} & \multicolumn{2}{c}{HEALPixes in region} \\
+		&	$2\theta\leq\SI{1.4}{\degree}$ & $\SI{1.4}{\degree} < 2\theta \leq \SI{2.5}{\degree}$ \\\hline
+		\num{256}  & \num{24}  & \num{88} \\
+		\num{512}  & \num{112} & \num{368} \\
+		\num{1024} & \num{480} & \num{1380} \\
+	\end{tabular}
+	\caption[Number of HEALPixes centers in regions around the zenith]{\textbf{Number of HEALPixes centers in regions around the zenith.} The numbers for three possible HEALPix models are shown. As characteristic areas, the efficiency core region ($2\theta\leq\SI{1.4}{\degree}$) and transition region ($\SI{1.4}{\degree} < 2\theta \leq \SI{2.5}{\degree}$) of the central pixel around the most efficient wavelength~$\lambda^\ast$ (cf. section~\ref{sec:best_wvl}) are chosen.}
+	\label{n_healpix_fov}
+\end{table}
+
+\subsection{Overview of Results}
+\todo{vielleicht andere Überschrift?}
 
 \todo{maps von neuer rechnung, die hoffentlich noch fertig wird}
 
@@ -115,7 +140,7 @@ First of all, one has to define how to iterate over the given information. In th
 
 \begin{figure}[H]
 	\includegraphics[width=\textwidth]{LUT_transposition_example.pdf}
-	\caption[Visualization for the lookup table transposition]{\textbf{Visualization for the lookup table transposition.} A certain HEALPix (here: $HP=\num{3950}$) is considered. For one camera pixel, the detection efficiency is read from the maps throughout all wavelength bins. In this example, some maps for pixel \num{20} are chosen. Doing this for all camera pixels yields to the blue-framed plot. For the considered HEALPix one gets the wavelength-dependent detection efficiency for each camera pixel. The \enquote{camera top view} plot shows the camera as seen from the lens. Pixels that have a maximum detection efficiency greater than~\SI{0.1}{\percent} are emphasized with colors. The detection efficiency functions of all other pixels are not plotted. Besides, the HEALPix center coordinates are given with a polar plot.}
+	\caption[Visualization for the lookup table transposition]{\textbf{Visualization for the lookup table transposition.} A certain HEALPix (here: $HP=\num{4890}$) is considered. For one camera pixel, the detection efficiency is read from the maps throughout all wavelength bins. In this example, some maps for pixel \num{20} are chosen. Doing this for all camera pixels yields to the blue-framed plot. For the considered HEALPix one gets the wavelength-dependent detection efficiency for each camera pixel. The \enquote{camera top view} plot shows the camera as seen from the lens. Pixels that have a maximum detection efficiency greater than~\SI{0.1}{\percent} are emphasized with colors. The detection efficiency functions of all other pixels are not plotted. Besides, the HEALPix center coordinates are given with a polar plot.}
 	\label{lut:transpose_example}
 \end{figure}
 
