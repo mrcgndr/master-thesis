@@ -12,10 +12,10 @@ In order to make some first checks and optimizations, the focus is on single ess
 Many of the \iceact telescope properties have (non-linear) wavelength dependencies (cf. section~\ref{sec:iceact:model:material}). Additionally, the Cherenkov spectrum is wavelength dependent as well (cf. figure~\ref{airshowers:cherenkovspectrum}). By implication, there has to be a wavelength $\lambda^\ast$ that \iceact is the most efficient. One can determine $\lambda^\ast$ by looking at the following limiting functions.
 
 \begin{itemize}
-	\item The Cherenkov spectrum. The data shown in figure~\ref{airshowers:cherenkovspectrum} (La Palma, \SI{2200}{\meter} a.s.l.) is chosen.
-	\item The internal transmission function of PMMA. It is assumed that a photon has to pass approximately \SI{30}{\milli\meter} of PMMA to get to the SiPMs. Thus, the internal transmission function shown in figure~\ref{iceact:model:material:transmission} as blue dotted-dashed line has to be exponentiated by \num{10} to hold for this case.
-	\item The internal transmission function of borosilicate, i.e. the material of the glass plate. The photons have to pass approximately \SI{2}{\milli\meter}. Exponentiation of a factor~$\frac{2}{3}$ of the orange dotted-dashed line in figure~\ref{iceact:model:material:transmission} leads to the desired function.
-	\item The photon detection efficiency (PDE) function of the SiPMs interpolated for $V_\text{OV} = \SI{5}{\volt}$ (cf. orange curve in figure~\ref{sipm:pde}).
+	\item \textbf{The Cherenkov spectrum.} The data shown in figure~\ref{airshowers:cherenkovspectrum} (La Palma, \SI{2200}{\meter} a.s.l.) is chosen.
+	\item \textbf{The internal transmission function of PMMA.} It is assumed that a photon has to pass approximately \SI{30}{\milli\meter} of PMMA to get to the SiPMs. Thus, the internal transmission function shown in figure~\ref{iceact:model:material:transmission} as blue dotted-dashed line has to be exponentiated by \num{10} to hold for this case.
+	\item \textbf{The internal transmission function of borosilicate}, i.e. the material of the glass plate. The photons have to pass approximately \SI{2}{\milli\meter}. Exponentiation of a factor~$\frac{2}{3}$ of the orange dotted-dashed line in figure~\ref{iceact:model:material:transmission} leads to the desired function.
+	\item \textbf{The photon detection efficiency (PDE) function of the SiPMs} interpolated for $V_\text{OV} = \SI{5}{\volt}$ (cf. orange curve in figure~\ref{sipm:pde}).
 \end{itemize}
 
 All of these functions are normalized, i.e. divided by their own maximum, and than multiplied which results in a new (relative) efficiency function. The maximum of this function again is the \enquote{best} wavelength found to be $\lambda^\ast = \SI{411}{\nano\meter}$. Figure~\ref{best_wvl} shows the procedure graphically. 
@@ -105,18 +105,18 @@ At all interfaces, the photon has to pass, reflection and transmission occur. In
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{GhostImage.pdf}
-	\caption[Schematic sketch for the \enquote{ghost image} beam path]{\textbf{Schematic sketch for the \enquote{ghost image} beam path.} The encircled numbers mark the order of interface interactions. At 1, 2, 3, 4, 6, 7, 9, 10, and 11, transmission is required whereas at 5 and 8, the photon needs to be reflected in order to produce the ghost image.}
+	\caption[Schematic sketch for the \enquote{ghost image} beam path]{\textbf{Schematic sketch for the \enquote{ghost image} beam path.} The encircled numbers mark the order of interface interactions. At 1, 2, 3, 4, 6, 7, 9, 10, and 11, transmission is required whereas at 5 and 8, the photon needs to be reflected in order to produce the ghost image. At 8, the azimuth shift of \SI{180}{\degree} takes place.}
 	\label{ghostimage_path}
 \end{figure}
 
-With the approximated transmission and reflection coefficient one can estimate the suppression factor. The ghost image occurs if a photon undergoes two reflections and four transmissions more than a \enquote{normal} photon that is detected in the right SiPM. Thus, we get to a suppression of
+With the approximated transmission and reflection coefficient one can estimate the suppression factor. The ghost image occurs if a photon undergoes two reflections and four transmissions more than a \enquote{normal} photon that is detected in the right SiPM. Thus, one gets a suppression factor of
 \begin{align}
 	(\SI{4}{\percent})^2 \cdot (\SI{96}{\percent})^4 \sim \SI{0.1}{\percent}\,.
 \end{align}
 One obtains, that the ghost image is a per-mill effect, i.e. for an image where \num{1000} photons are detected, one would expect one ghost image photon.
 \todo{verweis auf plot, wo der effekt sichtbar ist (wahrscheinlich detection efficiency maps section)}
 
-\section{Parametrization Simulation}
+\section{Parameterization Simulation}
 
 The parameterization has the goal to give the detection efficiency of each pixel for a photon with given wavelength $\lambda$ and direction $(\theta,\phi)$. Therefore, a simulation has to be done for a wavelength range $[\lambda_\text{min}, \lambda_\text{max}]$ and a direction range -- given by a maximum inclination angle $\theta_\text{max}$ -- in which \iceact is capable of detecting Cherenkov photons. Firstly, the \geant coordinate system is introduced in figure~\ref{geant_coords}.\\
 
