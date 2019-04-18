@@ -122,7 +122,7 @@ As already brought up in section~\ref{sec:winstoncones:impl}, the \textit{mesh s
 	\hfill
 	\begin{minipage}[t]{0.495\textwidth}
 		\vspace{-190pt}
-		\caption[\enquote{Image} produced by the \iceact Winston cone]{\textbf{\enquote{Image} produced by the \iceact Winston cone.} The Winston cone is fully illuminated by vertical light ($\theta=\SI{0}{\degree}$) with $\lambda=\SI{380}{\nano\meter}$ and locations of arriving photons at the exit window are histogramized in a normalized logarithmic scale. This simulation is done with five different maximum edge lengths $m$ of the mesh. For $m\geq\SI{0.4}{\milli\meter}$, distinct artifacts are visible. $m=\SI{0.4}{\milli\meter}$ (\subref{wico:theta0_image:m04}) is chosen for the parameterization simulation (cf. table~\ref{paramsim:params}).}
+		\caption[\enquote{Image} produced by the \iceact Winston cone]{\textbf{\enquote{Image} produced by the \iceact Winston cone.} The Winston cone is fully illuminated by vertical light ($\theta=\SI{0}{\degree}$) with $\lambda=\SI{380}{\nano\meter}$ and locations of arriving photons at the exit window are histogramized in a normalized logarithmic scale. This simulation is done with five different maximum edge lengths $m$ of the mesh. For $m\geq\SI{0.4}{\milli\meter}$, distinct artifacts are visible. $x$ and $y$ are the \geant coordinates as shown in figure~\ref{geant_coords}.}
 	\end{minipage}
 	\label{wico:theta0_image}
 \end{figure}
@@ -145,26 +145,26 @@ In order to compare the meshed Winston cone with the exact CAD model, the \geant
 	\label{wico:comparison_zemax}
 \end{figure}
 
-\todo{schreiben wegen speicherplatz und so (Komplexität)}
+In order to quantify the complexity of the meshed model, one can look at the file size for different mesh sizes. For the five investigated mesh sizes, this is done in table~\ref{wico:diskspace}.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{S[table-format=1.1]|S[table-format=5.0]}
+	\begin{tabular}{S[table-format=1.1]|S[table-format=5.0]|S[table-format=3.2]}
 		\toprule
-		\multicolumn{1}{c|}{mesh size $m$ [\si{\milli\meter}]} & \multicolumn{1}{c}{size of meshed CAD file [\si{\kibi\byte}]} \\
+		\multicolumn{1}{c|}{mesh size $m$ [\si{\milli\meter}]} & \multicolumn{1}{c|}{size of meshed CAD file [\si{\kibi\byte}]} & \multicolumn{1}{c}{approx. loading time [\si{\second}]} \\
 		\midrule
-		0.1 & 18385 \\
-		0.2 &  4581 \\
-		0.4 &  2003 \\
-		0.6 &   520 \\
-		0.8 &   668 \\
+		0.1 & 18385 & 385\\
+		0.2 &  4581 & 23.8\\
+		0.4 &  2003 & 3.64\\
+		0.6 &   520 & 0.35\\
+		0.8 &   482 & 0.30\\
 		\bottomrule
 	\end{tabular}
+	\caption[File size of Winston cone model for different mesh size]{\textbf{File size of Winston cone model for different mesh size.} Additionally, the approximate loading time of one Winston cone is given (on a single CPU core at \SI{1.4}{\giga\hertz}).}
+	\label{wico:diskspace}
 \end{table}
 
-\subsection{Winston Cone Simulation}
-
-\todo{write}
+In summary, the mesh size $m=\SI{0.4}{\milli\meter}$ is chosen for the parameterization simulation since only slight artifacts are produced (cf. figure~\ref{wico:theta0_image:m04}). Additionally, it can reproduce the Zemax simulation quite well and with a file size of about \SI{2}{\mebi\byte}, the loading time is at a just reasonable time scale of a few seconds.
 
 \subsection{\enquote{Ghost Image}}\label{sec:ghost_image}
 
