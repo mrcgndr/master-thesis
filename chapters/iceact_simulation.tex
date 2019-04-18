@@ -1,11 +1,11 @@
 % !TeX spellcheck = en_US
 \chapter{\iceact Simulation}\label{chap:iceact_sim}
 
-This chapter will discuss the \geant simulation process. \todo{bisschen mehr?}
+This chapter will discuss the \geant simulation process. At first, simulations of the single optical components are studied in order to find appropriate parameters and settings for the whole optical system. Afterwards, an overall simulation is performed for the final goal of \iceact parameterization.
 
-\section{Simulation of Single Components}
+\section{Getting to Know the \iceact Optics}
 
-In order to make some first checks and optimizations, the focus is on single essential components, i.e. the Fresnel lens and the Winston cones.
+In this section, the optical properties of \iceact are investigated in order to optimize their parameters. Possible uncertainties and aberration effects in the \iceact optics are examined by focusing on the single components: on the one hand, the effect of mounting a glass plate on top of the Fresnel lens is discussed. On the other hand, the approximation of the Winston cones by a tessellated structure might imply some aberrations or artifacts. 
 
 \subsection{\enquote{Best} Wavelength}\label{sec:best_wvl}
 
@@ -88,15 +88,83 @@ Thus, the aberration radius can be calculated for each focal plane shift $\Delta
 	\label{focalplaneshift_zoomout}
 \end{figure}
 
+\subsection{Winston Cone Meshing}\label{sec:wico_meshing}
+
+As already brought up in section~\ref{sec:winstoncones:impl}, the \textit{mesh size} $m$ -- i.e. the maximum edge length of the meshed Winston cone model -- has to be chosen as a compromise between imaging quality and computational effort. For the \iceact parameterization, especially the light collection capability of the Winston cone is necessary rather than its actual imaging quality. Nevertheless, the meshing is chosen to have a sufficiently high level of detail to avoid coarse imaging artifacts. Figure~\ref{wico:theta0_image} shows very obviously that the higher the mesh size the coarser the artifacts get. 
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.495\textwidth}
+		\includegraphics[width=\textwidth]{wico-theta0/hist_theta0_380nm-0.1mmMesh_log.png}
+		\subcaption{$m=\SI{0.1}{\milli\meter}$.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.495\textwidth}
+		\includegraphics[width=\textwidth]{wico-theta0/hist_theta0_380nm-0.2mmMesh_log.png}
+		\subcaption{$m=\SI{0.2}{\milli\meter}$.}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[t]{0.495\textwidth}
+		\includegraphics[width=\textwidth]{wico-theta0/hist_theta0_380nm-0.4mmMesh_log.png}
+		\subcaption{$m=\SI{0.4}{\milli\meter}$.}
+		\label{wico:theta0_image:m04}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.495\textwidth}
+		\includegraphics[width=\textwidth]{wico-theta0/hist_theta0_380nm-0.6mmMesh_log.png}
+		\subcaption{$m=\SI{0.6}{\milli\meter}$.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.495\textwidth}
+		\includegraphics[width=\textwidth]{wico-theta0/hist_theta0_380nm-0.8mmMesh_log.png}
+		\subcaption{$m=\SI{0.8}{\milli\meter}$.}
+	\end{subfigure}
+	\hfill
+	\begin{minipage}[t]{0.495\textwidth}
+		\vspace{-190pt}
+		\caption[\enquote{Image} produced by the \iceact Winston cone]{\textbf{\enquote{Image} produced by the \iceact Winston cone.} The Winston cone is fully illuminated by vertical light ($\theta=\SI{0}{\degree}$) with $\lambda=\SI{380}{\nano\meter}$ and locations of arriving photons at the exit window are histogramized in a normalized logarithmic scale. This simulation is done with five different maximum edge lengths $m$ of the mesh. For $m\geq\SI{0.4}{\milli\meter}$, distinct artifacts are visible. $m=\SI{0.4}{\milli\meter}$ (\subref{wico:theta0_image:m04}) is chosen for the parameterization simulation (cf. table~\ref{paramsim:params}).}
+	\end{minipage}
+	\label{wico:theta0_image}
+\end{figure}
+
+In order to compare the meshed Winston cone with the exact CAD model, the \geant simulation is compared with the Zemax\footnote{Zemax is a commercial ray tracing tool for Microsoft Windows. It is commonly used for the analysis and optimization of optical systems.} simulation done in~\cite{iceact:camera}. Figure~\ref{wico:comparison_zemax} shows a quite high similarity.
+
+\begin{figure}[H]
+	\centering
+	\saveimageheight[width=0.57\textwidth]{wico-theta0/hist_theta0_380nm-0.4mmMesh.png}
+	\begin{subfigure}[t]{0.41\textwidth}
+		\raiseimage[width=\textwidth]{WiCoTheta0_Zemax.png}
+		\subcaption{Zemax simulation~\cite{iceact:camera}.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.57\textwidth}
+		\usebox{\savedimage}
+		\subcaption{\geant simulation with $m=\SI{0.4}{\milli\meter}$. This is the same data as shown in figure~\ref{wico:theta0_image:m04} but with linear scaling.}
+	\end{subfigure}
+	\caption[Comparison between \geant and Zemax simulation]{\textbf{Comparison between \geant and Zemax simulation.} For the main structure of the image by vertical illumination, \geant produces a quite similar image to the Zemax simulation done in~\cite{iceact:camera}.}
+	\label{wico:comparison_zemax}
+\end{figure}
+
+\todo{schreiben wegen speicherplatz und so (Komplexität)}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{S[table-format=1.1]|S[table-format=5.0]}
+		\toprule
+		\multicolumn{1}{c|}{mesh size $m$ [\si{\milli\meter}]} & \multicolumn{1}{c}{size of meshed CAD file [\si{\kibi\byte}]} \\
+		\midrule
+		0.1 & 18385 \\
+		0.2 &  4581 \\
+		0.4 &  2003 \\
+		0.6 &   520 \\
+		0.8 &   668 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
 \subsection{Winston Cone Simulation}
 
-
-
-\section{Verification of the Simulated Optics}
-
-In this section, possible uncertainties and aberration effects are investigated. On the one hand, the approximation of the Winston cones by a tessellated structure might imply some aberrations or artifacts. On the other hand, the effect of mounting a glass plate on top of the Fresnel lens is discussed.
-
-\subsection{Winston Cone Meshing}\label{sec:wico_meshing}
+\todo{write}
 
 \subsection{\enquote{Ghost Image}}\label{sec:ghost_image}
 
@@ -141,13 +209,16 @@ The wavelength range is mainly limited by the material properties and the photon
 \begin{table}[H]
 	\centering
 	\begin{tabular}{r|c|l}
-		description 				   & symbol               & value\\\hline
+		\toprule
+		description 				   & symbol               & value\\
+		\midrule
 		minimum simulated wavelength   & $\lambda_\text{min}$ & \SI{272}{\nano\meter}\\
 		maximum simulated wavelength   & $\lambda_\text{max}$ & \SI{900}{\nano\meter}\\
 		maximum simulated zenith angle & $\theta_\text{max}$  & \SI{10}{\degree}\\
-		mesh size 					   & --				      & \SI{0.4}{\milli\meter}\\
+		mesh size (maximum edge length)& $m$				  & \SI{0.4}{\milli\meter}\\
 		focal plan shift 			   & $\Delta z$			  & \SI{1.25}{\milli\meter}\\
 		total simulated particles      & $N_\text{sim}$		  & \num{15e9}\\
+		\bottomrule
 	\end{tabular}
 	\caption[Parameters chosen for the parameterization simulation]{\textbf{Parameters chosen for the parameterization simulation.} Wavelengths are simulated uniformly in the interval $[\lambda_\text{min}, \lambda_\text{max}]$. The direction are simulated uniformly in azimuth $\phi$ and cosine of the zenith angle $\cos{\theta}$. The reasonable mesh size determined in section~\ref{sec:wico_meshing} and the focal plane shift discussed in section~\ref{sec:focalplaneshift} is applied.}
 	\label{paramsim:params}
