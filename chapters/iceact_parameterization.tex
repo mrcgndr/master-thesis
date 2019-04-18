@@ -159,8 +159,9 @@ The angular resolution $\theta_\text{pix}$ is defined to be the square root of t
 \begin{table}[H]
 \centering
 \begin{tabular}{S[table-format=2.0]|S[table-format=4.0]|S[table-format=9.0]|S[table-format=2.2]}
+\toprule
 \multicolumn{1}{l|}{$k$} & \multicolumn{1}{l|}{$N_\text{side} = 2^k$} & \multicolumn{1}{l|}{$N_\text{pix} = 12N_\text{side}^2$} & \multicolumn{1}{l}{$	\theta_\text{pix} = \sqrt{\Omega_\text{pix}}$} \\
-\hline
+\midrule
 0  & 1    & 12        &  \SI{58.6}{\degree}\\
 1  & 2    & 48        &  \SI{29.3}{\degree}\\
 2  & 4    & 192       &  \SI{14.7}{\degree}\\
@@ -176,6 +177,7 @@ The angular resolution $\theta_\text{pix}$ is defined to be the square root of t
 12 & 4096 & 201326592 &  \SI{51.5}{\arcsecond}\\
 13 & 8192 & 805306368 &  \SI{25.8}{\arcsecond}\\
 \multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c|}{\vdots} & \multicolumn{1}{c}{\vdots} \\
+\bottomrule
 \end{tabular}
 \caption[HEALPix parameters and resulting angular resolutions]{\textbf{HEALPix parameters and resulting angular resolutions.}~\cite{healpix:paper} $k$ represents the number of dividing iterations on the 12 panes, $N_\text{side}$ the number of tiles per pane edge, $N_\text{pix}$ the total number of pixels, and $\theta_\text{pix}$ the angular resolution defined by the angular length of a pixel edge.}
 \label{healpix:table}

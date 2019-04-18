@@ -64,12 +64,14 @@ with the \textit{Sellmeier coefficients} $B_{1,2,3}$ and $C_{1,2,3}$~\cite{iceac
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c|l}
+		\midrule
 		$B_1$  & \num{0.99654}  \\
 		$B_2$  & \num{0.18964}  \\
 		$B_3$  & \num{0.00411}  \\
 		$C_1$  & \SI{0.00787}{\micro\meter\squared}  \\
 		$C_2$  & \SI{0.02191}{\micro\meter\squared}  \\
 		$C_3$  & \SI{3.85727}{\micro\meter\squared}  \\
+		\bottomrule
 	\end{tabular}
 	\caption[Sellmeier coefficients for PMMA]{\textbf{Sellmeier coefficients for PMMA.}~\cite{iceact:refractiveindex} The above-mentioned coefficients are used in the \geant material properties for PMMA. The related Sellmeier equation~\eqref{eq:sellmeier} is plotted in figure \ref{iceact:model:material:refractive_index} as the blue curve.}
 	\label{iceact:model:pmma_sellmeiercoeffs}
@@ -214,11 +216,6 @@ Another important quantity is the cone length $L$ which is given by \cite{wico:b
 	L = \frac{a_\text{ex}(1+\sin\vartheta_\text{M})\cos\vartheta_\text{M}}{\sin^2\vartheta_\text{M}}\sim\frac{2a_\text{en}}{2\vartheta_\text{M}}\,.
 \end{align}
 
-
-
-
-
-
 By appropriate design, Winston cones fulfill all requirements for light concentrators in \iceact given by the optical layout (cf. figure~\ref{iceact:camera:layout}).
 However, one can design an improved Winston cone for the purposes in \iceact since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used (cf. figure~\ref{iceact:camera:pixelnumbering}). Instead of a radially symmetrical cone, the \iceact Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's detectional area (cf. figure~\ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the \iceact Winston cone is shown in figure~\ref{iceact:camera:iceact_wico_sketch}. In it, one can see a green dashed line and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations~\eqref{eq:wico:param}.
 
@@ -234,7 +231,7 @@ Hence, the application of Winston cones extend the detectional area of the pixel
 	\frac{A_\text{camera with WiCos}}{A_\text{camera without WiCos}} = \frac{61\cdot \frac{3}{2}\sqrt{3}\cdot\left(\frac{\SI{17.09}{\milli\meter}}{2}\right)^2}{61\cdot(\SI{6}{\milli\meter})^2}\approx\num{5.27}\,.
 \end{align}
 
-\subsubsection{Winston Cone Implementation in \geant with CADMesh}
+\subsubsection{Winston Cone Implementation in \geant with CADMesh}\label{sec:winstoncones:impl}
 
 Due to its complex shape, the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshing}. For the \iceact Winston cone this is done with the CAD software \textit{FreeCAD}, more precisely with the algorithm \textit{Mefisto}. This meshing routine only needs the maximum edge length of the single tiles as a free parameter. The smaller the maximum edge length the more detailed the mesh gets but the more computational time is needed to translate this mesh into \geant. Thus, a good compromise has to be found. Figure~\ref{wico:meshing} shows the meshed cone dependent on the maximum edge length. Simulations show a good performance for a maximum egde length of \SI{0.4}{\milli\meter}. Higher lengths result in visible image artifacts. (cf. section~\ref{sec:wico_meshing}) 
 
