@@ -78,7 +78,7 @@ More specifically, the \textit{bootstrapping} method is used. It is type of resa
 \end{align}
 For a large sample size $n\to\infty$ this means that $1-\left(1-\frac{1}{n}\right)^n\approx\SI{63}{\percent}$ of the data points in a bootstrapped data sample are statistically independent.
 
-The bootstrapping can now be repeated $k$ times and for each subsample $\{\vec{X}_i^\ast\}$ an adaptive KDE is done resulting in $k$ KDE functions $f_{\{\vec{X}_i^\ast\}}(\vec{x})$. The final KDE function $f(\vec{x})$ and its uncertainty is then given by the mean and the standard deviation,~\cite{kde:bootstrapping,kde:schoenen}
+The bootstrapping can now be repeated $k$ times and for each subsample $\{\vec{X}_i^\ast\}$ an adaptive KDE is done resulting in $k$ KDE functions $f_{\{\vec{X}_i^\ast\}}(\vec{x})$. The final KDE function $f(\vec{x})$ and its statistical uncertainty is then given by the mean and the standard deviation,~\cite{kde:bootstrapping,kde:schoenen}
 \begin{subequations}
 	\begin{align}
 		f(\vec{x}) &= \frac{1}{k}\sum_{i=1}^{k} f_{\{\vec{X}_i^\ast\}}(\vec{x})\\
