@@ -19,7 +19,7 @@ Since the photon detection efficiency of the SiPMs is a non-constant function of
 		\subcaption{adaptive binning}
 		\label{param:wvl_binning:adaptive}
 	\end{subfigure}
-	\caption[Constant vs. adaptive wavelength binning]{\textbf{Constant vs. adaptive wavelength binning.} All wavelengths of photons that are detected by any camera SiPM are histogramized in \num{50} bins between \SI{272}{\nano\meter} and \SI{900}{\nano\meter}. In (\subref{param:wvl_binning:constant}), the \num{50} bins are distributed uniformly in wavelength so that one can see a shape that is quite similar to the PDE of the SiPMs. Figure~(\subref{param:wvl_binning:adaptive}) shows the same data with adaptive bin sizes to equalize the counts per bin. The resulting bin edges are rounded to integer numbers which causes the visible fluctuations. Since the adaptive bin limits are always included by closed intervals, there are slightly more detected photons in~(\subref{param:wvl_binning:adaptive}) than in~(\subref{param:wvl_binning:constant}) due to numerical issues. This is not a problem, since also the simulated photons are binned in the same closed intervals, which result in correct detection efficiency calculations.}
+	\caption[Constant vs. adaptive wavelength binning]{\textbf{Constant vs. adaptive wavelength binning.} All wavelengths of photons that are detected by any camera SiPM are histogramized in \num{50} bins between \SI{272}{\nano\meter} and \SI{900}{\nano\meter}. In (\subref{param:wvl_binning:constant}), the \num{50} bins are distributed uniformly in wavelength so that one can see a shape that is quite similar to the PDE of the SiPMs. Figure~(\subref{param:wvl_binning:adaptive}) shows the same data with adaptive bin sizes to equalize the counts per bin. The resulting bin edges are rounded to integer numbers which causes the visible fluctuations. Since the adaptive bin limits are always included by closed intervals, there are slightly more detected photons in~(\subref{param:wvl_binning:adaptive}) than in~(\subref{param:wvl_binning:constant}) due to numerical issues. This is not a problem since also the simulated photons are binned in the same closed intervals which result in correct detection efficiency calculations.}
 	\label{param:wvl_binning}
 \end{figure}
 
@@ -104,7 +104,7 @@ For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl413nm_px00_view1.5deg.pdf}
-	\caption[Detection efficiency of central camera pixel]{\textbf{Detection efficiency of central camera pixel.} The plot is zoomed into the main detection region up to a zenith angle $\theta=\SI{1.5}{\degree}$. As a wavelength, the bin around the most efficient wavelength~$\lambda^\ast$ (cf. section~\ref{sec:best_wvl}) is chosen. In a field of view below $\SI{1.4}{\degree}$, the central pixel has its maximal detection efficiency. The HEALPix parameter in this map is $N_\text{side}=\num{512}$. Bootstrapping leads to the relative error shown in the right plot.}
+	\caption[Detection efficiency of central camera pixel]{\textbf{Detection efficiency of central camera pixel.} The plot is zoomed into the main detection region up to a zenith angle $\theta=\SI{1.5}{\degree}$. As a wavelength, the bin around the most efficient wavelength~$\lambda^\ast$ (cf. section~\ref{sec:best_wvl}) is chosen. In a field of view below $\SI{1.4}{\degree}$, the central pixel has its maximal detection efficiency. The HEALPix parameter in this map is $N_\text{side}=\num{512}$. Bootstrapping leads to the relative error shown in the right plot. The interval between the white dashed meridians is $\Delta\phi=\SI{10}{\degree}$.}
 	\label{deteffmap:px0}
 \end{figure}
 
@@ -127,11 +127,65 @@ As figure~\ref{deteffmap:px0} shows, a HEALPix parameter of $N_\text{side}=\num{
 \end{table}
 
 \subsection{Overview of Results}
-\todo{vielleicht andere Überschrift?}
 
-\todo{maps von neuer rechnung, die hoffentlich noch fertig wird}
+In this section, some results are presented. At first, the focus is on the maximum detection efficiency. Just because the optics has been optimized to the \enquote{best} wavelength $\lambda^\ast=\SI{411}{\nano\meter}$ by minimizing the focal spot for this wavelength (cf. section~\ref{sec:focalplaneshift}), this does not necessarily imply that the detection efficiency is maximal at $\lambda^\ast$. Indeed, the maximal efficiency is reached between \SI{426}{\nano\meter} and \SI{431}{\nano\meter} for the central camera pixel with $\epsilon_\text{max}\approx\SI{33.35}{\percent}$ as figure~\ref{max_deteff} shows. One also observes, that for the off-axis pixels -- i.e. all but the central one -- the centroid of the efficiency distributions slightly shifts towards higher wavelengths which. The reason is that the focal plane shifts \enquote{behind} the camera plane with increasing wavelengths (cf. figure~\ref{focalplaneshift}). The higher the wavelength, the more blurred the image gets and these wavelengths are tendentially seen by more pixels. As a result, more inner pixels are more sensitive to lower and more outer pixels are more sensitive to higher wavelengths.\\
 
-\todo{absolut höchste Effizienz erwähnen ... welche Richtung, welcher pixel, welche wellenlänge}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{deteffmaps/deteff_bins_max.pdf}
+	\caption[Maximum detection efficiency for each pixel and wavelength]{\textbf{Maximum detection efficiency for each pixel and wavelength.} The 61 camera pixels are color-coded via their ordinal number from blue to read. The overall maximum detection efficiency is reached by the central pixel at $\Delta\lambda=[\SI{426}{\nano\meter},\SI{431}{\nano\meter}]$ with $\epsilon_\text{max}\approx\SI{33.35}{\percent}$.}
+	\label{max_deteff}
+\end{figure}
+
+By summing up the individual detection efficiency maps of each pixel, the response of the whole camera to a certain wavelength is given. Figure~\ref{deteff:full_cam} shows these maps for three characteristic wavelength ranges. What is remarkable is that in the region of focus, i.e. wavelengths for which the focal spot on the camera plane is relatively small, the geometry of the camera is important. One can see very sharp differences between the main field of view of each pixel which corresponds to the Winston cone centers and the Winston cone edges resulting in an approximately \SI{10}{\percent} lower efficiency (cf. figure~\ref{deteff:full_cam:2}). For smaller wavelengths where the focus is above the camera plane, a distinct geometry-dependent pattern is not visible except, of course, the overall hexagonal shape. For higher wavelengths, a pattern is again visible, but a barrel-shaped distortion is visible. This is a known optical aberration effect where the magnification decreases with distance from the optical axis like for an image of a fisheye lens.\\
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.705\textwidth}
+		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl296nm_pxall_view10deg.pdf}
+		\subcaption{Ultra-violet range.}
+		\label{deteff:full_cam:1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.705\textwidth}
+		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl428.5nm_pxall_view10deg.pdf}
+		\subcaption{Maximal efficient range.}
+		\label{deteff:full_cam:2}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[t]{0.705\textwidth}
+		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl782nm_pxall_view10deg.pdf}
+		\subcaption{High wavelengths range.}
+		\label{deteff:full_cam:3}
+	\end{subfigure}
+	\caption[Detection efficiency maps of the full camera]{\textbf{Detection efficiency maps of the full camera.} The left plots show the detection efficiency while the right plots show the relative error. Three wavelength regions are chosen: a UV range in (\subref{deteff:full_cam:1}), the maximum efficiency in (\subref{deteff:full_cam:2}) and high wavelengths in (\subref{deteff:full_cam:3}). The white dashed parallels and meridians have the distances $\Delta\theta=\SI{2}{\degree}$ and $\Delta\phi=\SI{10}{\degree}$. The azimuth revolves counter-clockwisely starting at the white solid line. Please note the different color mapping for the detection efficiencies.}
+	\label{deteff:full_cam}		
+\end{figure}
+
+Interesting optical effects are visible if one plots some off-axis pixels individually. Figure~\ref{deteff:offaxis_px} shows three of these. Besides the core region one can also see the ghost image explained in section~\ref{sec:ghost_image} on the opposide side in terms of the azimuth. Additionally, there are some spots next to the core and the ghost image region which originate from reflections between the Winston cones' top and Fresnel lens' back side. In blind regions where the detection probability does not exceed \SI{e-3}{\percent}, the estimated efficiency is highly dominated by statistical fluctuations as the plots for relative statistical errors show as well.\\
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.705\textwidth}
+		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl428.5nm_px11_view10.0deg.pdf}
+		\subcaption{Pixel 11 on symmetry axis along $y$.}
+		\label{deteff:offaxis_px:1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.705\textwidth}
+		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl428.5nm_px14_view10.0deg.pdf}
+		\subcaption{Pixel 14 on symmetry axis along $x$.}
+		\label{deteff:offaxis_px:2}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[t]{0.705\textwidth}
+		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl428.5nm_px36_view10.0deg.pdf}
+		\subcaption{Pixel 36 on \enquote{quasi-symmetry} axis.}
+		\label{deteff:offaxis_px:3}
+	\end{subfigure}
+	\caption[Detection efficiency maps for some off-axis pixels]{\textbf{Detection efficiency for maps some off-axis pixels.} Similar plots as in figure~\ref{deteff:full_cam} but now for individual camera pixels at the wavelength range with maximum efficiency. Three pixels on symmetry axes are chosen. The two pixels shown in (\subref{deteff:offaxis_px:1}) and (\subref{deteff:offaxis_px:2}) are on real symmetry axes while the third pixel in (\subref{deteff:offaxis_px:3}) is on a symmetry axis of the camera plane but not with respect to the squared SiPMs.}
+	\label{deteff:offaxis_px}		
+\end{figure}
 
 \section{Lookup Table (LUT)}
 
@@ -192,8 +246,13 @@ Now that the data is ready, an evaluation algorithm has to be elaborated. In the
 	\begin{align}
 		\{HP_{i^\ast}, \Delta\lambda_{i^\ast}\}_{i^\ast=1}^{N^\ast} \rightarrow \{ \epsilon^\text{abs}_{HP_{i^\ast},\Delta\lambda_{i^\ast}}\}_{i^\ast=1}^{N^\ast}
 	\end{align}
-	\item For each valid photon $i^\ast$, a random number $r_{i^\ast}\in[0,1)$ is diced and sorted into the corresponding response array. Now, the advantage of saving the cumulative rather than the absolute responses (cf. section~\ref{sec:lut_production}) becomes clear. By definition, the cumulative responses are sorted in ascending order\footnote{This is the case if all numbers are non-negative like it is the case for the camera pixel responses. Otherwise, the cumulative sequence may not be sorted.}. As a result, the position $k$ where the random number is sorted in equals the number of the camera pixel where the photon is detected. If the random number is sorted in at the \num{61}-th position -- i.e. at the end -- this means that the photon is not detected. The cumulative saving enables a lookup process that is only based on comparative operations which are very fast.
+	\item For each valid photon $i^\ast$, a random number $r_{i^\ast}\in[0,1)$ is diced and sorted into the corresponding response array. Now, the advantage of saving the cumulative rather than the absolute responses (cf. section~\ref{sec:lut_production}) becomes clear. By definition, the cumulative responses are sorted in ascending order\footnote{This is the case if all numbers are non-negative like it is the case for the camera pixel responses. Otherwise, the cumulative sequence may not be sorted.}. As a result, the position $k$ where the random number is sorted in equals the ordinal number of the camera pixel where the photon is detected. If the random number is sorted in at the \num{61}-th position -- i.e. at the end -- this means that the photon is not detected. The cumulative saving enables a lookup process that is only based on comparative operations which are very fast.
 	\item The resulting sorting positions $k_{i^\ast}$ can now be histogramized which gives the final image seen by the camera.
 \end{enumerate}
 
-\section{Application on CORSIKA Air Showers Events}
+\section{Application on CORSIKA Air Shower Events}
+
+With the lookup table, one can finally produce event displays -- or images -- of simulated air showers. A commonly used toolkit for detailed simulation of cosmic-ray air showers is \textit{CORSIKA}\footnote{\textbf{CO}smic \textbf{R}ay \textbf{S}imulations for \textbf{KA}scade}~\cite{corsika:website}. It is capable of simulating the trajectory and energy of Cherenkov photons which emerge from air showers.
+
+\todo{...}
+\todo{Plots ...}
