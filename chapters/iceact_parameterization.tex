@@ -9,7 +9,7 @@ The following chapter will discuss the step-by-step strategy to get \textit{dete
 
 \textit{Kernel density estimation} (\textit{KDE}) is a non-parametric\footnote{A non-parametric method names a statistical approach based on a non-defined model that is deduced directly from data.} method to estimate a probability density function of a random variable by a given finite data sample. The standard \textit{kernel density estimator}
 \begin{align}
-	\hat{f}(x)=\frac{1}{nh}\sum_{i=1}^{n}K\left(\frac{x-X_i}{h}\right)\,,
+	\hat{f}(x)=\frac{1}{nh}\sum_{i=1}^{n}K\left(\frac{x-X_i}{h}\right)
 	\label{eq:kde}
 \end{align}
 is the sum of \textit{kernel functions} $K(\dots)$ for each data point $X_i$. The non-negative parameter $h$ is the \textit{bandwidth} and is a measure for the smoothing of the resulting KDE: the KDE gets smoother with increasing $h$. Due to the normalization factor, $\hat{f}(x)$ is normed to
