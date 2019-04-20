@@ -5,7 +5,11 @@
 
 \section{Motivation}
 
-The exploration of cosmic rays and cosmic-ray air showers is one of the major challenges in astro-particle physics. \todo{...}
+The exploration of cosmic rays and cosmic-ray air showers is one of the major challenges in astro-particle physics. Scientists all over the world try to explain the mechanisms in extra-galactic sources that enable them to accelerate particles to incredibly high energies of \SI{e20}{\electronvolt}. These particles reach us in the form of so called \textit{cosmic rays} which can be explored to understand the spectrum of cosmic rays in a preferably wide energy range. Especially for the highest energies, the flux gets very low. In order to compensate for this, larger and larger detectors are built. The \textit{\icecube Neutrino Observatory} is one of them. It is a neutrino telescope at the geographic South Pole measuring the Cherenkov light of secondary charged particles originating from neutrino interactions with the Antarctic ice. To differentiate between interesting so called \textit{cosmogenic} neutrinos and less interesting atmospheric neutrinos, the surface detector \icetop is installed above \icecube to veto muons and neutrinos from air showers.\\
+
+A large-scale upgrade -- \textit{\icecube-Gen2} -- is planned to massively enlarge the instrumented volume. As part of this upgrade is an extension of the surface detector by adding detectors with complementary detection techniques. One approach is to install an array of compact imaging air-Cherenkov telescopes based on a 61-pixel SiPM camera -- called \textit{\iceact}. In December 2015, a 7-pixel demonstrator telescope was deployed and successfully showed its veto and calibration capabilities together with \icetop during its measuring period in 2016. Additionally, \iceact can be used for cosmic ray composition measurements. Thanks to the air shower simulation toolkit CORSIKA, one can produce Monte Carlo data for air showers with various properties like primary energy, primary particle, inclination, etc. In order to evaluate Monte Carlo data -- i.e. how the showers are \enquote{seen} by \iceact\xspace -- a detailed knowledge of the optical system is crucial.\\
+
+In this thesis, the full optical system of a single \iceact telescope is simulated with \geant with the goal to parameterize the response of each camera pixel depending on direction and wavelength of the incident Cherenkov photons by a preferably efficient lookup table.
 
 \section{The \icecube Neutrino Observatory}
 
@@ -17,7 +21,7 @@ Since January 2011, the \icecube Neutrino Observatory at the Amundsen-Scott Sout
 	\label{icecube:detector}
 \end{figure}
 
-Neutrinos are very interesting elementary particles because of their weak interaction cross section and their electrical neutrality. This fact makes it possible for neutrinos to let them point back to their sources which is exploited in the search for astrophysical processes like active galactic nuclei, supernovae, or gamma-ray bursts. Since they are able to reach us without scattering processes, neutrinos can even give information about sources at cosmological distances. Simultaneously, the weak interaction potential is what neutrino detection makes challenging. Therefore, a detector with a large scale active volume is needed. In the case of \icecube, this is \SI{1}{\cubic\kilo\meter} of ice.\\
+Neutrinos are very interesting elementary particles because of their weak interaction cross section and their electrical neutrality. This fact makes it possible for neutrinos to let them point back to their sources which is exploited in the search for astrophysical processes like active galactic nuclei, supernovae, or gamma-ray bursts. Since they are able to reach us without scattering processes, neutrinos can even give information about sources at cosmological distances. Simultaneously, the weak interaction potential is what neutrino detection makes challenging. Therefore, a detector with a large scale active volume is needed. In the case of \icecube, this is \SI{1}{\cubic\kilo\meter} of ice. Finally, neutrinos are detected by detecting the Cherenkov light (cf. section~\ref{sec:cherenkov}) of secondary charged particles that are produced in unlikely but still occurring interactions with the glacial ice.\\
 
 At the surface on top of the in-ice detector the cosmic-ray air shower array \icetop is installed to detect Cherenkov radiation (cf. \ref{sec:cherenkov}). \icetop consists of 81 stations approximately arranged in the same grid as the in-ice strings. Each station has two tanks filled up with ice and two standard \icecube DOMs. This arrangement makes it possible for \icetop to detect primary cosmic rays (cf. \ref{sec:cosmicrays}) in the energy range of \si{\peta\electronvolt} to \si{\exa\electronvolt}. One purpose of \icetop is to provide a veto for downward-going neutrinos in the \icecube detector originating from coincident atmospheric air shower events. \cite{icecube:instrumentation} Since \icecube is mainly investigating astrophysical neutrinos, atmospheric neutrinos are a major background.\\
 
@@ -50,9 +54,9 @@ introducing a spectral index $\gamma$ which is dependent from the considered ene
 		\num{2.6} & \SI{4e9}{\giga\electronvolt} < E < \SI{3e11}{\giga\electronvolt}
 	\end{cases}\,.
 \end{align}
-Due to this interesting features, composition measurements at these \enquote{transition points} are desired in particular.
+Due to these interesting features, composition measurements at the transition points are desired in particular.
 
-Due to the shape, the phenomenological model to describe the spectrum is referred to as \textit{poly gonato} (Greek for \enquote{many knees}). The \enquote{knee} is assumed to be based on different rigidity\footnote{property of a magnetic field to bend a particle's trajectory} dependent cut-off energies for sub-spectra of element groups which sum up to the spectrum we observe. \cite{cosmicrays:hoerandel, cosmicrays:shapiro} At energies beyond \SI{e11}{\giga\electronvolt} a strong suppression is observed. The GZK-effect (named after Kenneth \textsc{Greisen}, Georgiy \textsc{Zatsepin}, and Vadim \textsc{Kuzmin}) is supposed to be the reason. Protons with energies above a threshold of \SI{5e19}{\electronvolt} can interact with photons of the cosmic microwave background in such a way that they produce $\pi^0$ and $\pi^+$ mesons via $\Delta^+$ resonance:
+The phenomenological model to describe the spectrum is referred to as \textit{poly gonato} (Greek for \enquote{many knees}). The \enquote{knee} is assumed to be based on different rigidity\footnote{property of a magnetic field to bend a particle's trajectory} dependent cut-off energies for sub-spectra of element groups which sum up to the spectrum we observe. \cite{cosmicrays:hoerandel, cosmicrays:shapiro} At energies beyond \SI{e11}{\giga\electronvolt} a strong suppression is observed. The GZK-effect (named after Kenneth \textsc{Greisen}, Georgiy \textsc{Zatsepin}, and Vadim \textsc{Kuzmin}) is supposed to be the reason. Protons with energies above a threshold of \SI{5e19}{\electronvolt} can interact with photons of the cosmic microwave background in such a way that they produce $\pi^0$ and $\pi^+$ mesons via $\Delta^+$ resonance:
 \begin{subequations}
 	\begin{align}
 	\gamma_\text{CMB} + p \rightarrow \Delta^+ &\rightarrow p + \pi^0\\
@@ -84,6 +88,8 @@ It should be mentioned that this calculation only holds for pure electro-magneti
 Since the maximum depth $X_\text{max}$ is dependent from energy and type of the primary particle it is very important for composition studies of cosmic rays. A detailed discussion on several interaction models and comparisons to simulation is done in \cite{airshowers:heitlermodel}.
 
 \section{Detection of Cosmic-ray Air Showers via Atmospheric Cherenkov Light}\label{sec:cherenkov}
+
+This section should give a brief introduction into the different possibilities to detect cosmic-ray air showers. In particular, the focus is on the detection via atmospheric Cherenkov light and the physics of the Cherenkov effect.
 
 \subsection{Detection Techniques}
 
@@ -162,7 +168,7 @@ with
 	\beta=\frac{v}{c_0} & dimensionless relative velocity.\\
 \end{vardescription}
 The factor $\frac{1}{\lambda^2}$ suppresses higher wavelengths so that the Cherenkov spectrum is dominant in the ultra-violet regime. Figure \ref{airshowers:cherenkovspectrum} shows a measured energy spectrum.
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{cherenkov_spectrum.pdf}
 	\caption[Cherenkov spectrum]{\textbf{Cherenkov wavelength spectrum.} Exemplary spectrum of Cherenkov photons measured at \SI{2200}{\meter} above sea level at the HEGRA IACT System (La Palma)\footnotemark. The falling edge towards high wavelength is proportional to $\lambda^{-2}$ whereas the falling edge towards low wavelengths is caused by atmospheric attenuation. Data adapted from \cite{airshowers:doering}.}	
@@ -195,7 +201,7 @@ A major purpose of \iceact is to enlarge the veto capabilities of \icetop by red
 
 The baseline design of \iceact is adapted from the \textit{FAMOUS}\footnote{\textbf{F}irst \textbf{A}uger \textbf{M}ulti-pixel photon counter camera for the \textbf{O}bservation of \textbf{U}ltra-high-energy air \textbf{S}howers} fluorescence telescope designed for the Pierre Auger Observatory in Argentina. It utilizes silicon photomultipliers (SiPMs, cf. section~\ref{sec:sipm:working_principle}) rather than photomultiplier tubes (PMTs) for the detection of fluorescence light.~\cite{famous:telescope} Since Cherenkov and fluorescence light range in similar wavelength regimes, Cherenkov light detection is possible as well. In addition, a third derivative of FAMOUS -- namely \textit{HAWC's Eye} -- has operated together with the HAWC gamma ray observatory. Studies showed, that a hybrid measurement of HAWC and HAWC's Eye could improve the energy resolution significantly~\cite{hawcseye:merlin}.\\
 
-The \iceact camera consists of \num{61} SiPMs (cf. section~\ref{iceact:model:camera}). In 2015, a telescope demonstrator (called \textit{IceACT-2016}) with 7 pixels was deployed on the \icecube Laboratory (ICL) and has been operated in 2016. Analyses of the taken data have proven the concept to be successful~\cite{iceact:erik}. The figure~\ref{iceact:picture} shows the telescope the demonstrator was replaced with in January 2017.
+The \iceact camera consists of \num{61} SiPMs (cf. section~\ref{iceact:model:camera}). In 2015, a telescope demonstrator (called \textit{IceACT-2016}) with 7 pixels was deployed on the \icecube Laboratory (ICL) and has been operated in 2016. Analyses of the taken data have proven the concept to be successful~\cite{iceact:erik}. The figure~\ref{iceact:picture} shows the telescope the demonstrator was replaced with in January 2017.\\
 
 \begin{figure}[H]
 	\centering
@@ -204,7 +210,7 @@ The \iceact camera consists of \num{61} SiPMs (cf. section~\ref{iceact:model:cam
 	\label{iceact:picture}
 \end{figure}
 
-In this thesis, the focus in on the development of a full telescope simulation with a subsequent parameterization. Thus, the technical properties of the \iceact optics are described in more detail associated with the simulation model in chapter~\ref{chap:iceact_model}. Nevertheless, figure~\ref{iceact:sketch} shows an overview sketch of the \iceact telescope.
+In this thesis, the focus in on the development of a full telescope simulation with a subsequent parameterization. Thus, the technical properties of the \iceact optics are described in more detail associated with the simulation model in chapter~\ref{chap:iceact_model}. Nevertheless, figure~\ref{iceact:sketch} shows an overview sketch of the \iceact telescope.\\
 
 \begin{figure}[H]
 	\centering
