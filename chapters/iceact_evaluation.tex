@@ -23,7 +23,7 @@ Since the photon detection efficiency of the SiPMs is a non-constant function of
 	\label{param:wvl_binning}
 \end{figure}
 
-The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPM, i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive}). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).
+The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPM -- i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive}). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).
 
 With the adaptive wavelength binning it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable probability density estimation. The simulated wavelength range starts at $\lambda_\text{min}=\SI{272}{\nano\meter}$ since there is no photon detected with a wavelength below \SI{272}{\nano\meter} due to the absorption properties or the glass plate (cf. \ref{sec:iceact:model:material}).
 
@@ -252,7 +252,50 @@ Now that the data is ready, an evaluation algorithm has to be elaborated. In the
 
 \section{Application on CORSIKA Air Shower Events}
 
-With the lookup table, one can finally produce event displays -- or images -- of simulated air showers. A commonly used toolkit for detailed simulation of cosmic-ray air showers is \textit{CORSIKA}\footnote{\textbf{CO}smic \textbf{R}ay \textbf{S}imulations for \textbf{KA}scade}~\cite{corsika:website}. It is capable of simulating the trajectory and energy of Cherenkov photons which emerge from air showers.
+With the lookup table, one can finally produce event displays -- or images -- of simulated air showers. A commonly used toolkit for detailed simulation of cosmic-ray air showers is \textit{CORSIKA}\footnote{\textbf{CO}smic \textbf{R}ay \textbf{S}imulations for \textbf{KA}scade}~\cite{corsika:website}. It is capable of simulating the direction and energy of Cherenkov photons which emerge from air showers.\\
 
-\todo{...}
-\todo{Plots ...}
+The plots in figure~\ref{corsika-events} show some images of air showers simulated with CORSIKA. Three different primaries are induced: proton, iron, and photon (gamma). The wavelength or respectively the energy of Cherenkov photons could possibly simulated directly within CORSIKA as stated before. But this results in a large amount of data and a longer simulation time. Therefore, just the direction of some Cherenkov photons, that hit the detector surface in a certain region is stored. For the lookup process, the wavelength of each photon is drawn from the Cherenkov spectrum shown in figure~\ref{airshowers:cherenkovspectrum} by extrapolating wavelengths above \SI{700}{\nano\meter} with a linear function. More details about possible options with CORSIKA and the simulation process can be found in the CORSIKA manual~\cite{corsika:manual}.
+
+\begin{figure}[H]
+	\centering
+	% protons
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{test-events/01/station_09.pdf}
+		\subcaption{}
+		\label{corsika-events:1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{test-events/08/station_09.pdf}
+		\subcaption{}
+		\label{corsika-events:2}
+	\end{subfigure}
+	\vfill
+	% iron
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{test-events/07/station_14.pdf}
+		\subcaption{}
+		\label{corsika-events:3}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{test-events/06/station_09.pdf}
+		\subcaption{}
+		\label{corsika-events:4}
+	\end{subfigure}
+	\hfill
+	% gamma
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{test-events/04/event.pdf}
+		\subcaption{}
+		\label{corsika-events:5}
+	\end{subfigure}
+		\hfill
+	\begin{subfigure}[t]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{test-events/05/event.pdf}
+		\subcaption{}
+		\label{corsika-events:6}
+	\end{subfigure}
+	\caption[Camera images diced with lookup table]{\textbf{Camera images diced with lookup table.} The red numbers in the hexagonal pixels count the number of detected photons in the respective pixel. In these events, only the direction of Cherenkov photons is simulated by CORSIKA. The wavelengths of the photons are drawn from the Cherenkov spectrum given in figure~\ref{airshowers:cherenkovspectrum}.}
+	\label{corsika-events}
+\end{figure}
