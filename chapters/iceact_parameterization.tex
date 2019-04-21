@@ -221,7 +221,7 @@ This is caused by the evaluation of a continuous PDF at discrete points. To do s
 \begin{align}
 	\Omega_\text{HP} = \frac{4\pi}{N_\text{pix}} \overset{\eqref{eq:npix}}{=} \frac{\pi}{3N_\text{side}^2}\,.
 	\label{eq:omega_hp}
-\end{align}
+\end{align}\\
 
 From the former considerations one can conclude the densities given by
 \begin{subequations}
@@ -242,7 +242,7 @@ From the former considerations one can conclude the densities given by
 	\end{align}
 \end{subequations}
 
-In equation \eqref{eq:rho_det}, $N_{\text{det},i,\Delta\lambda}$ rescales the KDE to be normed to the total amount of detected photons. The factor $(4\pi\Gamma)^{-1}$ in equation \eqref{eq:rho_sim} takes account of the zenith angle limit in the simulation so that the densities have the \enquote{unit}
+In equation \eqref{eq:rho_det}, $N_{\text{det},i,\Delta\lambda}$ rescales the KDE to be normed to the total amount of detected photons. The factor $(4\pi\Gamma)^{-1}$ in equation \eqref{eq:rho_sim} takes account of the zenith angle limit in the simulation so that the densities have the unit
 \begin{align}
 	[\rho] = \frac{\text{particles}}{\text{angular area}}\,.
 \end{align}
@@ -265,4 +265,3 @@ To visualize the renormalization process, figure~\ref{deteff:1d_example} shows a
 	\caption[Example: KDE renormalization]{\textbf{Example: KDE renormalization.} 1D example to visualize the renormalization process. In this \enquote{toy simulation} \num{1000}~\enquote{photons} are simulated uniformly in the interval $[\SI{0}{\au},\SI{70}{\au}]$ for which the blue dashed line is the corresponding PDF. \num{200}~\enquote{photons} are detected (black dashes on the $x$-axis) and the PDF is calculated by adaptive kernel density estimation (green dashed line). Since the PDFs are both normalized to $1$ (w.r.t. left $y$-axis), a rescaling is now done (cf. right $y$-axis). The KDE for detected \enquote{photons} is scaled (green solid line) so that the enclosed area is $N_\text{det}=\num{200}$. This is also done with the PDF of simulated data (blue solid line) to correspond to an enclosed area $N_\text{sim}=\num{1000}$. The scaled detection and simulation densities $\rho_\text{det}$ and $\rho_\text{sim}$ are evaluated in bins with size $\Delta x$ which is analogous to the HEALPix area $\Omega_\text{HP}$ (cf. equation~\eqref{eq:omega_hp}). One gets the detection efficiency $\epsilon(x)$ for each bin by dividing the emphasized hatched areas by each other. The division of areas incorporates the integration over the HEALPix area done in the \enquote{real} evaluation (cf. equation~\eqref{eq:deteff}).}
 	\label{deteff:1d_example}	
 \end{figure}
-
