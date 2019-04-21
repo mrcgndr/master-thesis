@@ -183,6 +183,17 @@ With the approximated transmission and reflection coefficient one can estimate t
 \end{align}
 One obtains, that the ghost image is a per-mill effect, i.e. for an image where \num{1000} photons are detected, one would expect one ghost image photon. The detection efficiency maps in figure~\label{deteff:offaxis_px} show some examples for the ghost image effect. It causes a suppressed mirror image of the core efficiency region.
 
+\subsection{Impact-location-dependent Detection Efficiency on the Lens}\label{sec:impactlocation}
+\todo{blöde Überschrift ...}
+
+Due to their shape, the Winston cones have different maximum incident angles for their two symmetry axes (cf. figure~\ref{iceact:camera:iceact_wico_sketch}). That implicates that there are trajectories with such angles that can not reach the exit window or the SiPM. For the Fresnel lens, this leads to the fact that the detection efficiency may be dependent on the impact position on the lens. To investigate this, a ray tracing simulation is done, where  
+
+\todo{welche Wellenlänge haben die Photonen?}
+\todo{Plot mit symmetrischem Pixel der mittig trifft}
+\todo{Plot mit symmetrischem Pixel der auf Grenzfläche trifft}
+\todo{Plot mit asymmetrischem Pixel der mittig trifft}
+\todo{Plot mit asymmetrischem Pixel der auf Grenzfläche trifft}
+
 \section{Parameterization Simulation}
 
 The parameterization has the goal to give the detection efficiency of each pixel for a photon with given wavelength $\lambda$ and direction $(\theta,\phi)$. Therefore, a simulation has to be done for a wavelength range $[\lambda_\text{min}, \lambda_\text{max}]$ and a direction range -- given by a maximum inclination angle $\theta_\text{max}$ -- in which \iceact is capable of detecting Cherenkov photons. Firstly, the \geant coordinate system is introduced in figure~\ref{geant_coords}.\\
