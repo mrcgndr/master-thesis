@@ -1,7 +1,7 @@
 % !TeX spellcheck = en_US
 \chapter{\iceact Parameterization Strategy}\label{chap:param_strategy}
 
-The simulation results discussed in chapter \ref{chap:iceact_sim} can now be used to parameterize the telescope response of \iceact. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). Afterwards, the high computational effort by propagating each Cherenkov photon through the whole \geant model is not needed any more. To achieve this, one needs a well-defined strategy to convert the simulated raw data into a meaningful parameterization.\\
+The simulation results discussed in chapter \ref{chap:iceact_sim} can now be used to parameterize the telescope response of \iceact. The major goal of this is to provide a fast way to evaluate the detection probability of incident photons in each camera pixel which is done by elaboration of a lookup table (\textit{LUT}). Afterwards, the high computational effort by propagating each Cherenkov photon through the whole \geant model is not needed anymore. To achieve this, one needs a well-defined strategy to convert the simulated raw data into a meaningful parameterization.\\
 
 The following chapter will discuss the step-by-step strategy to get \textit{detection efficiency maps} out of the \geant data. These maps will describe the direction-dependent detection probabilty for a certain wavelength range and a certain camera pixel.
 
@@ -42,9 +42,9 @@ On the \iceact camera, each pixel has a certain region of photon directions wher
 with
 \begin{vardescription}
 	n & total number of data points,\\
-	w_i & weight of th $i$-th data point,\\
+	w_i & weight of the $i$-th data point,\\
 	N_i & Gaussian normalization,\\
-	\vec{X_i} & coordinate vector of the $i$-the data point,\\
+	\vec{X_i} & coordinate vector of the $i$-th data point,\\
 	h & global bandwidth factor,\\
 	\lambda_i & local bandwidth factor,\\
 	\mathbf{C} & covariance matrix.\\
@@ -72,7 +72,7 @@ For the \iceact parameterization the sensitivity parameter $\alpha$ is set to $\
 
 One problem of kernel density estimation is that it does not provide any statistical information, i.e. \enquote{how precise} the probability density is estimated. Since the data set used for the KDE is just a random sample of the underlying \textit{probability density function} (\textit{PDF}), one needs a method to draw multiple subsamples from the given data which is known as \textit{resampling}.
 
-More specifically, the \textit{bootstrapping} method is used. It is type of resampling where $n$ data points are drawn from $n$ data points with replacement, so that one data point can possibly be chosen multiple times or not at all. The probability of drawing a point is equal for all points given by $\frac{1}{n}$. Hence, the probability of a not drawing a single data point in a bootstrapped sample is
+More specifically, the \textit{bootstrapping} method is used. It is a type of resampling where $n$ data points are drawn from $n$ data points with replacement, so that one data point can possibly be chosen multiple times or not at all. The probability of drawing a point is equal for all points given by $\frac{1}{n}$. Hence, the probability of not drawing a single data point in a bootstrapped sample is
 \begin{align}
 	\left(1-\frac{1}{n}\right)^n \overset{n\to\infty}{\longrightarrow} \approx\SI{37}{\percent}\,.
 \end{align}
@@ -145,7 +145,7 @@ In order to account for the spherical shape of the angles of incidence, it is us
 	\label{healpix:pixelization}
 \end{figure}
 
-The basic idea is to subdivide the sphere into 12 quadrilateral equal-area panes which can then further divided uniformly into more sub panes as shown in figure \ref{healpix:pixelization}. A parameter $k$ numbers the subdivision step starting with the base resolution at $k=0$ so that the number of sub panes per each of the 12 panes is $N_{\text{side}}^2=\left(2^k\right)^2$. Hence, the total amount of pixels on the sphere is then \cite{healpix:paper}
+The basic idea is to subdivide the sphere into 12 quadrilateral equal-area panes which can then further be divided uniformly into more sub panes as shown in figure \ref{healpix:pixelization}. A parameter $k$ numbers the subdivision step starting with the base resolution at $k=0$ so that the number of sub panes per each of the 12 panes is $N_{\text{side}}^2=\left(2^k\right)^2$. Hence, the total amount of pixels on the sphere is then \cite{healpix:paper}
 \begin{align}
 N_\text{pix} = 12N_\text{side}^2\,.
 \label{eq:npix}
@@ -190,9 +190,9 @@ For the application in this simulation the pixelization of a whole sphere is not
 \end{align}
 For the \iceact simulation with $\theta_\text{max} = \SI{10}{\degree}$ this leads to only about \SI{0.76}{\percent} of the sphere needed to be pixelized\footnote{In the \iceact parameterization, a few more HEALPix are actually needed. The reason is, that all HEALPixes that at least overlap partly with the region $\theta\leq\theta_\text{max}$ are included.}.
 
-An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of \iceact simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates~$(\theta, \phi)$ to be saved, but only the ordinal number~$HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter~$N_\text{nside}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by~$\theta_\text{max}$ result in a distinct maximum ordinal number~$HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
+An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \enquote{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of \iceact simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates~$(\theta, \phi)$ to be saved, but only the ordinal number~$HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter~$N_\text{side}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by~$\theta_\text{max}$ result in a distinct maximum ordinal number~$HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
 
-\subsection{KDE Renormalizaion: Detection Efficiency}
+\subsection{KDE Renormalization: Detection Efficiency}
 
 By using the adaptive KDE method one gets a probability density function which implies normalization (cf. equation \eqref{kde:norm}). In order to get to an actual efficiency, one has to do a renormalization.
 
