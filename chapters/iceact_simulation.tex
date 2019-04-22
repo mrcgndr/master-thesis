@@ -123,8 +123,8 @@ As already brought up in section~\ref{sec:winstoncones:impl}, the \textit{mesh s
 	\begin{minipage}[t]{0.495\textwidth}
 		\vspace{-190pt}
 		\caption[\enquote{Image} produced by the \iceact Winston cone]{\textbf{\enquote{Image} produced by the \iceact Winston cone.} The Winston cone is fully illuminated by vertical light ($\theta=\SI{0}{\degree}$) with $\lambda=\SI{380}{\nano\meter}$ and locations of arriving photons at the exit window are histogramized in a normalized logarithmic scale. This simulation is done with five different maximum edge lengths $m$ of the mesh. For $m\geq\SI{0.4}{\milli\meter}$, distinct artifacts are visible. $x$ and $y$ are the \geant coordinates as shown in figure~\ref{geant_coords}.}
+		\label{wico:theta0_image}
 	\end{minipage}
-	\label{wico:theta0_image}
 \end{figure}
 
 In order to compare the meshed Winston cone with the exact CAD model, the \geant simulation is compared with the Zemax\footnote{Zemax is a commercial ray tracing tool for Microsoft Windows. It is commonly used for the analysis and optimization of optical systems.} simulation done in~\cite{iceact:camera}. Figure~\ref{wico:comparison_zemax} shows a quite high similarity.
@@ -168,7 +168,7 @@ In summary, the mesh size $m=\SI{0.4}{\milli\meter}$ is chosen for the parameter
 
 \subsection{\enquote{Ghost Image}}\label{sec:ghost_image}
 
-At all interfaces, the photon has to pass, reflection and transmission occur. In the \iceact optics, mainly the transmission is desired. Nevertheless, reflections occur as well. To get a rough estimate, one can assume perpendicular incidence and evaluate equation~\eqref{eq:perp_interface_transmission} with $n(\lambda)=\num{1.5}$, $n_\text{air}=1$. The result is, that a photon is transmitted by $\approx\SI{96}{\percent}$ and reflected by $\approx\SI{4}{\percent}$. Usually, an incidental reflection results in \enquote{diffuse} scattering of the photons and decreases the imaging quality of the optical system. Besides this effect which results in a kind of \enquote{noisy} image, there is a very systematic beam path that ends up with a accumulation of scattered photons in a distinct direction -- the \textit{ghost image}. The reason for this effect is the glass plate in combination with the Fresnel lens. The imaging character of a lens translates an incident direction into a position on the focal plane. It can appear, that a photon is reflected at the Winston cone entrance window and thus gets back to the Fresnel lens. The Fresnel lens can now refract the photon in such a way that it gets to the back of glass plate namely with the same inclination angle as in the initial state, but now with the reversed traveling direction. A possible reflection on the glass plate results in a shift of the azimuth angle by \SI{180}{\degree}. By a trasmission through the Fresnel lens once again, the photon is now refracted to the focal plane with a azimuth shift of \SI{180}{\degree} as well. If now this photon gets finally through the cone and is detected by the SiPM, it causes the ghost image. To visualize this, figure~\ref{ghostimage_path} shows the ghost image effect at \enquote{leading order}, i.e. the most probable beam path.
+At all interfaces, the photon has to pass, reflection and transmission occur. In the \iceact optics, mainly the transmission is desired. Nevertheless, reflections occur as well. To get a rough estimate, one can assume perpendicular incidence and evaluate equation~\eqref{eq:perp_interface_transmission} with $n(\lambda)=\num{1.5}$, $n_\text{air}=1$. The result is, that a photon is transmitted by $\approx\SI{96}{\percent}$ and reflected by $\approx\SI{4}{\percent}$. Usually, an incidental reflection results in \enquote{diffuse} scattering of the photons and decreases the imaging quality of the optical system. Besides this effect which results in a kind of \enquote{noisy} image, there is a very systematic beam path that ends up with a accumulation of scattered photons in a distinct direction -- the \textit{ghost image}. The reason for this effect is the glass plate in combination with the Fresnel lens. The imaging character of a lens translates an incident direction into a position on the focal plane. It can appear, that a photon is reflected at the Winston cone entrance window and thus gets back to the Fresnel lens. The Fresnel lens can now refract the photon in such a way that it gets to the back of glass plate namely with the same inclination angle as in the initial state, but now with the reversed traveling direction. A possible reflection on the glass plate results in a shift of the azimuth angle by \SI{180}{\degree}. By a trasmission through the Fresnel lens once again, the photon is now refracted to the focal plane with a azimuth shift of \SI{180}{\degree} as well. If now this photon gets finally through the cone and is detected by the SiPM, it causes the ghost image. To visualize this, figure~\ref{ghostimage_path} shows the ghost image effect at \enquote{leading order}, i.e. the most probable beam path.\\
 
 \begin{figure}[H]
 	\centering
@@ -181,22 +181,82 @@ With the approximated transmission and reflection coefficient one can estimate t
 \begin{align}
 	(\SI{4}{\percent})^2 \cdot (\SI{96}{\percent})^4 \sim \SI{0.1}{\percent}\,.
 \end{align}
-One obtains, that the ghost image is a per-mill effect, i.e. for an image where \num{1000} photons are detected, one would expect one ghost image photon. The detection efficiency maps in figure~\label{deteff:offaxis_px} show some examples for the ghost image effect. It causes a suppressed mirror image of the core efficiency region.
+One obtains, that the ghost image is a per-mill effect, i.e. for an image where \num{1000} photons are detected, one would expect one ghost image photon. The detection efficiency maps in figure~\ref{deteff:offaxis_px} show some examples for the ghost image effect. It causes a suppressed mirror image of the core efficiency region. The ghost image is also visible in the camera top plane histograms of photons in figures~\ref{alienplots_normalsym}, \ref{alienplots_quasisym}, and~\ref{alienplots_strangesym}.
 
-\subsection{Impact-location-dependent Detection Efficiency on the Lens}\label{sec:impactlocation}
+\subsection{Impact-location-dependent Detection Efficiency}\label{sec:impactlocation}
 \todo{blöde Überschrift ...}
 
-Due to their shape, the Winston cones have different maximum incident angles for their two symmetry axes (cf. figure~\ref{iceact:camera:iceact_wico_sketch}). That implicates that there are trajectories with such angles that can not reach the exit window or the SiPM. For the Fresnel lens, this leads to the fact that the detection efficiency may be dependent on the impact position on the lens. To investigate this, a ray tracing simulation is done, where  
+Due to their shape, the Winston cones have different maximum incident angles for their two symmetry axes (cf. figure~\ref{iceact:camera:iceact_wico_sketch}). That implicates that there are trajectories with such angles that can not reach the exit window or the SiPM. For the optics, this leads to the fact that the detection efficiency may be dependent on the impact position on the lens or the glass plate, respectively. To investigate this, a ray tracing simulation is done, where the lens is uniformly illuminated with photons of a single wavelength $\lambda=\SI{420}{\nano\meter}$ and a single direction $(\theta,\phi)$. The resulting impact positions at the camera top plane and the camera pixel plane are histogramized. Additionally, all initial impact positions $(x,y)$ at the glass plate of are histogramized. By simulation, it is known which of the photons are detected. Therefore, one gets a impact-location-dependent detection efficiency profile -- further abbreviated as \textit{detection profile} -- of the optics.
+The detection profiles have a characteristic shapes for certain discrete photon directions. This is due to the symmetry properties of the \iceact camera. Basically, a hexagonal grid consisting of smaller hexagons has six symmetry axes but as the SiPMs are squared, these break down to only two remaining axes like it is sketched in figure~\ref{camera:symmetryaxes}.\\
 
-\todo{welche Wellenlänge haben die Photonen?}
-\todo{Plot mit symmetrischem Pixel der mittig trifft}
-\todo{Plot mit symmetrischem Pixel der auf Grenzfläche trifft}
-\todo{Plot mit asymmetrischem Pixel der mittig trifft}
-\todo{Plot mit asymmetrischem Pixel der auf Grenzfläche trifft}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{SiPMs_symmetry.pdf}
+	\caption[Symmetry axes of the \iceact camera]{\textbf{Symmetry axes of the \iceact camera.} The red lines show the two symmetry axes of the full camera. Additional symmetry axes of the hexagonal pattern are marked as green lines. The origin of the \geant coordinate system sketched in the bottom left is the camera center on top of the Winston cones.}
+	\label{camera:symmetryaxes}
+\end{figure}
+
+As a result, one expects the detection profiles for photon directions parallel to one of the two symmetry axes to be symmetrical w.r.t. to this axis as well. Figure~\ref{alienplots_normalsym} shows two examples.\\
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.492\textwidth}
+		\fbox{\includegraphics[width=\textwidth]{alienplots/theta3_phi000.png}}
+		\subcaption{Focal point on single Winston cone.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.492\textwidth}
+		\fbox{\includegraphics[width=\textwidth]{alienplots/theta4_phi000.png}}
+		\subcaption{Focal point on two Winston cones.}
+	\end{subfigure}
+	\caption[Detection profiles in symmetry axis along $x$]{\textbf{Detection profiles in symmetry axis along $x$.} The profile shown in the bottom right of each plot is distinct for both cases but since the photon direction is along a symmetry axis of the whole camera, the detection profile is symmetrical w.r.t. this axis as well. Histograms of the photon distribution in the camera top plane (top left) and in the SiPM plane (bottom left). A polar plot of the photon direction is shown on the top right.}
+	\label{alienplots_normalsym}
+\end{figure}
+
+For the quasi-symmetrical axis -- i.e. a symmetry axis of the hexagons but not of the SiPMs (green lines in figure~\ref{camera:symmetryaxes}) -- one expects basically symmetrical detection profiles which are more or less distorted. Two examples are shown in figure~\ref{alienplots_quasisym}.\\
+	
+\begin{figure}[H]
+	\centering	
+	\begin{subfigure}[t]{0.492\textwidth}
+		\fbox{\includegraphics[width=\textwidth]{alienplots/theta3_phi060.png}}
+		\subcaption{Focal point on single Winston cone.}
+		\label{alienplots_quasisym:1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.492\textwidth}
+		\fbox{\includegraphics[width=\textwidth]{alienplots/theta4_phi060.png}}
+		\subcaption{Focal point on two Winston cones.}
+		\label{alienplots_quasisym:2}
+	\end{subfigure}
+	\caption[Detection profiles in quasi-symmetry axis]{\textbf{Detection profiles in quasi-symmetry axis.} Similar plots as in figure~\ref{alienplots_normalsym} but now for photon directions along a quasi-symmetrical axis. For the case of the focal spot being on a single Winston cone as in (\subref{alienplots_quasisym:1}), the quasi-symmetrical detection profile is less obvious than for two Winston cones under the focal spot shown in (\subref{alienplots_quasisym:2}).}
+	\label{alienplots_quasisym}
+\end{figure}
+
+Although the shape of detection profiles seems to be understood now, there is a peculiar behavior occuring if one simulated photon directions parallel to the other alleged main symmetry axis. If the focal spot is on top of just a single Winston cone, one obtains the expected symmetrical profile. However, if the focal spot covers multiple Winston cones -- i.e. three along the $y$-axis -- a significantly asymmetrical profile arises as shown in figure~\ref{alienplots_strangesym}.\\
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.492\textwidth}
+		\fbox{\includegraphics[width=\textwidth]{alienplots/theta3_phi090.png}}
+		\subcaption{Focal point on single Winston cone.}
+		\label{alienplots_strangesym:1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.492\textwidth}
+		\fbox{\includegraphics[width=\textwidth]{alienplots/theta4_phi090.png}}
+		\subcaption{Focal point on three Winston cones.}
+		\label{alienplots_strangesym:2}
+	\end{subfigure}
+	\caption[Detection profiles in symmetry axis along $x$]{\textbf{Detection profiles in symmetry axis along $y$.} Similar plots as in figure~\ref{alienplots_normalsym} but now for photon directions along the other symmetry axis of the whole camera. The symmetrical shape ot the detection profile holds for the case of the focal spot under a single Winston cone shown in (\subref{alienplots_strangesym:1}). However, the focal spot covering three Winston cones leads to considerably asymmetry of the profile.}
+	\label{alienplots_strangesym}
+\end{figure}
+
+Further investigation show that the strength of this feature is directly dependent on how strongly the focal spot covers multiple Winston cone entrance windows. More plots on this issue can be found in the appendix~\ref{appendix:alienplots}.
+For the purpose of parameterizing the \iceact telescope, this feature is not that important since only the direction of the photons rather than their impact location on the telescope are considered. Therefore, it is sufficient for the parameterization to assume the detection profile to be constant and averaging their efficiency. Furthermore, the advantage is that the resulting parameterization is spatially independent. One only needs to know the orientation of the camera and a possible tilt angle of the optical axis.
 
 \section{Parameterization Simulation}
 
-The parameterization has the goal to give the detection efficiency of each pixel for a photon with given wavelength $\lambda$ and direction $(\theta,\phi)$. Therefore, a simulation has to be done for a wavelength range $[\lambda_\text{min}, \lambda_\text{max}]$ and a direction range -- given by a maximum inclination angle $\theta_\text{max}$ -- in which \iceact is capable of detecting Cherenkov photons. Firstly, the \geant coordinate system is introduced in figure~\ref{geant_coords}.\\
+The parameterization pursues the goal to give the detection efficiency of each pixel for a photon with given wavelength $\lambda$ and direction $(\theta,\phi)$. Therefore, a simulation has to be done for a wavelength range $[\lambda_\text{min}, \lambda_\text{max}]$ and a direction range -- given by a maximum inclination angle $\theta_\text{max}$ -- in which \iceact is capable of detecting Cherenkov photons. Firstly, the \geant coordinate system is introduced in figure~\ref{geant_coords}.\\
 
 \begin{figure}[H]
 	\centering
@@ -214,7 +274,8 @@ The parameterization has the goal to give the detection efficiency of each pixel
 	\label{geant_coords}
 \end{figure}
 
-The wavelength range is mainly limited by the material properties and the photon detection efficiency of the SiPMs (cf. figures~\ref{iceact:model:material:transmission} and \ref{sipm:pde}). The layout of the optical system determines the maximum inclination angle. In figure~\ref{iceact:camera:layout} a maximum inclination angle of $\approx\SI{6.8}{\degree}$ is calculated. For this parameterization, a larger angle of $\theta_\text{max}=\SI{10}{\degree}$ is chosen in order to account for UV photons near $\lambda_\text{min}$  which are refracted more strongly and thus can be detected under higher zenith angles. Both -- i.e. wavelengths and directions -- are simulated uniformly distributed. For $\lambda$ and $\phi$ this can be done without problems. For the zenith angle $\theta$ one has to consider the curvilinear character of the spherical coordinate system, which causes a variable phase space depending on $\theta$. By taking the cosine of the zenith angle, this effect is compensated. Thus, the simulation is done uniformly in $\cos{\theta}$. Additionally, the focal plane shift (cf. section~\ref{sec:focalplaneshift}) and the reasonable mesh size (cf. section~\ref{sec:wico_meshing}) is applied. In total, \num{15e9} particles are simulated. Table~\ref{paramsim:params} gives a summary of the simulation parameters.
+The wavelength range is mainly limited by the material properties and the photon detection efficiency of the SiPMs (cf. figures~\ref{iceact:model:material:transmission} and \ref{sipm:pde}). The layout of the optical system determines the maximum inclination angle. In figure~\ref{iceact:camera:layout} a maximum inclination angle of $\approx\SI{6.8}{\degree}$ is calculated. For this parameterization, a larger angle of $\theta_\text{max}=\SI{10}{\degree}$ is chosen in order to account for UV photons near $\lambda_\text{min}$  which are refracted more strongly and thus can be detected under higher zenith angles. Both -- i.e. wavelengths and directions -- are simulated uniformly distributed. For $\lambda$ and $\phi$ this can be done without problems. For the zenith angle $\theta$ one has to consider the curvilinear character of the spherical coordinate system, which causes a variable phase space depending on $\theta$. By taking the cosine of the zenith angle, this effect is compensated. Thus, the simulation is done uniformly in $\cos{\theta}$. Additionally, the focal plane shift (cf. section~\ref{sec:focalplaneshift}) and the reasonable mesh size (cf. section~\ref{sec:wico_meshing}) is applied. In total, \num{15e9} particles are simulated. As already stated in section~\ref{sec:impactlocation}, the detection efficiency should be determined independently of the impact position of a single Cherenkov photon on the telescope. This is ensured by seeding the simulated particles uniformly distributed directly above the glass plate and thus fully illuminate it. Although an additional calculation of the effective area can thus be dropped, one has to define to which aperture the detection probabilities should be normalized. Since the glass plate has a larger diameter than the lens as is covers the tube's coating, a normalization to an accidentally false aperture would result in different probabilities. In this simulation, the aperture of the telescope is assumed to be the area of the glass plate, thus $A_\text{eff} = \pi(\SI{650.3}{\milli\meter})^2\approx\SI{1.33}{\meter\squared}$.
+Table~\ref{paramsim:params} gives a summary of the simulation parameters.
 
 \begin{table}[H]
 	\centering
@@ -228,10 +289,9 @@ The wavelength range is mainly limited by the material properties and the photon
 		mesh size (maximum edge length)& $m$				  & \SI{0.4}{\milli\meter}\\
 		focal plan shift 			   & $\Delta z$			  & \SI{1.25}{\milli\meter}\\
 		total simulated particles      & $N_\text{sim}$		  & \num{15e9}\\
+		effective area				   & $A_\text{eff}$		  & \SI{1.33}{\meter\squared}\\
 		\bottomrule
 	\end{tabular}
 	\caption[Parameters chosen for the parameterization simulation]{\textbf{Parameters chosen for the parameterization simulation.} Wavelengths are simulated uniformly in the interval $[\lambda_\text{min}, \lambda_\text{max}]$. The direction are simulated uniformly in azimuth $\phi$ and cosine of the zenith angle $\cos{\theta}$. The reasonable mesh size determined in section~\ref{sec:wico_meshing} and the focal plane shift discussed in section~\ref{sec:focalplaneshift} is applied.}
 	\label{paramsim:params}
 \end{table}
-
-\todo{ebene welle, volle ausleuchtung der glasplatte}
