@@ -1,7 +1,9 @@
 \chapter{Summary and Outlook}
 
-\todo{now possible: evaluation of Monte Carlo data}
+The successful parameterization of the full \iceact optics makes it now possible to evaluate Monte-Carlo data from cosmic-ray air showers with low time and computational effort. A detailed knowledge on how \iceact images the Cherenkov light can now be applied to estimate the veto and cosmic ray composition measurement capabilities for a single telescope but also for an array of many \iceact telescopes. A proposed design consists of deploying multiple \iceact \textit{stations} with 7 telescopes each -- 1 central upright and 6 tilted, surrounding ones. Since the parameterization can easily be adapted for tilted telescopes by coordinate transformation and considering the different effective area, this layout can also be tested for its imaging capabilities.\\
 
-\todo{adaptable for HAWCs Eye, FAMOUS, ...}
+The \iceact demonstrator telescope was equipped with different SiPMs and round, hollow aluminum Winston cones. Previous simulation studies showed a maximum detection efficiency of about \SI{19}{\percent} at $\lambda = \SI{454}{\nano\meter}$~\cite{famous:niggemann}. With the solid PMMA Winston cones and the MicroFJ SiPM, \iceact reaches a maximum detection efficiency of about \SI{33}{\percent} between \SI{426}{\nano\meter} and \SI{431}{\nano\meter}.\\
 
-\todo{Signal simulation}
+\iceact embodies one of multiple applications of compact imaging air-Cherenkov telescopes. Therefore, the simulation can be used or easily adapted for similar experiments like HAWC's Eye, FAMOUS, or other future projects having the goal of a complementary detection technique for larger-scale surface detector experiments.\\
+
+Finally, the potential of the \geant simulation is still not fully exploited. For instance, the SiPM simulation toolkit G4SiPM offers much more possibilities. Once a detailed knowledge of features and properties of the \iceact SiPM is available, G4SiPM could simulated voltage traces for each SiPM. This makes it possible to simulate the response of \iceact not just in an optical but also in an electronic point of view.

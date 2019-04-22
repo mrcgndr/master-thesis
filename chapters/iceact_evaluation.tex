@@ -252,9 +252,16 @@ Now that the data is ready, an evaluation algorithm has to be elaborated. In the
 
 \section{Application on CORSIKA Air Shower Events}
 
-With the lookup table, one can finally produce event displays -- or images -- of simulated air showers. A commonly used toolkit for detailed simulation of cosmic-ray air showers is \textit{CORSIKA}\footnote{\textbf{CO}smic \textbf{R}ay \textbf{S}imulations for \textbf{KA}scade}~\cite{corsika:website}. It is capable of simulating the direction and energy of Cherenkov photons which emerge from air showers.\\
+With the lookup table, one can finally produce event displays -- or images -- of simulated air showers. A commonly used toolkit for detailed Monte-Carlo simulation of cosmic-ray air showers is \textit{CORSIKA}\footnote{\textbf{CO}smic \textbf{R}ay \textbf{S}imulations for \textbf{KA}scade}~\cite{corsika:website}. It is capable of simulating the direction and energy of Cherenkov photons which emerge from air showers.\\
 
-The plots in figure~\ref{corsika-events} show some images of air showers simulated with CORSIKA. Three different primaries are induced: proton, iron, and photon (gamma). The wavelength or respectively the energy of Cherenkov photons could possibly simulated directly within CORSIKA as stated before. But this results in a large amount of data and a longer simulation time. Therefore, just the direction of some Cherenkov photons, that hit the detector surface in a certain region is stored. For the lookup process, the wavelength of each photon is drawn from the Cherenkov spectrum shown in figure~\ref{airshowers:cherenkovspectrum} by extrapolating wavelengths above \SI{700}{\nano\meter} with a linear function. More details about possible options with CORSIKA and the simulation process can be found in the CORSIKA manual~\cite{corsika:manual}.
+The plots in figure~\ref{corsika-events} show some images of air showers simulated with CORSIKA. Three different primaries are induced: proton, iron, and photon (gamma). The wavelength or respectively the energy of Cherenkov photons could possibly simulated directly within CORSIKA as stated before. But this results in a large amount of data and a longer simulation time. Therefore, just the direction of some Cherenkov photons, that hit the detector surface in a certain region is stored. For the lookup process, the wavelength of each photon is drawn from the Cherenkov spectrum shown in figure~\ref{airshowers:cherenkovspectrum} by extrapolating wavelengths above \SI{700}{\nano\meter} with a linear function. More details about possible options with CORSIKA and the simulation process can be found in the CORSIKA manual~\cite{corsika:manual}.\\
+
+In order to take into account the effective area of the telescope, only Cherenkov photons that hit a circular area within a diameter of the glass plate $d=\SI{650.3}{\milli\meter}$. This holds for the case of an upright telescope. For a telescope tilted by a zenith angle $\theta^\ast$, the projected effective area is
+\begin{align}
+A_\text{eff}^\ast = A_\text{eff}\cos{\theta^\ast}\,.
+\end{align}\\
+
+However, the events shown in figure~\ref{corsika-events} are evaluation for the simple case of a single, upright telescope.
 
 \begin{figure}[H]
 	\centering
