@@ -42,6 +42,7 @@
 \usepackage{scrlayer-scrpage}
 \ofoot*{\raisebox{-2mm}{\pagemark}}
 \renewcommand*{\chapterpagestyle}{scrheadings}
+%\renewcommand*{\emptypagestyle}{scrheadings}
 % Fußnoten nicht auf mehrere Seiten aufteilen
 \interfootnotelinepenalty=10000
 % Absatzanfang nicht einrücken
@@ -124,7 +125,7 @@
 \newcommand{\iceact}{\mbox{IceAct}\xspace}
 \newcommand{\icecube}{\mbox{IceCube}\xspace}
 \newcommand{\icetop}{\mbox{IceTop}\xspace}
-
+ 
 % Document
 % -----------------------------------
 \begin{document}
@@ -132,14 +133,14 @@
 \frontmatter 
 	\input{./title/title} 		% Titelblatt
     \input{./title/persons}		% Betreuer, Korrektor
+    \protect\thispagestyle{scrheadings}
     \onehalfspacing             % Zeilenabstand ab hier 1.5 zeilig
-	\renewcommand{\contentsname}{Content}
+	%\renewcommand{\contentsname}{Content}
 	\tableofcontents			% Inhaltsverzeichnis
-	\protect\thispagestyle{scrheadings}
 
 % -----------------------------------
 \mainmatter 					% die einzelnen Kapitel
-    \pagestyle{scrheadings}
+    \protect\pagestyle{scrheadings}
     \input{./chapters/introduction}
     \input{./chapters/iceact_model}
     \input{./chapters/iceact_simulation}
@@ -148,15 +149,16 @@
     \input{./chapters/summary_outlook}
 
 % -----------------------------------
-\backmatter
+\appendix
 	\input{./chapters/appendix}
-	\renewcommand{\listfigurename}{Figures}
+	
+\backmatter
+	\pagenumbering{Roman} 
+	\input{./chapters/acknowledgements}
+	%\renewcommand{\listfigurename}{Figures}
 	\listoffigures 				% Abbildungsverzeichnis
-	\protect\thispagestyle{scrheadings}
-	\renewcommand{\listtablename}{Tables}
+	%\renewcommand{\listtablename}{Tables}
 	\listoftables				% Tabellenverzeichnis
-	\protect\thispagestyle{scrheadings}
-	\pagestyle{scrheadings}
 	\printbibliography[title=Literature]
 
 \includepdf{./chapters/form_eidesstattliche_versicherung.pdf}
