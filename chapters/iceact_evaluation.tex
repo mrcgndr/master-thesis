@@ -5,7 +5,9 @@ The parameterization strategy introduced in chapter~\ref{chap:param_strategy} ca
 
 \section{Wavelength Binning}\label{sec:wvl_binning}
 
-Since the photon detection efficiency of the SiPMs is a non-constant function of the wavelength (cf. figure~\ref{sipm:pde}), one can optimize the different wavelength ranges or \textit{bin sizes}~$\Delta\lambda$ by equalizing not the bin sizes (\textit{constant binning}) but the detected photons per bin which is further referred to as \textit{adaptive binning}. Figure~\ref{param:wvl_binning} shows a comparison between constant and adaptive wavelength binning.
+Since the photon detection efficiency of the SiPMs is a non-constant function of the wavelength (cf. figure~\ref{sipm:pde}), one can optimize the different wavelength ranges or \textit{bin sizes}~$\Delta\lambda$ by equalizing not the bin sizes themselves (\textit{constant binning}) but the detected photons per bin which is further referred to as \textit{adaptive binning}. Figure~\ref{param:wvl_binning} shows a comparison between constant and adaptive wavelength binning.\\
+
+The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPMs -- i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive}). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).\\
 
 \begin{figure}[H]
 	\centering
@@ -24,9 +26,7 @@ Since the photon detection efficiency of the SiPMs is a non-constant function of
 	\label{param:wvl_binning}
 \end{figure}
 
-The adaptive bin edges are calculated by sorting the wavelengths of all simulated particles that are detected by any of the 61 SiPMs -- i.e. all photons on which the KDE will be applied afterwards (cf. section~\ref{sec:adaptive_vs_nonadaptive}). Next, this sequence is divided into \num{50} parts of equal length. Thus, the wavelengths are divided into consecutive \SI{2}{\percent}-quantiles. In order to get more convenient bin sizes, the quantile limits (or bin edges) are rounded to integer values which obviously result in some fluctuations (cf. figure~\ref{param:wvl_binning:adaptive}).\\
-
-With the adaptive wavelength binning it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable probability density estimation. The simulated wavelength range starts at $\lambda_\text{min}=\SI{272}{\nano\meter}$ since there is no photon detected with a wavelength below \SI{272}{\nano\meter} due to the absorption properties of the glass plate (cf. \ref{sec:iceact:model:material}).
+With the adaptive wavelength binning, it is ensured that in each range $\Delta\lambda$ almost the same number of photons is detected which enables a statistically more stable probability density estimation. The simulated wavelength range starts at $\lambda_\text{min}=\SI{272}{\nano\meter}$ since there is no photon detected with a wavelength below \SI{272}{\nano\meter} due to the absorption properties of the glass plate (cf. \ref{sec:iceact:model:material}).
 
 \section{Adaptive vs. Non-adaptive KDE}\label{sec:adaptive_vs_nonadaptive}
 
@@ -60,30 +60,33 @@ Now that the wavelength binning is defined, the next step is to take a look on t
 	\caption[Example: directions of detected photons as a scatter plot]{\textbf{Example: directions of detected photons as a scatter plot.} A subset of simulated photon directions that are detected in a given camera pixel $i$ and the wavelength range $\Delta\lambda$ are shown in a polar plot. One can clearly see that there are regions with high and low statistical significance. Additionally, the \textit{ghost image} effect (cf. section~\ref{sec:ghost_image}) is visible in the non-central pixels ((\subref{param:example_scatter:2}), (\subref{param:example_scatter:3}), (\subref{param:example_scatter:4})).}
 	\label{param:example_scatter}	
 \end{figure}
-
+\newpage
 The regions with very sparse \enquote{dots} can only arise from random scattering processes inside the optical system since they are outside the main field of view and the \textit{ghost image} region (cf. section~\ref{sec:ghost_image}). Thus, the probability density should be rather constant in these scattering regions. For the KDE, one achieves this by increasing the kernel bandwith. Simultaneously, the \enquote{real} detection regions should be described precisely which is done by reducing the bandwith. The need of an adaptive kernel density approach is given. Figure~\ref{param:kde_comparison} strikingly shows the difference between an adaptive and a non-adaptive KDE.\\
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[t]{0.40\textwidth}
+	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px00_wvl450-455.pdf}
 		\subcaption{}
 		\label{param:kde_comparison:1}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.40\textwidth}
+	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px10_wvl800-900.pdf}
 		\subcaption{}
 		\label{param:kde_comparison:2}
 	\end{subfigure}
-	\vfill
-	\begin{subfigure}[b]{0.40\textwidth}
+\end{figure}
+\begin{figure}[H]
+	\ContinuedFloat
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px20_wvl410-415.pdf}
 		\subcaption{}
 		\label{param:kde_comparison:3}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.40\textwidth}
+	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{comparison_adaptive_nonadaptive_px54_wvl600-615.pdf}
 		\subcaption{}
 		\label{param:kde_comparison:4}
@@ -93,14 +96,15 @@ The regions with very sparse \enquote{dots} can only arise from random scatterin
 \end{figure}
 
 Anyway, the detection distributions can now be calculated and renormalized for each of the \num{61} camera pixels and \num{50} wavelength bins which result in \num{3050} so called \textit{detection efficiency maps} shown in the next section~\ref{sec:deteff_maps}.
+\newpage
 
 \section{Detection Efficiency Maps}\label{sec:deteff_maps}
 
-By following the strategy described in chapter~\ref{chap:para_:strategy} and considering the findings from sections~\ref{sec:wvl_binning} and \ref{sec:adaptive_vs_nonadaptive}, one can now finally calculate \textit{detection efficiency maps}. For each camera pixel $i$ and wavelength bin $\Delta\lambda$, these maps show the probability $\epsilon_{i,\Delta\lambda,HP}$ to detect a photon with wavelength $\lambda\in\Delta\lambda$ in camera pixel $i$ as a function of its origin direction~$(\theta,\phi)$ which is coded in the ordinal number~$HP$ of the corresponding HEALPix. For the error estimation, the bootstrapping method presented in section~\ref{sec:bootstrapping} is used. To get a confident estimation with reasonable computational effort, $N_\text{bootstrap} = \num{10}$ bootstrapping iterations are performed.\\
+By following the strategy described in chapter~\ref{chap:param_strategy} and considering the findings from sections~\ref{sec:wvl_binning} and \ref{sec:adaptive_vs_nonadaptive}, one can now finally calculate \textit{detection efficiency maps}. For each camera pixel $i$ and wavelength bin $\Delta\lambda$, these maps show the probability $\epsilon_{i,\Delta\lambda,HP}$ to detect a photon with wavelength $\lambda\in\Delta\lambda$ in camera pixel $i$ as a function of its origin direction~$(\theta,\phi)$ which is coded in the ordinal number~$HP$ of the corresponding HEALPix. For the error estimation, the bootstrapping method presented in section~\ref{sec:bootstrapping} is used. To get a confident estimation with reasonable computational effort, $N_\text{bootstrap} = \num{10}$ bootstrapping iterations are performed.\\
 
 \subsection{Choice of HEALPix Pixelization Parameter $N_\text{side}$}
 
-For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to choose a reasonable value as well (cf. table~\ref{healpix:table}): too fine pixelization would obviously result in a very detailed parameterization. Due to KDE, an \enquote{unbinned} detection efficiency is available -- at least in origin directions -- so that it is technically possible to choose a very fine binning. The problem is, that the main goal of the \iceact parameterization is to produce a lookup table that is efficient and capable of evaluating large amounts of Cherenkov photons. An unnecessarily fine HEALPix binning would just blow up the lookup table and quick evaluation is not feasible anymore. To determine the optimal $N_\text{side}$ of the HEALPix model, the detection efficiency of the central pixel $i=0$ is considered. As one can see in figure~\ref{deteffmap:px0}, the most efficient angular area is below a zenith angle of $\theta=\SI{0.7}{\degree}$. Usually, this regions are called \textit{field of view} (\textit{FOV}) which equals the doubled zenith angle $2\theta$ if the FOV is symmetrical around the zenith. Thus, the core field of view of the central pixel is $\SI{1.4}{\degree}$. In the transition region $\SI{1.4}{\degree} < 2\theta \leq \SI{2.5}{\degree}$, the detection efficiency decreases rapidly. Therefore, it is crucial to pixelize this region such that the hexagonal shape of the pixel's field of view -- which is caused by the Winston cones -- is described in a sufficient degree of detail in order to have a fairly precise approximation.
+For the pixelization parameter of the HEALPix model~$N_\text{side}$ (cf. section~\ref{sec:healpix}), one has to choose a reasonable value as well (cf. table~\ref{healpix:table}): too fine pixelization would obviously result in a very detailed parameterization. Due to KDE, an \enquote{unbinned} detection efficiency is available -- at least in origin directions -- so that it is technically possible to choose a very fine binning. The problem is that the main goal of the \iceact parameterization is to produce a lookup table that is efficient and capable of evaluating large amounts of Cherenkov photons. An unnecessarily fine HEALPix binning would just blow up the lookup table and quick evaluation is not feasible anymore. To determine the optimal $N_\text{side}$ of the HEALPix model, the detection efficiency of the central pixel $i=0$ is considered. As one can see in figure~\ref{deteffmap:px0}, the most efficient angular area is below a zenith angle of $\theta=\SI{0.7}{\degree}$. Usually, this regions are called \textit{field of view} (\textit{FOV}) which equals the doubled zenith angle $2\theta$ if the FOV is symmetrical around the zenith. Thus, the core field of view of the central pixel is $\SI{1.4}{\degree}$. In the transition region $\SI{1.4}{\degree} < 2\theta \leq \SI{2.5}{\degree}$, the detection efficiency decreases rapidly. Therefore, it is crucial to pixelize this region such that the hexagonal shape of the pixel's field of view -- which is caused by the Winston cones -- is described in a sufficient degree of detail in order to have a fairly precise approximation.
 
 \begin{figure}[H]
 	\centering
@@ -109,7 +113,7 @@ For the pixelization parameter of the HEALPix model~$N_\text{side}$, one has to 
 	\label{deteffmap:px0}
 \end{figure}
 
-As figure~\ref{deteffmap:px0} shows, a HEALPix parameter of $N_\text{side}=\num{512}$ is sufficient to describe the hexagonal shape. By applying $N_\text{side}=\num{256}$, four HEALPix would reduce to just one HEALPix, which could hardly describe the edges. On the other side, one gets to $N_\text{side}=\num{1024}$ by dividing a HEALPix into four. This results in an unnecessarily high amount of HEALPix to describe the given shape. Table~\ref{n_healpix_fov} shows the number of enclosed HEALPix(-centers) in the core region ($2\theta\leq\SI{1.4}{\degree}$) and the transition region ($\SI{1.4}{\degree} < 2\theta \leq \SI{2.5}{\degree}$) depending on the used HEALPix parameter.
+As figure~\ref{deteffmap:px0} shows, a HEALPix parameter of $N_\text{side}=\num{512}$ is sufficient to describe the hexagonal shape. By applying $N_\text{side}=\num{256}$, four HEALPixes would reduce to just one HEALPix, which could hardly describe the edges. On the other side, one gets to $N_\text{side}=\num{1024}$ by dividing a HEALPix into four. This results in an unnecessarily high amount of HEALPixes to describe the given shape. Table~\ref{n_healpix_fov} shows the number of enclosed HEALPix(-centers) in the core region ($2\theta\leq\SI{1.4}{\degree}$) and the transition region ($\SI{1.4}{\degree} < 2\theta \leq \SI{2.5}{\degree}$) depending on the used HEALPix parameter.
 
 \begin{table}[H]
 	\centering
@@ -133,28 +137,31 @@ In this section, some results are presented. At first, the focus is on the maxim
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{deteffmaps/deteff_bins_max.pdf}
+	\includegraphics[width=0.8\textwidth]{deteffmaps/deteff_bins_max.pdf}
 	\caption[Maximum detection efficiency for each pixel and wavelength]{\textbf{Maximum detection efficiency for each pixel and wavelength.} The 61 camera pixels are color-coded via their ordinal number from blue to read. The overall maximum detection efficiency is reached by the central pixel at $\Delta\lambda=[\SI{426}{\nano\meter},\SI{431}{\nano\meter}]$ with $\epsilon_\text{max}\approx\SI{33.35}{\percent}$.}
 	\label{max_deteff}
 \end{figure}
 
-By summing up the individual detection efficiency maps of each pixel, the response of the whole camera to a certain wavelength is given. Figure~\ref{deteff:full_cam} shows these maps for three characteristic wavelength ranges. What is remarkable is that in the region of focus, i.e. wavelengths for which the focal spot on the camera plane is relatively small, the geometry of the camera is important. One can see very sharp differences between the main field of view of each pixel which corresponds to the Winston cone centers and the Winston cone edges resulting in an approximately \SI{10}{\percent} lower efficiency (cf. figure~\ref{deteff:full_cam:2}). For smaller wavelengths where the focus is above the camera plane, a distinct geometry-dependent pattern is not visible except, of course, the overall hexagonal shape. For higher wavelengths, a pattern occurs again, but a barrel-shaped distortion is visible. This is a known optical aberration effect where the magnification decreases with distance from the optical axis like for an image of a fisheye lens.\\
+By summing up the individual detection efficiency maps of each pixel, the response of the whole camera to a certain wavelength is given. Figure~\ref{deteff:full_cam} shows these maps for three characteristic wavelength ranges. What is remarkable is that in the region of focus -- i.e. wavelengths for which the focal spot on the camera plane is relatively small -- the geometry of the camera is important. One can see very sharp differences between the main field of view of each pixel which corresponds to the Winston cone centers and the Winston cone edges resulting in an approximately \SI{10}{\percent} lower efficiency (cf. figure~\ref{deteff:full_cam:2}). For smaller wavelengths where the focus is above the camera plane, a distinct geometry-dependent pattern is not visible except -- of course -- the overall hexagonal shape. For higher wavelengths, a pattern occurs again, but a barrel-shaped distortion is visible. This is a known optical aberration effect where the magnification decreases with distance from the optical axis like for an image of a fisheye lens.\\
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[t]{0.705\textwidth}
+	\begin{subfigure}[t]{\textwidth}
 		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl296nm_pxall_view10deg.pdf}
 		\subcaption{Ultra-violet range.}
 		\label{deteff:full_cam:1}
 	\end{subfigure}
-	\hfill
-	\begin{subfigure}[t]{0.705\textwidth}
+\end{figure}
+\begin{figure}[H]	
+	\ContinuedFloat
+	\centering
+	\begin{subfigure}[t]{\textwidth}
 		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl428.5nm_pxall_view10deg.pdf}
 		\subcaption{Maximal efficient range.}
 		\label{deteff:full_cam:2}
 	\end{subfigure}
-	\vfill
-	\begin{subfigure}[t]{0.705\textwidth}
+	\hfill
+	\begin{subfigure}[t]{\textwidth}
 		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl782nm_pxall_view10deg.pdf}
 		\subcaption{High wavelengths range.}
 		\label{deteff:full_cam:3}
@@ -163,23 +170,26 @@ By summing up the individual detection efficiency maps of each pixel, the respon
 	\label{deteff:full_cam}		
 \end{figure}
 
-Interesting optical effects are visible if one plots some off-axis pixels individually. Figure~\ref{deteff:offaxis_px} shows three of these. Besides the core region one can also see the ghost image explained in section~\ref{sec:ghost_image} on the opposite side in terms of the azimuth. Additionally, there are some spots next to the core and the ghost image region which originate from reflections between the Winston cones' top and Fresnel lens' back side. In blind regions where the detection probability does not exceed \SI{e-3}{\percent}, the estimated efficiency is highly dominated by statistical fluctuations as the plots for relative statistical errors show as well.\\
+Interesting optical effects are visible if one plots some off-axis pixels individually. Figure~\ref{deteff:offaxis_px} shows three of these. Besides the core region, one can also see the ghost image explained in section~\ref{sec:ghost_image} on the opposite side in terms of the azimuth. Additionally, there are some spots next to the core and the ghost image region which originate from reflections between the Winston cones' top and Fresnel lens' back side. In blind regions where the detection probability does not exceed \SI{e-3}{\percent}, the estimated efficiency is highly dominated by statistical fluctuations as the plots for relative statistical errors show as well.\\
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[t]{0.705\textwidth}
+	\begin{subfigure}[t]{\textwidth}
 		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl428.5nm_px11_view10.0deg.pdf}
 		\subcaption{Pixel 11 on symmetry axis along $y$.}
 		\label{deteff:offaxis_px:1}
 	\end{subfigure}
-	\hfill
-	\begin{subfigure}[t]{0.705\textwidth}
+\end{figure}
+\begin{figure}[H]
+	\ContinuedFloat
+	\centering
+	\begin{subfigure}[t]{\textwidth}
 		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl428.5nm_px14_view10.0deg.pdf}
 		\subcaption{Pixel 14 on symmetry axis along $x$.}
 		\label{deteff:offaxis_px:2}
 	\end{subfigure}
 	\vfill
-	\begin{subfigure}[t]{0.705\textwidth}
+	\begin{subfigure}[t]{\textwidth}
 		\includegraphics[width=\textwidth]{deteffmaps/deteff_wvl428.5nm_px36_view10.0deg.pdf}
 		\subcaption{Pixel 36 on \enquote{quasi-symmetry} axis.}
 		\label{deteff:offaxis_px:3}
@@ -188,17 +198,19 @@ Interesting optical effects are visible if one plots some off-axis pixels indivi
 	\label{deteff:offaxis_px}		
 \end{figure}
 
+Additional detection efficiency maps can be found in the appendix~\ref{appendix:deteffmaps}.
+
 \section{Lookup Table (LUT)}
 
 As the detection efficiency maps are ready now, one has to think about a way to access the information as fast as possible. Usually, this is done by storing the parameterization function evaluated at certain points in a multidimensional array structure known as \textit{lookup table}. Afterwards, events can be \enquote{diced} with the given information yielding count histograms for the camera -- named \textit{images}.
 
 \subsection{LUT Production}\label{sec:lut_production}
 
-First of all, one has to define how to iterate over the given information. In this case, one starts with a photon direction $(\theta,\phi)$ translated into the corresponding HEALPix number~$HP$ and the wavelength~$\lambda$ of this photon which is assigned to the proper wavelength bin~$\Delta\lambda$. The result then should be the response of each pixel to the very same photon, i.e. how probable is it for the photon to be detected in camera pixel $i$. In order to achieve this, one can evaluate the detection efficiency maps by firstly considering just one HEALPix. For this HEALPix, the detection efficiency for all wavelength bins and all camera pixels is read out, which is shown exemplary in figure~\ref{lut:transpose_example}. 
+First of all, one has to define how to iterate over the given information. In this case, one starts with a photon direction $(\theta,\phi)$ translated into the corresponding HEALPix number~$HP$ and the wavelength~$\lambda$ of this photon which is assigned to the proper wavelength bin~$\Delta\lambda$. The result then should be the response of each pixel to the very same photon, i.e. how probable is it for the photon to be detected in camera pixel $i$. In order to achieve this, one can evaluate the detection efficiency maps by firstly considering just one HEALPix. For this HEALPix, the detection efficiency for all wavelength bins and all camera pixels is read out, which is exemplarily shown in figure~\ref{lut:transpose_example}.\\
 
 \begin{figure}[H]
 	\includegraphics[width=\textwidth]{LUT_transposition_example.pdf}
-	\caption[Visualization for the lookup table transposition]{\textbf{Visualization for the lookup table transposition.} A certain HEALPix (here: $HP=\num{4890}$) is considered. For one camera pixel, the detection efficiency is read from the maps throughout all wavelength bins. In this example, some maps for pixel \num{20} are chosen. Doing this for all camera pixels yields to the blue-framed plot. For the considered HEALPix one gets the wavelength-dependent detection efficiency for each camera pixel. The \enquote{camera top view} plot shows the camera as seen from the lens. Pixels that have a maximum detection efficiency greater than~\SI{0.1}{\percent} are emphasized with colors. The detection efficiency functions of all other pixels are not plotted. Besides, the HEALPix center coordinates are given with a polar plot.}
+	\caption[Visualization for the lookup table transposition]{\textbf{Visualization for the lookup table transposition.} A certain HEALPix (here: $HP=\num{4890}$) is considered. For one camera pixel, the detection efficiency is read from the maps throughout all wavelength bins. In this example, some maps for pixel \num{20} are chosen. Doing this for all camera pixels yields to the blue-framed plot. For the considered HEALPix one gets the wavelength-dependent detection efficiency for each camera pixel. The \enquote{camera top view} plot shows the camera as seen from the lens. Pixels that have a maximum detection efficiency greater than~\SI{0.1}{\percent} are emphasized with colors. The detection efficiency functions of all other pixels are not plotted. Besides, the HEALPix center coordinates are given with a polar plot. More of these plots are shown for certain HEALPixes in the appendix~\ref{appendix:healpixplots}.}
 	\label{lut:transpose_example}
 \end{figure}
 
@@ -223,18 +235,18 @@ where the last element $\epsilon_{60}^\text{abs}$ is the total detection probabi
 	\Rightarrow \epsilon^\text{abs}_{HP,\Delta\lambda} = \{\epsilon^\text{abs}_k\}_{k=0}^{60}\,.
 \end{align}\\
 
-The HEALPix resolution used for parameterization of \iceact is $N_\text{side}=\num{512}$. With $\theta_\text{max}=\SI{10}{\degree}$, this results in a total \enquote{active} HEALPix number of $N_{HP}=\num{24420}$. Additionally, the wavelengths are divided into $N_{\Delta\lambda} = \num{50}$ bins in the interval $[\SI{272}{\nano\meter},\SI{900}{\nano\meter}]$ (cf. section~\ref{sec:wvl_binning}). For the \num{61} pixel camera this results in $N_{HP}\cdot N_{\Delta\lambda}\cdot \num{61} = \num{74481000}$ numbers to be saved. The needed disk space for this lookup table is \SI{284}{\mebi\byte} by using \SI{32}{\bit} float as data type\footnote{Since also the information about wavelength binning, HEALPix model, and maximum simulated zenith angle has to be included, the lookup table file might need slightly more space.}.
+The HEALPix resolution used for parameterization of \iceact is $N_\text{side}=\num{512}$. With $\theta_\text{max}=\SI{10}{\degree}$, this results in a total \enquote{active} HEALPix number of $N_{HP}=\num{24420}$. Additionally, the wavelengths are divided into $N_{\Delta\lambda} = \num{50}$ bins in the interval $[\SI{272}{\nano\meter},\SI{900}{\nano\meter}]$ (cf. section~\ref{sec:wvl_binning}). For the \num{61}-pixel camera, this results in $N_{HP}\cdot N_{\Delta\lambda}\cdot \num{61} = \num{74481000}$ numbers to be saved. The needed disk space for this lookup table is \SI{284}{\mebi\byte} by using \SI{32}{\bit} float as data type\footnote{Since also the information about wavelength binning, HEALPix model, and maximum simulated zenith angle has to be included, the lookup table file might need slightly more space.}.
 
 \subsection{LUT Readout -- \enquote{Event Dicing}}\label{sec:lut_readout}
 
-Now that the data is ready, an evaluation algorithm has to be elaborated. In the following, the principle to evaluate $N$ photons is described step by step.
+Now that the data is properly stored in the LUT, an evaluation algorithm has to be elaborated. In the following, the principle to evaluate $N$ photons is described step by step.
 
 \begin{enumerate}
 	\item For each direction the corresponding HEALPix number is calculated.\footnote{In this thesis, the evaluation algorithm is implemented with Python. For HEALPix calculations, the package \textit{healpy} is used.}
 	\begin{align}
 		\{(\theta_i, \phi_i)\}_{i=1}^N \rightarrow \{HP_i\}_{i=1}^N
 	\end{align}
-	\item Only valid photons are evaluated. A photon is valid if its HEALPix number~$HP_i$ is in the lookup table -- i.e. below the cutoff -- and if its wavelength~$\lambda_i$ is in the wavelength range covered by the lookup table $[\lambda_\text{min},\lambda_\text{max}]$. $N^\ast\leq N$ photons are valid. Invalid photons are counted.
+	\item Only valid photons are evaluated. A photon is valid if its HEALPix number~$HP_i$ is in the lookup table -- i.e. below the cut-off -- and if its wavelength~$\lambda_i$ is in the wavelength range covered by the lookup table $[\lambda_\text{min},\lambda_\text{max}]$. $N^\ast\leq N$ photons are valid. Invalid photons are counted.
 	\begin{align}
 		\text{valid} \coloneqq HP_i < N_{HP} \wedge \lambda_i \in [\lambda_\text{min},\lambda_\text{max}]
 	\end{align} 
@@ -247,15 +259,15 @@ Now that the data is ready, an evaluation algorithm has to be elaborated. In the
 	\begin{align}
 		\{HP_{i^\ast}, \Delta\lambda_{i^\ast}\}_{i^\ast=1}^{N^\ast} \rightarrow \{ \epsilon^\text{abs}_{HP_{i^\ast},\Delta\lambda_{i^\ast}}\}_{i^\ast=1}^{N^\ast}
 	\end{align}
-	\item For each valid photon $i^\ast$, a random number $r_{i^\ast}\in[0,1)$ is diced and sorted into the corresponding response array. Now, the advantage of saving the cumulative rather than the absolute responses (cf. section~\ref{sec:lut_production}) becomes clear. By definition, the cumulative responses are sorted in ascending order\footnote{This is the case if all numbers are non-negative like it is the case for the camera pixel responses. Otherwise, the cumulative sequence may not be sorted.}. As a result, the position $k$ where the random number is sorted in equals the ordinal number of the camera pixel where the photon is detected. If the random number is sorted in at the \num{61}-th position -- i.e. at the end -- this means that the photon is not detected. The cumulative saving enables a lookup process that is only based on comparative operations which are very fast.
+	\item For each valid photon $i^\ast$, a random number $r_{i^\ast}\in[0,1)$ is diced and sorted into the corresponding response array. Now, the advantage of saving the cumulative rather than the absolute responses (cf. section~\ref{sec:lut_production}) becomes clear. By definition, the cumulative responses are sorted in ascending order\footnote{This is the case if all numbers are non-negative like it is the case for the camera pixel responses. Otherwise, the cumulative sequence may not be sorted.}. As a result, the position $k$ where the random number is sorted in equals the ordinal number of the camera pixel where the photon is detected. If the random number is sorted in at the \mbox{\num{61}-th} position -- i.e. at the end -- this means that the photon is not detected. The cumulative saving enables a lookup process that is only based on comparative operations which are very fast.
 	\item The resulting sorting positions $k_{i^\ast}$ can now be histogramized which gives the final image seen by the camera.
 \end{enumerate}
-
+\newpage
 \section{Application on CORSIKA Air Shower Events}
 
 With the lookup table, one can finally produce event displays -- or images -- of simulated air showers. A commonly used toolkit for detailed Monte-Carlo simulation of cosmic-ray air showers is \textit{CORSIKA}\footnote{\textbf{CO}smic \textbf{R}ay \textbf{S}imulations for \textbf{KA}scade}~\cite{corsika:website}. It is capable of simulating the direction and energy of Cherenkov photons which emerge from air showers.\\
 
-The plots in figure~\ref{corsika-events} show some images of air showers simulated with CORSIKA. Three different primaries are induced: proton, iron, and photon (gamma). The wavelength or respectively the energy of Cherenkov photons could possibly simulated directly within CORSIKA as stated before. But this results in a large amount of data and a longer simulation time. Therefore, just the direction of some Cherenkov photons, that hit the detector surface in a certain region is stored. For the lookup process, the wavelength of each photon is drawn from the Cherenkov spectrum shown in figure~\ref{airshowers:cherenkovspectrum} by extrapolating wavelengths above \SI{700}{\nano\meter} with a linear function. More details about possible options with CORSIKA and the simulation process can be found in the CORSIKA manual~\cite{corsika:manual}.\\
+The plots in figure~\ref{corsika-events} show some images of air showers simulated with CORSIKA. Three different primaries are induced: proton, iron, and photon (gamma). The wavelength or respectively the energy of Cherenkov photons could possibly simulated directly within CORSIKA as stated before but this results in a large amount of data and a longer simulation time. Therefore, just the direction of some Cherenkov photons, that hit the detector surface in a certain region is stored. For the lookup process, the wavelength of each photon is drawn from the Cherenkov spectrum shown in figure~\ref{airshowers:cherenkovspectrum} by extrapolating wavelengths above \SI{700}{\nano\meter} with a linear function. More details about possible options with CORSIKA and the simulation process can be found in the CORSIKA manual~\cite{corsika:manual}.\\
 
 In order to take into account the effective area of the telescope, only Cherenkov photons that hit a circular area within a diameter of the glass plate $d=\SI{650.3}{\milli\meter}$ are evaluated. This holds for the case of an upright telescope. For a telescope tilted by a zenith angle $\theta^\ast$, the projected effective area is
 \begin{align}
@@ -265,45 +277,39 @@ A_\text{eff}^\ast = A_\text{eff}\cos{\theta^\ast}\,.
 However, the events shown in figure~\ref{corsika-events} are evaluated for the simple case of a single, upright telescope.
 
 \begin{figure}[H]
-	\centering
 	% protons
 	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{test-events/01/station_09.pdf}
 		\subcaption{}
 		\label{corsika-events:1}
 	\end{subfigure}
-	\hfill
 	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{test-events/08/station_09.pdf}
 		\subcaption{}
 		\label{corsika-events:2}
 	\end{subfigure}
-	\vfill
 	% iron
 	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{test-events/07/station_14.pdf}
 		\subcaption{}
 		\label{corsika-events:3}
 	\end{subfigure}
-	\hfill
 	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{test-events/06/station_09.pdf}
 		\subcaption{}
 		\label{corsika-events:4}
 	\end{subfigure}
-	\hfill
 	% gamma
 	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{test-events/04/event.pdf}
 		\subcaption{}
 		\label{corsika-events:5}
 	\end{subfigure}
-		\hfill
 	\begin{subfigure}[t]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{test-events/05/event.pdf}
 		\subcaption{}
 		\label{corsika-events:6}
 	\end{subfigure}
-	\caption[Camera images diced with lookup table]{\textbf{Camera images diced with lookup table.} The red numbers in the hexagonal pixels count the number of detected photons in the respective pixel. In these events, only the direction of Cherenkov photons is simulated by CORSIKA. The wavelengths of the photons are drawn from the Cherenkov spectrum given in figure~\ref{airshowers:cherenkovspectrum}.}
+	\caption[Camera images diced with the lookup table]{\textbf{Camera images diced with the lookup table.} The red numbers in the hexagonal pixels count the number of detected photons in the respective pixel. In these events, only the direction of Cherenkov photons is simulated by CORSIKA. The wavelengths of the photons are drawn from the Cherenkov spectrum given in figure~\ref{airshowers:cherenkovspectrum}.}
 	\label{corsika-events}
 \end{figure}

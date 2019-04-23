@@ -82,7 +82,7 @@
 % Serifenschrift
 \rmfamily
 % Seitenränder
-\usepackage[outer=26mm, inner=22mm, top=32mm, bottom=36mm]{geometry}
+\usepackage[outer=22mm, inner=26mm, top=32mm, bottom=36mm]{geometry}
 % Hyperlinks
 \usepackage{hyperref}
 % Todonotes
@@ -153,15 +153,14 @@
 % -----------------------------------
 \appendix
 	\input{./chapters/appendix}
-	
 \backmatter
 	\pagenumbering{Roman} 
-	\input{./chapters/acknowledgements}
-	%\renewcommand{\listfigurename}{Figures}
+	\renewcommand{\listfigurename}{Figures}
 	\listoffigures 				% Abbildungsverzeichnis
-	%\renewcommand{\listtablename}{Tables}
+	\renewcommand{\listtablename}{Tables}
 	\listoftables				% Tabellenverzeichnis
 	\printbibliography[title=Literature]
+	\input{./chapters/acknowledgements}
 
 \includepdf{./chapters/form_eidesstattliche_versicherung.pdf}
 

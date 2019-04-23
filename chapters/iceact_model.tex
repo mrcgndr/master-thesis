@@ -10,29 +10,37 @@ The optical system of \iceact is modeled in \geant. The following chapter will g
 	\includegraphics[width=0.5\textwidth]{Geant4Logo.png}
 	\caption[\geant logo]{\textbf{\geant logo.} \cite{geant4:logo}}	
 \end{wrapfigure}
-\geant\footnote{\textbf{\textsc{Ge}}ometry \textbf{\textsc{an}}d \textbf{\textsc{t}}racking} is a multi-purpose simulation framework for the passage of particles trough matter, written in \textit{C++} and developed by the \geant Collaboration at CERN. It includes physics models, geometry, tracking, hits, and digitization. Thus, it allows detailed simulations and response analyses for particle detectors in many application fields like particle and accelerator physics, space engineering or medical science. In the framework's source some basic and advanced use cases are implemented and provided as examples. The toolkit is built up of multiple categories (or modules) using each other (cf. figure \ref{geant4:categories}).~\cite{geant4}
+\geant\footnote{\textbf{\textsc{Ge}}ometry \textbf{\textsc{an}}d \textbf{\textsc{t}}racking} is a multi-purpose simulation framework for the passage of particles trough matter, written in \textit{C++} and developed by the \geant Collaboration at CERN. It includes physics models, geometry, tracking, hits, and digitization. Thus, it allows detailed simulations and response analyses for particle detectors in many application fields like particle and accelerator physics, space engineering, or medical science. In the framework's source, some basic and advanced use cases are implemented and provided as examples. The toolkit is built up of multiple categories (or modules) using each other (cf. figure \ref{geant4:categories}).~\cite{geant4}\\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Geant4ConceptDiagram.pdf}
+	\includegraphics[width=0.55\textwidth]{Geant4ConceptDiagram.pdf}
 	\caption[\geant category diagram]{\textbf{Diagram of relationships between \geant categories.} \cite[adapted]{geant4} The circles represent a \enquote{using} relation. The category with the circle next to the box uses the linked one.}	
 	\label{geant4:categories}
 \end{figure}
 
-Especially for \iceact, \geant is capable of simulating Cherenkov (optical) photons, material properties like transmission, reflection, and refraction, as well as detection efficiency properties of the SiPMs.
+Especially for \iceact, \geant is capable of simulating Cherenkov (optical) photons, material properties like transmission, reflection, and refraction, as well as detection efficiency properties of the SiPMs.\\
 
 Since this thesis is about an approach of an all-encompassing telescope simulation, \geant provides all major possibilities to get a distinct analysis of the entire optical system of \iceact.
 
 \subsection{FAMOUS Telescope Simulation}\label{sec:famous_simulation}
+
 The fluorescence telescope FAMOUS for the Pierre Auger Observatory in Argentina is developed at RWTH Aachen to measure fluorescence light originating from ultra-high-energy cosmic rays (UHECR) by using Silicon Photomultipliers (SiPMs)~\cite{famous:bretz}. Within the development, a detailed \geant simulation has been elaborated \cite{famous:sim_github,famous:sim_github}. The telescope design of FAMOUS is similar since the detection technique and the optics system is basically the same. Therefore, the \iceact telescope simulation is based on this FAMOUS \geant framework. A detailed discourse and a summary of previous analyses can be found in~\cite{famous:niggemann}.
 
 \section{Materials}\label{sec:iceact:model:material}
 
-For an optical device, the material that the light should pass has to be chosen deliberately. Especially the transmission properties, processability, and for \iceact in particular the resistance against harsh weather conditions are of interest.\\
+For an optical device, the material that the light should pass has to be chosen deliberately. Especially, the transmission properties, processability, and for \iceact in particular the resistance against harsh weather conditions are of interest.\\
 
-The glass plate on top of \iceact is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass. Borosilicate is chosen for its high durability, transparency in the interesting spectral region, flatness, and weak fluorescence intensities. The refractive index is evaluated at some wavelength. Since we need to have a full dispersion relation the points are spline interpolated (cf. orange curve in figure~\ref{iceact:model:material:refractive_index}).~\cite{iceact:borosilicate:datasheet}
+The glass plate on top of \iceact is made of SCHOTT BOROFLOAT\textsuperscript{\textregistered} 33 borosilicate glass. Borosilicate is chosen for its high durability, transparency in the interesting spectral region, flatness, and weak fluorescence intensities. The refractive index is known at certain wavelengths. ~\cite{iceact:borosilicate:datasheet} Since we need to have a full dispersion relation, the points are spline interpolated (cf. orange curve in figure~\ref{iceact:model:material:refractive_index}).\\
 
-In the BOROFLOAT\textsuperscript{\textregistered} 33 data sheet~\cite{iceact:borosilicate:datasheet} the transmission properties are given for a vertical light and a glass plate of a thickness of $d = \SI{6.5}{\milli\meter}$. Therefore, the transmission curve $T_\text{total}(\lambda)$ includes the internal absorption as well as the two interface transitions into and out of the borosilicate which yields
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{material/refractive_index.pdf}
+	\caption[Refractive index of used materials]{\textbf{Refractive index of materials used in the simulation.} For PMMA the dispersion is calculated by evaluating the Sellmeier equation introduced in this section. The refractive index for the used borosilicate is only given for specific wavelengths \cite{iceact:borosilicate:datasheet}. Therefore, splines are used to inter- and extrapolate the full curve.}
+	\label{iceact:model:material:refractive_index}	
+\end{figure}
+
+In the BOROFLOAT\textsuperscript{\textregistered} 33 data sheet~\cite{iceact:borosilicate:datasheet}, the transmission properties are given for a vertical light and a glass plate of a thickness of $d = \SI{6.5}{\milli\meter}$. Therefore, the transmission curve $T_\text{total}(\lambda)$ includes the internal absorption as well as the two interface transitions into and out of the borosilicate which yields
 \begin{align}
 	T_\text{total}(\lambda) = T_\text{interface}^2(\lambda)\cdot T_\text{internal}(d=\SI{6.5}{\milli\meter},\lambda)\,.
 	\label{eq:transmission}
@@ -42,7 +50,7 @@ The transmission at the interface can be calculated by using the Fresnel equatio
 	T_\text{interface}(\lambda) = 1 - \left(\frac{n(\lambda)-n_\text{air}}{n(\lambda)+n_\text{air}}\right)^2\,.
 	\label{eq:perp_interface_transmission}
 \end{align}
-In \geant the wavelength dependent absorption length $a(\lambda)$ has to be implemented which is given by exponential absorption:
+In \geant, the wavelength-dependent absorption length $a(\lambda)$ has to be implemented which is given by exponential absorption:
 \begin{align}
 	I(x) = I_0 e^{-\frac{x}{a}} \Leftrightarrow a = - \frac{x}{\ln{\frac{I(x)}{I_0}}}\,.
 	\label{eq:absorptionlaw}
@@ -54,7 +62,22 @@ Thus, one gets the absorption length by using equations~\eqref{eq:transmission},
 \end{align}
 This is implemented in the \geant material properties with $n_\text{air} = 1$. Figure \ref{iceact:model:material:transmission} shows the three transmission components as orange lines.\\
 
-The Fresnel lens and the Winston Cones in \iceact are made of polymethyl methacrylate (PMMA). The dispersion~$n(\lambda)$ can be parametrized with the empirical \textit{Sellmeier equation}~\cite{iceact:sellmeier}. For glasses, the usual form is
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.485\textwidth}
+		\includegraphics[width=\textwidth]{material/transmission.pdf}
+		\subcaption{full view}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.499\textwidth}
+		\includegraphics[width=\textwidth]{material/transmission_zoom.pdf}
+		\subcaption{zoomed view}
+	\end{subfigure}
+	\caption[Transmission of used materials]{\textbf{Transmission functions of materials used in the simulation.} The total transmission function is the product of internal and two interface transmissions which is evaluated for a perpendicularly incident particle in this plot. Thus, the solid lines represent a complete (perpendicular) transition through a $d=\SI{3}{\milli\meter}$ thick layer of the respective material. For a better comparison, the data of internal transmission for borosilicate (given for $d=\SI{6.5}{\milli\meter}$ in~\cite{iceact:borosilicate:datasheet}) is converted for  $d=\SI{3}{\milli\meter}$.}
+	\label{iceact:model:material:transmission}	
+\end{figure}
+
+The Fresnel lens and the Winston cones in \iceact are made of polymethyl methacrylate (PMMA). The dispersion~$n(\lambda)$ can be parametrized with the empirical \textit{Sellmeier equation}~\cite{iceact:sellmeier}. For glasses, the usual form is
 \begin{align}
 	n^2(\lambda) = 1 + \frac{B_1\lambda^2}{\lambda^2-C_1} + \frac{B_2\lambda^2}{\lambda^2-C_2} + \frac{B_3\lambda^2}{\lambda^2-C_3}\,,
 	\label{eq:sellmeier}
@@ -73,94 +96,76 @@ with the \textit{Sellmeier coefficients} $B_{1,2,3}$ and $C_{1,2,3}$~\cite{iceac
 		$C_3$  & \SI{3.85727}{\micro\meter\squared}  \\
 		\bottomrule
 	\end{tabular}
-	\caption[Sellmeier coefficients for PMMA]{\textbf{Sellmeier coefficients for PMMA.}~\cite{iceact:refractiveindex} The above-mentioned coefficients are used in the \geant material properties for PMMA. The related Sellmeier equation~\eqref{eq:sellmeier} is plotted in figure \ref{iceact:model:material:refractive_index} as the blue curve.}
+	\caption[Sellmeier coefficients for PMMA]{\textbf{Sellmeier coefficients for PMMA.}~\cite{iceact:refractiveindex} The above-mentioned coefficients are used in the \geant material properties for PMMA. The related Sellmeier equation~\eqref{eq:sellmeier} is plotted in figure \ref{iceact:model:material:refractive_index} as blue curve.}
 	\label{iceact:model:pmma_sellmeiercoeffs}
 \end{table}
 
-For the transmission properties of PMMA, the same method as for borosilicate is used (see above). Therefore, the data stated in \cite{famous:niggemann} is taken as $T_\text{internal}(d = \SI{3}{\milli\meter})$. Figure \ref{iceact:model:material:transmission} shows the three transmission components as blue lines.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{material/refractive_index.pdf}
-	\caption[Refractive index of used materials]{\textbf{Refractive index of materials used in the simulation.} For PMMA the dispersion is calculated by evaluating the Sellmeier equation introduced in this section. The refractive index for the used borosilicate is only given for specific wavelengths \cite{iceact:borosilicate:datasheet}. Therefore, splines are used to inter- and extrapolate the full curve.}
-	\label{iceact:model:material:refractive_index}	
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[t]{0.485\textwidth}
-		\includegraphics[width=\textwidth]{material/transmission.pdf}
-		\subcaption{full view}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[t]{0.499\textwidth}
-		\includegraphics[width=\textwidth]{material/transmission_zoom.pdf}
-		\subcaption{zoomed view}
-	\end{subfigure}
-	\caption[Transmission of used materials]{\textbf{Transmission functions of materials used in the simulation.} The total transmission function is the product of internal and two interface transmissions which is evaluated for a perpendicularly incident particle in this plot. Thus, the solid lines represent a complete (perpendicular) transition through a $d=\SI{3}{\milli\meter}$ thick layer of the respective material. For a better comparison, the data of internal transmission for borosilicate (given for $d=\SI{6.5}{\milli\meter}$ in~\cite{iceact:borosilicate:datasheet}) is converted for  $d=\SI{3}{\milli\meter}$.}
-	\label{iceact:model:material:transmission}	
-\end{figure}
+For the transmission properties of PMMA, the same method as for borosilicate is used (see above). Therefore, the data stated in \cite{famous:niggemann} is taken as $T_\text{internal}(d = \SI{3}{\milli\meter})$. Figure \ref{iceact:model:material:transmission} shows the three transmission components as blue lines.\\
 
 The tube, back plane and other coating surfaces are simulated as \enquote{dummy} material with no reflection or transmission parameters. A particle that hits those surfaces is absorbed and not considered any further.
+\newpage
 
 \section{Optics}
 
-As introduced in section \ref{sec:iceact_intro}, \iceact is designed to image the direction of Cherenkov light on a camera consisting of multiple pixels. The imaging is done by a Fresnel lens, and an SiPM-based camera with light collecting \enquote{cones}. A sketch of the camera layout is shown in figure \ref{iceact:camera:layout}
+As introduced in section \ref{sec:iceact_intro}, \iceact is designed to image the direction of Cherenkov light on a camera consisting of multiple pixels. The imaging is done by a Fresnel lens, and an SiPM-based camera with light collecting \enquote{cones} mounted on top. A sketch of the camera layout is shown in figure \ref{iceact:camera:layout}.\\
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{CameraDesign.pdf}
-	\caption[\iceact camera layout]{\textbf{The \iceact camera layout.} \cite{iceact:camera} In this sketch the Fresnel lens with a diameter $D=\SI{549.7}{\milli\meter}$ and a focal length of $f=\SI{502.1}{\milli\meter}$ focusing rays to the camera sketched below. Additionally, three characteristic angles are shown: the maximum incidence angle of a ray to be focused on the camera plane $\Omega\approx\SI{6.8}{\degree}$, the maximum incidence angle on the central Winston cone $\gamma\approx\SI{28.7}{\degree}$, and the maximum incidence angle for the outermost Winston cone $\delta\approx\SI{33.7}{\degree}$.}
+	\includegraphics[width=0.8\textwidth]{CameraDesign.pdf}
+	\caption[Basic \iceact camera layout]{\textbf{The basic \iceact camera layout.} \cite{iceact:camera} In this sketch, the Fresnel lens with a diameter $D=\SI{549.7}{\milli\meter}$ and a focal length of $f=\SI{502.1}{\milli\meter}$ focuses rays on the camera sketched below. Additionally, three characteristic angles are shown: the maximum incidence angle of a ray still focused on the camera plane $\Omega\approx\SI{6.8}{\degree}$, the maximum incidence angle on the central Winston cone $\gamma\approx\SI{28.7}{\degree}$, and the maximum incidence angle for the outermost Winston cone $\delta\approx\SI{33.7}{\degree}$.}
 	\label{iceact:camera:layout}	
 \end{figure}
 
-In the following section the four optical components of the \iceact \geant model are discussed. Figure~\ref{iceact:model:cut} shows a cross-sectional sketch of the model.
+In the following section, the four optical components of the \iceact \geant model are discussed. Figure~\ref{iceact:model:cut} shows a cross-sectional sketch of the model.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{IceActGeant4Model.pdf}
-	\caption[\iceact \geant model]{\textbf{The \iceact \geant model.} Cross-sectional sketch of the \iceact optics in \geant with all simulated components. They are described in detail in \cref{iceact:model:fresnellens,iceact:model:camera,iceact:model:glassplate}.}
+	\includegraphics[width=0.8\textwidth]{IceActGeant4Model.pdf}
+	\caption[\iceact \geant model]{\textbf{The \iceact \geant model.} Cross-sectional sketch of the \iceact optics in \geant with all simulated components. They are described in detail in sections \ref{iceact:model:fresnellens}, \ref{iceact:model:camera}, and \ref{iceact:model:glassplate}.}
 	\label{iceact:model:cut}	
 \end{figure}
 
 \subsection{Glass Plate}\label{iceact:model:glassplate}
 
-The \iceact glass plate has a thickness of \SI{2+-0.2}{\milli\meter}, a diameter of \SI{650.3+-1}{\milli\meter}, and is made of borosilicate as mentioned in section~\ref{sec:iceact:model:material}. It is mounted on top of the tube and its major purpose is to protect the Fresnel lens from the environment. At South Pole conditions, one of the major challenges for the optical system is adherence of snow above the lens which reduces the field of view. In the \SI{12.2}{\milli\meter} thick air gap between glass plate and Fresnel lens a heating cable is installed to remove snow from the glass surface. 
+The \iceact glass plate has a thickness of \SI{2+-0.2}{\milli\meter}, a diameter of \SI{650.3+-1}{\milli\meter}, and is made of borosilicate as mentioned in section~\ref{sec:iceact:model:material}. It is mounted on top of the tube and its major purpose is to protect the Fresnel lens from the environment. At South Pole conditions, one of the major challenges for the optical system is adherence of snow above the lens which reduces the field of view. In the \SI{12.2}{\milli\meter} thick air gap between glass plate and Fresnel lens, a heating cable is installed to remove snow from the glass surface. 
 
 \subsection{Fresnel Lens}\label{iceact:model:fresnellens}
 
-The two major advantages using a Fresnel lens rather than a conventional lens are the significantly less weight and the fact that light passes less material which could absorb it. The main idea of a Fresnel lens is to divide a thick lens into small annular facets in form of prisms that keep the local inclination of the conventional lens by making local approximations of the lens' \textit{sagitta function}\footnote{In application to lenses, the sagitta function~$z(\rho)$ gives the lens thickness $z$ as a function of the radial distance $\rho$ from the optical axis for radially symmetrical lenses.}. Figure~\ref{iceact:model:fresnelvsthick} visualizes the principle. \iceact uses the model ORAFOL SC 943 with an aperture of \SI{549.7}{\milli\meter} and a focal length of \SI{502.1}{\milli\meter} at a wavelength of \SI{546+-27.3}{\nano\meter}. The lens is \SI{2.5}{\milli\meter} thick, has 10 grooves per \si{\milli\meter}, and is made of polymethyl methacrylate (PMMA) as stated in section~\ref{sec:iceact:model:material}.~\cite{iceact:fresnellens:datasheet}
+The two major advantages using a Fresnel lens rather than a conventional lens are the significantly less weight and the fact that light passes less material which could absorb it. The main idea of a Fresnel lens is to divide a thick lens into small annular facets in form of prisms that keep the local inclination of the conventional lens by making local approximations of the lens' \textit{sagitta function}\footnote{In application to lenses, the sagitta function~$z(\rho)$ gives the lens thickness $z$ as a function of the radial distance $\rho$ from the optical axis for radially symmetrical lenses.}. Figure~\ref{iceact:model:fresnelvsthick} visualizes the principle. \iceact uses the model ORAFOL SC 943 with an aperture of \SI{549.7}{\milli\meter} and a focal length of \SI{502.1}{\milli\meter} at a wavelength of \SI{546+-27.3}{\nano\meter}. The lens is \SI{2.5}{\milli\meter} thick, has 10 grooves per \si{\milli\meter}, and is made of polymethyl methacrylate (PMMA) as stated in section~\ref{sec:iceact:model:material}.~\cite{iceact:fresnellens:datasheet}\\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{FresnelVsNormalLens.pdf}
+	\includegraphics[width=0.6\textwidth]{FresnelVsNormalLens.pdf}
 	\caption[Comparison conventional vs. Fresnel lens]{\textbf{Comparison between a conventional \enquote{thick} lens and a Fresnel lens.} \cite{famous:eichler} For the functionality of a lens the radius-dependent sagitta function $z(\rho)$ is crucial. To get rid of the bulky material of a conventional lens, the Fresnel lens is divided into annular \enquote{prisms} called \enquote{grooves}. The slope angle $\delta$ of each groove is a local approximation of the sagitta function to ensure the imaging capability.}
 	\label{iceact:model:fresnelvsthick}	
 \end{figure}
+\newpage
+The transmission of a Fresnel lens is not just given by the material properties. Due to the groove structure, there are so called \textit{draft facets} where unwanted refractions, reflections, or transmissions occur. One can compensate for this by adjusting the \text{draft angle} $\psi$ (cf. figures \ref{iceact:model:fresnelgroove} and \ref{iceact:model:fresnelprofile}) as a function of the lens radius $\rho$. Anyway, the molding process -- which is the common manufacturing technique of Fresnel lenses -- does not allow to have a perpendicular draft facet ($\psi = 0$) due to mold release ~\cite{iceact:fresnellens:design}. This forces the lens to have a minimum draft angle of $\psi_0 = \SI{3}{\degree}$. With the optimization mentioned before, this leads to a radial dependent draft angle which can be expressed as \cite{famous:eichler, famous:niggemann}
+\begin{align}
+\psi(\rho) = \SI{3}{\degree} + \SI{0.0473}{\degree\per\milli\meter}\rho\,.
+\label{eq:draft_angle}
+\end{align}\\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{FresnelGroove.pdf}
+	\includegraphics[width=0.7\textwidth]{FresnelGroove.pdf}
 	\caption[Fresnel groove]{\textbf{Cross-sectional sketch of a Fresnel groove.} \cite{famous:eichler} Most of the incoming rays are hitting the regular active (or slope) facet of the groove with slope angle $\delta$. For an optimal groove, the inactive (or draft) facet would be parallel to the optical axis. Due to manufacturing process, there is always a small slope on the inactive facet given by the draft angle $\psi$ and the peak is rounded. With this design, there are some impact regions where incoming rays are not refracted to the focal point: if they undergo total reflection at the inactive facet inside the groove (red-dashed region), if they hit the peak rounding (red rays), or if they hit the inactive face (gray region).}
 	\label{iceact:model:fresnelgroove}	
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{FresnelSideProfile.pdf}
+	\includegraphics[width=0.8\textwidth]{FresnelSideProfile.pdf}
 	\caption[Fresnel side-profile]{\textbf{Side-profile sketch of a Fresnel lens.} \cite[adapted]{iceact:fresnellens:design}. Complementary sketch to figure \ref{iceact:model:fresnelgroove} which shows the draft angle increase with radius $\rho$ driven by manufacturing.}
 	\label{iceact:model:fresnelprofile}	
 \end{figure}
 
-The transmission of a Fresnel lens is not just given by the material properties. Due to the groove structure there are so called \textit{draft facets} where unwanted refractions, reflections, or transmissions occur. One can compensate for this by adjusting the \text{draft angle} $\psi$ (cf. figures \ref{iceact:model:fresnelgroove} and \ref{iceact:model:fresnelprofile}) as a function of the lens radius $\rho$. Anyway, the molding process -- which is the common manufacturing technique of Fresnel lenses -- does not allow to have a perpendicular draft facet ($\psi = 0$) due to mold release. This forces the lens to have a minimum draft angle of $\psi_0 = \SI{3}{\degree}$. With the optimization mentioned before, this leads to a radial dependent draft angle which can be expressed as \cite{famous:eichler, famous:niggemann}
-\begin{align}
-	\psi(\rho) = \SI{3}{\degree} + \SI{0.0473}{\degree\per\milli\meter}\rho\,.
-	\label{eq:draft_angle}
-\end{align}\\
-
-Nevertheless, one has to be aware of the fact that approximating a thick lens by a Fresnel lens comes along with losses due to \enquote{false} optical projections and results in aberration effects. To quantify the quality of any lens, an important property is the so called \textit{point spread function} (\textit{PSF}) which describes the energy distribution in the focal plane for a point-like light source at infinite distance, i.e. light parallel to the optical axis. One usually calculates the \textit{aberration radius} $r_{90}$. It is defined to be the radius of the circle around the PSF centroid which encloses \SI{90}{\percent} of the beam energy. One can use the aberration radius for optimizations of the optics. This is described in more detail in section~\ref{sec:focalplaneshift}.\\
+However, one has to be aware of the fact that approximating a thick lens by a Fresnel lens comes along with losses due to \enquote{false} optical projections and results in aberration effects. To quantify the quality of any lens, an important property is the so called \textit{point spread function} (\textit{PSF}) which describes the energy distribution in the focal plane for a point-like light source at infinite distance -- i.e. light parallel to the optical axis. One usually calculates the \textit{aberration radius} $r_{90}$. It is defined to be the radius of the circle around the PSF centroid which encloses \SI{90}{\percent} of the beam energy. One can use the aberration radius for optimizations of the optics. This is described in more detail in section~\ref{sec:focalplaneshift}.\\
 
 The draft angle function (cf. equation~\eqref{eq:draft_angle}) is implemented in the Fresnel lens design in \geant, the groove peak rounding suggested in figure~\ref{iceact:model:fresnelgroove} is not. The effect of simulating the rounding is discussed in \cite{famous:eichler} with the result that a peak rounding radius of $\SI{5}{\micro\meter}$ would slightly enlarge the aberration radius by a few \SI{10}{\micro\meter}. A detailed discussion and measurement of point spread functions and optical aberrations is done in \cite{famous:niggemann} and \cite{famous:eichler}.
+\newpage
 
 \subsection{Camera}\label{iceact:model:camera}
+
+The \iceact camera is the compound of 61 silicon photomultipliers (SiPMs, cf. section~\ref{sec:sipm:working_principle}) arranged in a hexagonal grid together with 61 Winston cones (cf. section~\ref{sec:winstoncones}) glued on them. In addition to the 61 instrumented pixels, there are three pixels aside for reference measurements. Two of them are just placed without Winston cones on top to measure optical noise while one pixel is completely \enquote{blind} by being masked. These reference pixels make it possible to measure the optical as well as the pure electronic noise of the SiPM. Figure~\ref{iceact:camera:picture} shows an assembled \iceact camera. To address each pixel, they are numbered in a spiral scheme starting with the central \enquote{0$\text{th}$} pixel and going outside counterclockwise as seen from the top (cf. figure~\ref{iceact:camera:pixelnumbering}).\\
 
 \begin{figure}[H]
 	\centering
@@ -176,11 +181,9 @@ The draft angle function (cf. equation~\eqref{eq:draft_angle}) is implemented in
 		\subcaption{Placing sketch and pixel numbering of the camera where the 61 pixels are numbered in a spiral scheme starting with the central pixel. The origin of the \geant coordinate system sketcehd on the bottom left is the entrance window center of the central Winston cone on pixel $i=0$. In the hexagonal grid, all SiPM centers have a distance of \SI{15}{\milli\meter} to their next neighboring pixels. The bright blue SiPMs are \enquote{open} pixels without a Winston cone on top and the dark blue SiPM is a \enquote{blind} pixel.}
 		\label{iceact:camera:pixelnumbering}	
 	\end{subfigure}
-	\caption[The \iceact camera]{\textbf{The \iceact camera.}}	
+	\caption[\iceact camera]{\textbf{The \iceact camera.}}	
 \end{figure}
-
-The \iceact camera is the compound of 61 Silicon Photomultipliers (SiPMs, cf. section~\ref{sec:sipm_working_principle}) arranged in a hexagonal grid together with 61 Winston cones (cf. section~\ref{sec:winstoncones}) glued on them. In addition to the 61 instrumented pixels there are three pixels aside for reference measurements. Two of them are just placed without Winston cones on top to measure optical noise while one pixel is completely \enquote{blind} by being masked. This makes it possible to measure the pure electronic noise of the SiPM. Figure~\ref{iceact:camera:picture} shows an assembled \iceact camera. To address each pixel, they are numbered in a spiral scheme starting with the central \enquote{0$\text{th}$} pixel and going outside counterclockwise as seen from the top (cf. figure~\ref{iceact:camera:pixelnumbering}).\\
-
+\newpage
 In the following sections, the working principle as well as the implementation in \geant are discussed.
 
 \subsubsection{Winston Cones -- Working Principle}\label{sec:winstoncones}
@@ -192,14 +195,14 @@ In the following sections, the working principle as well as the implementation i
 	\label{iceact:camera:wico_sketch}	
 \end{wrapfigure}
 
-The \iceact telescopes use a light collection technique to enlarge the detection area of the SiPM grid based on \textit{compound parabolic concentrators} (\textit{CPC}s) \cite{wico:book}. In the following, this concentrators are named \textit{Winston cones}. 
-Primarily, a Winston cone is a rotationally symmetrical paraboloid formed by an off-axis parabola revolving around the axis of symmetry (\textit{CPC axis}, cf. figure \ref{iceact:camera:wico_sketch}). Hence, the entrance area $A_\text{en}=\pi a_\text{en}^2$ and the exit area $A_\text{ex}=\pi a_\text{ex}^2$ are circular. The concentration effect works for every ray hitting the entrance area up to the maximum angle $\vartheta_\text{M}$. A relation between $\vartheta_M$ and the characteristic lengths shown in figure~\ref{iceact:camera:wico_sketch} can be found: \cite{wico:book,iceact:camera}
+The \iceact telescopes use a light collection technique to enlarge the detection area of the SiPM grid based on \textit{compound parabolic concentrators} (\textit{CPC}s) \cite{wico:book}. In the following and  already mentioned in previous sections, these concentrators are known as \textit{Winston cones}. 
+Primarily, a Winston cone is a rotationally symmetrical paraboloid formed by an off-axis parabola revolving around the axis of symmetry (\textit{CPC axis}, cf. figure \ref{iceact:camera:wico_sketch}). Hence, the entrance area $A_\text{en}=\pi a_\text{en}^2$ and the exit area $A_\text{ex}=\pi a_\text{ex}^2$ are circular. The concentration effect works for every ray hitting the entrance area up to the maximum incidence angle $\vartheta_\text{M}$. A relation between $\vartheta_M$ and the characteristic lengths shown in figure~\ref{iceact:camera:wico_sketch} can be found: \cite{wico:book,iceact:camera}
 \begin{align}
 	\sin\vartheta_\text{M} = n\cdot\frac{a_\text{ex}}{a_\text{en}}\,,
 	\label{eq:wico:theta_max}
 \end{align}
-with the refractive index $n$ of the cone material. On the one hand, light can be concentrated by using surface reflections in hollow cones ($n=n_\text{air}\approx 1$), or -- on the other hand -- by using internal total reflections in solid cones ($n>1$). Equation~\eqref{eq:wico:theta_max} shows that the maximum angle can be increased by using a solid cone with a preferably large refractive index.
-
+with the refractive index $n$ of the cone material. On the one hand, light can be concentrated by using surface reflections in hollow cones ($n=n_\text{air}\approx 1$), or -- on the other hand -- by using internal total reflections in solid cones ($n>1$). Equation~\eqref{eq:wico:theta_max} shows that the maximum angle can be increased by using a solid cone with a preferably large refractive index.\\
+\newpage
 The parabola describing the Winston cone surface is further called \textit{Winston curve} and can be parameterized by \cite{wico:book,iceact:camera}
 \begin{subequations}
 	\label{eq:wico:param}
@@ -209,7 +212,7 @@ The parabola describing the Winston cone surface is further called \textit{Winst
 	\end{align}
 \end{subequations}
 
-with the cone radius $x$, the cone length $y$, and the angle $\phi$ between the line connecting the parabola focus with a point on the opposite parabola and the parabola axis (cf. figure~\ref{iceact:camera:wico_sketch}).
+with the cone radius $x$, the cone length $y$, and the angle $\phi$ between the line connecting the parabola focus with a point on the opposite parabola and the parabola axis (cf. figure~\ref{iceact:camera:wico_sketch}).\\
 
 Another important quantity is the cone length $L$ which is given by \cite{wico:book,iceact:camera}
 \begin{align}
@@ -217,7 +220,7 @@ Another important quantity is the cone length $L$ which is given by \cite{wico:b
 \end{align}
 
 By appropriate design, Winston cones fulfill all requirements for light concentrators in \iceact given by the optical layout (cf. figure~\ref{iceact:camera:layout}).
-However, one can design an improved Winston cone for the purposes in \iceact since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used (cf. figure~\ref{iceact:camera:pixelnumbering}). Instead of a radially symmetrical cone, the \iceact Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's detectional area (cf. figure~\ref{iceact:camera:picture}). This design is called \textit{hex-to-square}. A sketch of the \iceact Winston cone is shown in figure~\ref{iceact:camera:iceact_wico_sketch}. One can see a green dashed line in it and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations~\eqref{eq:wico:param}.
+However, one can design an improved Winston cone for the purposes in \iceact since a hexagonal grid of quadratic pixels with an area of $\SI{6}{\milli\meter}\times\SI{6}{\milli\meter}$ is used (cf. figure~\ref{iceact:camera:pixelnumbering}). Instead of a radially symmetrical cone, the \iceact Winston cone is designed in such a way that the exit window fits the SiPM area while the entrance window is hexagonal to maximize the camera's detectional area (cf. figure~\ref{iceact:camera:picture}). This design is called \textit{hex-to-square}~\cite{iceact:camera}. A sketch of the \iceact Winston cone is shown in figure~\ref{iceact:camera:iceact_wico_sketch}. One can see a green dashed line in it and a pink solid line on the cone's side which follow optimized Winston curves by using the parameterization of equations~\eqref{eq:wico:param}.\\
 
 \begin{figure}[H]
 	\centering
@@ -233,7 +236,7 @@ Hence, the application of Winston cones extend the detectional area of the pixel
 
 \subsubsection{Winston Cone Implementation in \geant with CADMesh}\label{sec:winstoncones:impl}
 
-Due to its complex shape, the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles called \textit{meshing}. For the \iceact Winston cone this is done with the CAD software \textit{FreeCAD}, more precisely with the algorithm \textit{Mefisto}. This meshing routine only needs the maximum edge length of the single tiles as a free parameter. The smaller the maximum edge length the more detailed the mesh gets but the more computational time is needed to translate this mesh into \geant. Thus, a good compromise has to be found. Figure~\ref{wico:meshing} shows the meshed cone dependent on the maximum edge length. Simulations show a good performance for a maximum egde length of \SI{0.4}{\milli\meter}. Higher lengths result in visible image artifacts. (cf. section~\ref{sec:wico_meshing}) 
+Due to its complex shape, the cones are implemented in \geant by decomposing their CAD\footnote{\textbf{C}omputer-\textbf{a}ided \textbf{D}esign, technique to use a computer for the creation, analysis, etc. of a design.} sketch into small triangular tiles. This process is called \textit{meshing}. For the \iceact Winston cone this is done with the CAD software \textit{FreeCAD}, more precisely with the algorithm \textit{Mefisto}. This meshing routine only needs the maximum edge length of the single tiles as a free parameter. The smaller the maximum edge length the more detailed the mesh gets but the more computational time is needed to translate this mesh into \geant. Thus, a good compromise has to be found. Figure~\ref{wico:meshing} shows the meshed cone dependent on the maximum edge length. Simulations show a good performance for a maximum egde length of \SI{0.4}{\milli\meter}. Higher lengths result in visible image artifacts (cf. section~\ref{sec:wico_meshing}).\\
 
 \begin{figure}[H]
 	\centering
@@ -246,30 +249,38 @@ The meshed geometry is then translated into \geant by using the toolkit \textit{
 
 \subsubsection{Silicon Photomultipliers (SiPM)}\label{sec:sipm:working_principle}
 
-\textit{Silicon photomultipliers} (\textit{SiPM}s) are semiconductor devices used for photon detection in multiple applications. In comparison to conventional photon detection devices like \textit{photomultiplier tubes} (\textit{PMT}s) they are rather compact and offer a higher detection efficiency. These features made them interesting devices for application in imaging detectors.
+\textit{Silicon photomultipliers} (\textit{SiPM}s) are semiconductor devices used for photon detection in multiple applications. In comparison to conventional photon detection devices like \textit{photomultiplier tubes} (\textit{PMT}s), they are rather compact and offer a higher photon detection efficiency. These features made them interesting devices for application in imaging detectors.\\
 
-An SiPM is the composition of an array of so called \textit{Geiger-mode avalanche photo diodes} (\mbox{\textit{G-APD}s}). Their working principle is based on $p$-$n$-junctions (cf. figure~\ref{sipm:pn_junction}). This is the simple configuration when an $n$-doped and a $p$-doped material are brought together. Thus, a \textit{depletion zone} occurs where free electrons of the $n$-doped material fill holes of the $p$-doped material. Due to the resulting net charge, an electric field arises from the $n$- to the $p$-doped side, comparable to a capacitor. The size of the depletion zone can be enlarged by an external \textit{bias voltage} $V_\text{bias}$ applied with the anode side at the $n$-doped material. In this state, the junction conducts current easily in one direction only, which is commonly known as a \textit{diode}. \cite{pn:simon}
+An SiPM is the composition of an array of so called \textit{Geiger-mode avalanche photo diodes} (\mbox{\textit{G-APD}s}). Their working principle is based on $p$-$n$-junctions (cf. figure~\ref{sipm:pn_junction}). This is the simple configuration when an $n$-doped and a $p$-doped material are brought together. Thus, a \textit{depletion zone} occurs where free electrons of the $n$-doped material fill holes of the $p$-doped material. Due to the resulting net charge, an electric field arises from the $n$- to the $p$-doped side comparable to a capacitor. The size of the depletion zone can be enlarged by an external \textit{bias voltage} $V_\text{bias}$ applied with the anode side at the $n$-doped material. In this state, the junction conducts current easily in one direction only, which is commonly known as a \textit{diode}.~\cite{pn:simon}\\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{PNJunction.pdf}
+	\includegraphics[width=0.8\textwidth]{PNJunction.pdf}
 	\caption[Sketch of a $p$-$n$-junction]{\textbf{Sketch of a $p$-$n$-junction.} \cite{iceact:camera} In the top, the energy bands are shown for $n$-doped and $p$-doped semiconductor with the Fermi energy level $E_F$, the gap energy $E_G$, and the donor or acceptor energy level $E_D$ and $E_A$ respectively. Below, a $p$-$n$-junction is sketched. An incident photon may result in production of an additional electron-hole-pair inducing a current via avalanches.}
 	\label{sipm:pn_junction}	
 \end{figure}
 
-If a photon now traverses the diode, a possible impact can ionize an atom and thus produce an electron-hole-pair. While the electron is accelerated along the electrical field it can ionize further atoms if the electric field is strong enough -- an avalanche is formed that induces a highly temperature-dependent breakdown voltage $V_\text{breakdown}$. Here, the \enquote{Geiger-mode} prefix additionally indicates that the signal is not dependent on the number of total detected photons. A quenching resistor allows to stop the avalanche and enables the cell to recover quickly. This working principle is referred to as an \textit{avalanche photo diode} (\textit{APD}). Usually, photo diodes are based on germanium (Ge) or silicon (Si). Since the band gap of silicon-based photo diodes is higher (\SI{1.12}{\electronvolt}) than for germanium-based ones (\SI{0.67}{\electronvolt}), the electrons in silicon-based photo diodes need higher energies to produce a significant photo current. Thus, Si photo diodes generate less noise than photo diodes based on Ge. \cite{sipm:renker_lorenz} An important operation parameter of a G-APD is the over voltage $V_\text{OV}$ since many features (e.g. the gain) of G-APDs are proportional to it. It is defined as the difference of bias and breakdown voltage~\cite{sipm:renker_lorenz}
+If a photon now traverses the diode, a possible impact can ionize an atom and thus produce an electron-hole-pair. While the electron is accelerated along the electrical field, it can ionize further atoms if the electric field is strong enough -- an avalanche is formed that induces a highly temperature-dependent breakdown voltage $V_\text{breakdown}$. Here, the \enquote{Geiger-mode} prefix additionally indicates that the signal is not dependent on the number of total detected photons. A \textit{quenching resistor} allows to stop the avalanche and enables the cell to recover quickly. This working principle is referred to as an \textit{avalanche photo diode} (\textit{APD}). Usually, photo diodes are based on germanium (Ge) or silicon (Si). Since the band gap of silicon-based photo diodes is higher (\SI{1.12}{\electronvolt}) than for germanium-based ones (\SI{0.67}{\electronvolt}), the electrons in silicon-based photo diodes need higher energies to produce a significant photo current. Thus, Si photo diodes generate less noise than photo diodes based on Ge.~\cite{sipm:renker_lorenz} An important operation parameter of a G-APD is the \textit{over voltage} $V_\text{OV}$ since many features (e.g. the gain) of G-APDs are proportional to it. It is defined as the difference of bias and breakdown voltage~\cite{sipm:renker_lorenz}
 \begin{align}
 	V_\text{OV} = V_\text{bias} - V_\text{breakdown}\,.
-\end{align}
+\end{align}\\
 
-Basically, there are two types of G-APD cells: $p$-on-$n$ which is shown in figure~\ref{sipm:apd_cell} and $n$-on-$p$. They differ in the wavelength region they are efficient in. While $n$-on-$p$ cells are efficient for wavelengths beyond \SI{1}{\micro\meter}, the $p$-on-$n$ cells operate best in the blue and UV regime -- thus in the peak region of Cherenkov light (cf. figure~\ref{airshowers:cherenkovspectrum}).
-
-\begin{figure}[H]
+\begin{wrapfigure}{r}{0.42\textwidth}
 	\centering
-	\includegraphics[width=0.5\textwidth]{APD_Cell.png}
+	\includegraphics[width=0.4\textwidth]{APD_Cell.png}
 	\caption[Sketch of a \enquote{$p$-on-$n$} G-APD cell]{\textbf{Sketch of a \enquote{$p$-on-$n$} G-APD cell.} \cite{sipm:renker_lorenz} This type is optimized to have a high photon detection efficiency in the blue and UV wavelength regime.}
 	\label{sipm:apd_cell}	
-\end{figure}
+\end{wrapfigure}
+Basically, there are two types of G-APD cells: $p$-on-$n$ which is shown in figure~\ref{sipm:apd_cell} and $n$-on-$p$. They differ in the wavelength region they are efficient in. While $n$-on-$p$ cells are efficient for wavelengths beyond \SI{1}{\micro\meter}, the $p$-on-$n$ cells operate best in the blue and UV regime -- thus in the peak region of Cherenkov light (cf. figure~\ref{airshowers:cherenkovspectrum}).\\
+
+The step from a G-APD to an SiPM is done if one now combines many G-APDs in a grid structure in parallel connection which is shown in figure~\ref{sipm:circuit_picture}. Figure~\ref{sipm:pulses} shows measured waveforms (or \enquote{pulses}) of SiPM with linear amplification. A discretization of puls heights which correspond to the number of single cell breakdowns can be observed. The amplitude $A_i$ of a standard pulse is proportional to the capacitance $C$ and anti-proportional to the electron charge $q$ and the over voltage $V_\text{OV}$,~\cite{sipm:renker_lorenz}
+\begin{align}
+A_i\propto\frac{C}{qV_\text{OV}}\,.
+\end{align}
+If now multiple cell breakdowns occur, the total pulse height just sums up over the number of triggered cells which is commonly known as \textit{PE} (\textit{photo electron equivalent}),~\cite{sipm:renker_lorenz}
+\begin{align} 
+A = \sum_{i=0}^{PE} A_i\,.
+\end{align}\\
 
 \begin{figure}[H]
 	\centering
@@ -288,15 +299,6 @@ Basically, there are two types of G-APD cells: $p$-on-$n$ which is shown in figu
 	\label{sipm:circuit_picture}
 \end{figure}
 
-The step from a G-APD to an SiPM is done if one now combines many G-APDs in a grid structure in parallel connection which is shown in figure~\ref{sipm:circuit_picture}. Figure~\ref{sipm:pulses} shows measured waveforms (or \enquote{pulses}) of SiPM with linear amplification. A discretization of puls heights which correspond to the number of single cell breakdowns can be observed. The amplitude $A_i$ of a standard pulse is proportional to the capacitance $C$ and anti-proportional to the electron charge $q$ and the over voltage $V_\text{OV}$,~\cite{sipm:renker_lorenz}
-\begin{align}
-	A_i\propto\frac{C}{qV_\text{OV}}\,.
-\end{align}
-If now multiple cell breakdowns occur, the total pulse height just sums up over the number of triggered cells which is commonly known as \textit{PE} (\textit{photo electron equivalent}),~\cite{sipm:renker_lorenz}
-\begin{align} 
-	A = \sum_{i=0}^{PE} A_i\,.
-\end{align}
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{SiPM_pulseplot}
@@ -304,19 +306,18 @@ If now multiple cell breakdowns occur, the total pulse height just sums up over 
 	\label{sipm:pulses}
 \end{figure}
 
-In addition, the pulse shape can be parameterized by a function of two exponential functions,
+In addition, the pulse shape can be parameterized by a function of two exponential functions,~\cite{sipm:fact_calibration}
 \begin{align}
 	A(t,PE) = c\cdot PE \cdot \left(1-\frac{1}{1+\exp\left(\frac{t-t_0}{\tau}\right)}\right)\cdot\exp\left(-\frac{t-t_0}{\lambda}\right)\,,
 \end{align}
-where $c$ is a calibration factor, that corresponds to the amplitude of a \SI{1}{PE} pulse, $t_0$ is the starting time of the pulse, and $\tau$ and $\lambda$ are the rise and fall times respectively, which are typically in a range of $\tau=\SI{0.9}{\nano\meter}$ to $\SI{1.1}{\nano\meter}$ and $\lambda=\SI{18}{\nano\second}$ to $\SI{20}{\nano\second}$.~\cite{sipm:fact_calibration}\\
+where $c$ is a calibration factor that corresponds to the amplitude of a \SI{1}{PE} pulse, $t_0$ is the starting time of the pulse, and $\tau$ and $\lambda$ are the rise and fall times respectively which are typically in a range of $\tau=\SI{0.9}{\nano\meter}$ to $\SI{1.1}{\nano\meter}$ and $\lambda=\SI{18}{\nano\second}$ to $\SI{20}{\nano\second}$.~\cite{sipm:fact_calibration}\\
 
-Moreover, figure~\ref{sipm:iceact_sipm} shows the SiPM used for the \iceact camera. It is the\textit{ MicroFJ-60035-TSV SiPM} by \textit{ON Semiconductor}\footnote{In former theses and publications on \iceact the SiPM is called SensL J-Series 60035. Since 2018, SensL is fully integrated in the head organization ON Semiconductor which took over the sales of SensL products.}. 
-It consists of \num{22292} G-APD cells with the dimensions $\SI{35}{\micro\meter}\times\SI{35}{\micro\meter}$ each. The active area is $\SI{6.07}{\milli\meter}\times\SI{6.07}{\milli\meter}$ and the package area is $\SI{6.13}{\milli\meter}\times\SI{6.13}{\milli\meter}$ which results in a fill factor\footnote{Percentage of the active area that is actually equipped with cells.} of $\epsilon_\text{fill}=\SI{75}{\percent}$. On top of the active area, a glass plate with a thickness of \SI{0.37}{\milli\meter} (cf. figure~\ref{sipm:tec_sketch}) is mounted. More technical properties can be found in the data sheet~\cite{sipm:datasheet}.
+Moreover, figure~\ref{sipm:iceact_sipm} shows the SiPM used for the \iceact camera. It is the\textit{ MicroFJ-60035-TSV SiPM} by \textit{ON Semiconductor}\footnote{In former theses and publications on \iceact the SiPM is called SensL J-Series 60035. Since 2018, SensL is fully integrated in the head organization ON Semiconductor which took over the sales of SensL products.} consisting of \num{22292} G-APD cells with the dimensions $\SI{35}{\micro\meter}\times\SI{35}{\micro\meter}$ each. The active area is $\SI{6.07}{\milli\meter}\times\SI{6.07}{\milli\meter}$ and the package area is $\SI{6.13}{\milli\meter}\times\SI{6.13}{\milli\meter}$ which results in a fill factor\footnote{Percentage of the active area that is actually equipped with cells.} of $\epsilon_\text{fill}=\SI{75}{\percent}$. On top of the active area, a glass window with a thickness of \SI{0.37}{\milli\meter} (cf. figure~\ref{sipm:tec_sketch}) is mounted. These and more technical properties can be found in the data sheet~\cite{sipm:datasheet}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{SiPM_sketch.pdf}
-	\caption[Technical sketch of the MicroFJ-60035-TSV SiPM used in \iceact]{\textbf{Technical sketch of the MicroFJ-60035-TSV SiPM used in \iceact.}~\cite{sipm:datasheet} All dimensions given in \si{\milli\meter}.}
+	\caption[Technical sketch of the \iceact SiPM]{\textbf{Technical sketch of the MicroFJ-60035-TSV SiPM used in \iceact.}~\cite{sipm:datasheet} All dimensions given in \si{\milli\meter}.}
 	\label{sipm:tec_sketch}	
 \end{figure}
 
@@ -326,16 +327,16 @@ In the \iceact \geant simulation, the SiPM is implemented via the plug-in \texti
 
 For the material properties of the \SI{0.37}{\milli\meter} thick covering glass plate on the SiPM, only the refractive index of $n = \SI{1.53}{\nano\meter}$ at a wavelength of $\lambda = \SI{436}{\nano\meter}$ is given in the data sheet~\cite{sipm:datasheet}. Since there are no detailed information about the glass, $n$ is assumed to be constant for the simulation.\\
 
-The other important property is the \textit{photon detection efficiency} $PDE(\lambda,V_\text{OV})$ which is given for the over voltages $V_\text{OV}=\SI{2.5}{\volt}$ and $V_\text{OV}=\SI{6}{\volt}$ and for wavelengths $\lambda = \SI{200}{\nano\meter}$ to $\SI{900}{\nano\meter}$. In \iceact the SiPMs are operated with an over voltage of $V_\text{OV} = \SI{5}{\volt}$. Measurements in the data sheet show that the relation between over voltage and PDE is linear.~\cite{sipm:datasheet} Therefore, one gets the needed $PDE_{\SI{5}{\volt}}\coloneqq PDE(\lambda,V_\text{OV}=\SI{5}{\volt})$ by linear interpolation as
+The other important property is the \textit{photon detection efficiency} $PDE(\lambda,V_\text{OV})$ which is given for the over voltages $V_\text{OV}=\SI{2.5}{\volt}$ and $V_\text{OV}=\SI{6}{\volt}$ and for wavelengths $\lambda = \SI{200}{\nano\meter}$ to $\SI{900}{\nano\meter}$. In \iceact, the SiPMs are operated with an over voltage of $V_\text{OV} = \SI{5}{\volt}$. Measurements in the data sheet show that the relation between over voltage and PDE is linear~\cite{sipm:datasheet}. Therefore, one gets the needed $PDE_{\SI{5}{\volt}}\coloneqq PDE(\lambda,V_\text{OV}=\SI{5}{\volt})$ by linear interpolation as
 \begin{align}
 	PDE_{\SI{5}{\volt}} = PDE_{\SI{2.5}{\volt}} + \frac{\SI{2.5}{\volt}}{\SI{6}{\volt}-\SI{2.5}{\volt}} \cdot (PDE_{\SI{6}{\volt}}-PDE_{\SI{2.5}{\volt}}),
 \end{align}
-which is then implemented in \geant. In addition, G4SiPM takes into account, that the PDE is measured for perpendicular light incidence in air environment. By using Fresnel equations it compensates for slant photon incidences. The fill factor $\epsilon_\text{fill}$ is also divided out. \cite{sipm:g4sipm,famous:niggemann}. 
-The interpolated and original PDE functions are shown in figure~\ref{sipm:pde}
+which is then implemented in \geant. In addition, G4SiPM takes into account that the PDE is measured for perpendicular light incidence in air environment. By using Fresnel equations, it compensates for slant photon incidences. The fill factor $\epsilon_\text{fill}$ is also divided out. \cite{sipm:g4sipm,famous:niggemann}. 
+The interpolated and original PDE functions are shown in figure~\ref{sipm:pde}\\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{material/PDE_interpolation.pdf}
-	\caption[Photon detection efficiency of the MicroFJ-60035-TSV SiPM]{\textbf{Photon detection efficiency of the MicroFJ-60035-TSV SiPM.} The data for over voltages of \SI{6}{\volt} and \SI{2.5}{\volt} is taken from~\cite{sipm:datasheet}, the curve for \SI{5}{\volt} -- which is used in the \geant simulation -- is interpolated linearly.}
+	\includegraphics[width=0.8\textwidth]{material/PDE_interpolation.pdf}
+	\caption[Photon detection efficiency of the \iceact SiPM]{\textbf{Photon detection efficiency of the MicroFJ-60035-TSV SiPM.} The data for over voltages of \SI{6}{\volt} and \SI{2.5}{\volt} is taken from~\cite{sipm:datasheet}, the curve for \SI{5}{\volt} -- which is used in the \geant simulation -- is interpolated linearly.}
 	\label{sipm:pde}	
 \end{figure}
