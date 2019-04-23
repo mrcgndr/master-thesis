@@ -69,7 +69,7 @@ with
 	\ln{g} = n^{-1} \sum_{i=1}^{n} \ln{\hat{f}(\vec{X_i})}\,,\\
 	\alpha\in[0,1]\,.
 \end{vardescription}
-For the \iceact parameterization, the sensitivity parameter $\alpha$ is set to $\alpha=\num{0.3}$ since this has been shown to be an appropriate value as well as in \cite{kde:schoenen}. Additionally, all $n$ photon hits have the same weight, which results in \cite{kde:schoenen,kde:wangwang}
+For the \iceact parameterization, the sensitivity parameter $\alpha$ is set to $\alpha=\num{0.3}$ since this has been shown to be an appropriate value as well as in \cite{kde:schoenen}. Additionally, all $n$ photon hits have the same weight which results in \cite{kde:schoenen,kde:wangwang}
 \begin{align}
 	w_i = \frac{1}{n}\,.
 \end{align}
@@ -193,7 +193,7 @@ For the application in this simulation, the pixelization of a whole sphere is no
 	\Gamma = \frac{1}{4\pi}\int\limits_{0}^{2\pi}\int\limits_{0}^{\theta_\text{max}}\sin{\theta} d\theta d\phi = \frac{1-\cos\theta_\text{max}}{2}\,.
 	\label{eq:spherefactor}
 \end{align}
-For the \iceact simulation with $\theta_\text{max} = \SI{10}{\degree}$, this leads to the fact that only about \SI{0.76}{\percent} of the sphere is needed to be pixelized\footnote{In the \iceact parameterization, a few more HEALPix are actually needed. The reason is, that all HEALPixes that at least overlap partly with the region $\theta\leq\theta_\text{max}$ are included.}.\\
+For the \iceact simulation with $\theta_\text{max} = \SI{10}{\degree}$, this leads to the fact that only about \SI{0.76}{\percent} of the sphere is needed to be pixelized\footnote{In the \iceact parameterization, a few more HEALPix are actually needed. The reason is that all HEALPixes that at least overlap partly with the region $\theta\leq\theta_\text{max}$ are included.}.\\
 
 An additional important supplement is that the HEALPix numbering scheme is hierarchical. The standard numbering scheme -- called \textit{ring scheme} -- starts at the zenith $\theta = \SI{0}{\degree}$ and follows a spiral for increasing zenith angles. There are two advantages of this numbering scheme for the use case of \iceact simulation. On the one hand, the unambiguous numbering makes it unnecessary for the directional coordinates~$(\theta, \phi)$ to be saved but only the ordinal number~$HP$. In order to reconstruct the direction in polar coordinates, one only has to know the pixelization parameter~$N_\text{side}$. On the other hand, the ring scheme and the fact that the simulated directions are limited by~$\theta_\text{max}$ result in a distinct maximum ordinal number~$HP^\text{max}$ and one can just ignore all pixels beyond this number. This allows saving information very efficiently by using HEALPixes. 
 
